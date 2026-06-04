@@ -1,10 +1,11 @@
 /* POST /api/submit
-   Body: { name, email, consent, answers: [{given}, ...] }
-   - Grades server-side against the hidden key
+   Body: { subject, name, email, consent, answers: [{given}, ...] }
+   - Grades server-side against the hidden key for the chosen subject
    - Pushes the lead + event to Klaviyo (best-effort, no-ops without key)
    - Returns the full report JSON for the browser to render
 */
-import { gradeAndReport } from "../_bank.js";
+import { gradeAndReport as gradePhysics } from "../_bank.js";
+import { gradeAndReport as gradeBiology } from "../_biology.js";
 import { syncKlaviyo } from "../_klaviyo.js";
 
 const json = (obj, status = 200) =>
@@ -22,7 +23,6 @@ export const onRequestPost = async ({ request, env }) => {
   }
 
   const email = (body.email || "").trim();
-  // Basic validation
   if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return json({ error: "A valid email is required." }, 400);
   }
@@ -30,7 +30,9 @@ export const onRequestPost = async ({ request, env }) => {
     return json({ error: "Consent is required to receive results." }, 400);
   }
 
-  const report = gradeAndReport(body.name, Array.isArray(body.answers) ? body.answers : []);
+  const subject = (body.subject || "physics").toLowerCase();
+  const grade = subject === "biology" ? gradeBiology : gradePhysics;
+  const report = grade(body.name, Array.isArray(body.answers) ? body.answers : []);
 
   // Fire lead capture to Klaviyo. Pass consent through so the list subscription
   // step runs. Do not let a Klaviyo hiccup break the user's result.
