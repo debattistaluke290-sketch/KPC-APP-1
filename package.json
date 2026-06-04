@@ -1,0 +1,15 @@
+{
+  "name": "kpc-diagnostic",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "KPC Notes Malta — free subject diagnostic (Cloudflare Pages + Functions)",
+  "scripts": {
+    "dev": "wrangler pages dev public",
+    "deploy": "wrangler pages deploy public",
+    "test": "node test.mjs"
+  },
+  "devDependencies": {
+    "wrangler": "^3.0.0"
+  }
+}

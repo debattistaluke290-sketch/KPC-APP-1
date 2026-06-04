@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KPC Notes — Free Physics Diagnostic</title>
+<meta name="description" content="Free physics diagnostic from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
+
+<!-- ============================================================
+     META PIXEL  —  replace YOUR_PIXEL_ID with your real ID.
+     Leave as-is to disable during development.
+     ============================================================ -->
+<script>
+  window.KPC_PIXEL_ID = "YOUR_PIXEL_ID"; // <-- set this
+  (function(){
+    if(!window.KPC_PIXEL_ID || window.KPC_PIXEL_ID==="YOUR_PIXEL_ID") return;
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', window.KPC_PIXEL_ID);
+    fbq('track', 'PageView');
+  })();
+  function pixel(event, params){
+    if(window.fbq && window.KPC_PIXEL_ID && window.KPC_PIXEL_ID!=="YOUR_PIXEL_ID"){
+      window.fbq('track', event, params||{});
+    }
+  }
+</script>
+
+<!-- ============================================================
+     CONFIG — fill these in for production.
+     ============================================================ -->
+<script>
+  window.KPC_CONFIG = {
+    privacyUrl: "https://kpcnotesmt.com/privacy",       // <-- your privacy policy
+    shopBundleUrl: "https://kpcnotesmt.com/cart",        // <-- Shopify cart/collection link
+    discountCode: "DIAGNOSTIC20"
+  };
+</script>
+
+<style>
+  :root{
+    --purple-deep:#341D54; --purple-near:#1A0F2E; --purple:#7C27AC;
+    --pink:#D6587E; --pink-dark:#c0436a; --white:#fff; --bg:#F5F2EA;
+    --card:#fff; --ink:#341D54; --muted:#7a6f86; --line:#e8def0;
+    --green:#2fa566; --amber:#e0982f; --red:#cf3b3b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.5;min-height:100vh}
+  .wrap{width:100%;max-width:600px;margin:0 auto;padding:22px 16px 48px}
+  .narrow{max-width:560px}
+  .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .logo{width:38px;height:38px;border-radius:10px;background:linear-gradient(135deg,var(--pink),var(--purple));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:18px;
+    box-shadow:0 4px 12px rgba(124,39,172,.3)}
+  .brand .name{font-weight:800;letter-spacing:.3px;font-size:17px;color:var(--purple-deep)}
+  .brand .name span{color:var(--pink)}
+  .topbar .tag{font-size:12px;color:var(--muted);font-weight:600}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:18px;
+    padding:28px 24px;box-shadow:0 8px 30px rgba(52,29,84,.07)}
+  .screen{display:none;animation:fade .25s ease}
+  .screen.active{display:block}
+  @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .btn{appearance:none;border:none;cursor:pointer;width:100%;background:var(--pink);color:#fff;
+    font-weight:700;font-size:16px;padding:15px 18px;border-radius:12px;
+    transition:background .15s,transform .05s;box-shadow:0 4px 14px rgba(214,88,126,.28)}
+  .btn:hover{background:var(--pink-dark)}
+  .btn:active{transform:translateY(1px)}
+  .btn[disabled]{background:#d8c9e2;cursor:not-allowed;box-shadow:none}
+  .btn.secondary{background:transparent;color:var(--purple);border:1.5px solid var(--line);box-shadow:none}
+  .btn.secondary:hover{background:#f6f0fa}
+
+  .hero{background:linear-gradient(155deg,var(--purple-deep),var(--purple-near));color:#fff;border-radius:22px;
+    padding:34px 26px;margin-bottom:24px;position:relative;overflow:hidden}
+  .hero:after{content:"";position:absolute;right:-50px;top:-50px;width:200px;height:200px;
+    background:radial-gradient(circle,rgba(214,88,126,.4),transparent 70%);border-radius:50%}
+  .hero:before{content:"";position:absolute;left:-60px;bottom:-70px;width:200px;height:200px;
+    background:radial-gradient(circle,rgba(124,39,172,.45),transparent 70%);border-radius:50%}
+  .hero > *{position:relative;z-index:1}
+  .hero .pill{display:inline-block;background:rgba(255,255,255,.12);color:#f0d7e2;font-weight:600;
+    font-size:12.5px;padding:5px 12px;border-radius:999px;margin-bottom:16px}
+  .hero h1{font-size:30px;line-height:1.13;letter-spacing:-.5px;margin-bottom:12px;max-width:95%}
+  .hero h1 .hl{color:var(--pink)}
+  .hero p{color:#d8cce4;font-size:15.5px;max-width:94%}
+  .trust{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:22px;align-items:center}
+  .trust .stars{color:var(--pink);letter-spacing:2px;font-size:15px}
+  .trust .item{font-size:12.5px;color:#cdbfdb;font-weight:600}
+  .trust .item b{color:#fff}
+
+  .section-h{font-size:13px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:6px 4px 12px}
+  .subjects{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .subject{background:var(--card);border:1.5px solid var(--line);border-radius:16px;padding:18px 16px;
+    cursor:pointer;transition:border-color .15s,transform .08s,box-shadow .15s;position:relative}
+  .subject:hover{border-color:var(--purple);transform:translateY(-2px);box-shadow:0 10px 24px rgba(52,29,84,.1)}
+  .subject .ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:23px;margin-bottom:12px}
+  .subject h3{font-size:16px;margin-bottom:3px;color:var(--purple-deep)}
+  .subject p{font-size:12.5px;color:var(--muted)}
+  .subject .go{color:var(--pink);font-weight:700;font-size:13px;margin-top:10px;display:inline-block}
+  .subject.soon{cursor:default;opacity:.9}
+  .subject.soon:hover{border-color:var(--line);transform:none;box-shadow:none}
+  .subject.soon .badge{position:absolute;top:14px;right:14px;background:#f3ebf8;color:var(--purple);
+    font-size:10.5px;font-weight:700;padding:3px 8px;border-radius:99px;letter-spacing:.3px}
+  .homefoot{text-align:center;font-size:12px;color:var(--muted);margin-top:26px;line-height:1.8}
+  .homefoot b{color:var(--purple)}
+  .homefoot a{color:var(--muted)}
+
+  .progress-head{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:var(--muted);margin-bottom:8px;font-weight:600}
+  .bar{height:8px;background:#efe7f4;border-radius:99px;overflow:hidden;margin-bottom:6px}
+  .bar > i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--purple),var(--pink));border-radius:99px;transition:width .3s ease}
+  .topic-tag{font-size:13px;color:var(--purple);font-weight:700;margin:18px 0 4px;display:flex;align-items:center;gap:8px}
+  .paper-badge{background:#fdeef3;color:var(--pink-dark);font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px}
+  .q{font-size:19px;font-weight:600;margin:6px 0 8px;line-height:1.4}
+  .q .data{display:block;font-size:14px;color:var(--muted);font-weight:500;margin-top:6px}
+  .diagram{background:#faf7fc;border:1px solid var(--line);border-radius:14px;padding:14px;margin:14px 0;text-align:center}
+  .diagram svg{max-width:100%;height:auto}
+  .paper-hint{font-size:13px;color:var(--pink-dark);background:#fdf2f6;border:1px solid #f3d4e0;border-radius:10px;
+    padding:10px 12px;margin:10px 0 16px;display:flex;gap:8px;align-items:flex-start}
+  .opt{display:block;width:100%;text-align:left;background:#fff;border:1.5px solid var(--line);border-radius:12px;
+    padding:14px 16px;margin-bottom:10px;font-size:15px;cursor:pointer;transition:border-color .12s,background .12s}
+  .opt:hover{border-color:var(--purple)}
+  .opt.chosen{border-color:var(--purple);background:#f3ebf8}
+  .answer-field{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;font-family:inherit;margin-bottom:6px}
+  .answer-field:focus{outline:none;border-color:var(--purple)}
+  .answer-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
+  .quiz-actions{margin-top:10px}
+
+  .pill-lite{display:inline-block;background:#f3ebf8;color:var(--purple);font-weight:600;font-size:13px;padding:5px 12px;border-radius:999px;margin-bottom:16px}
+  h2{font-size:21px;margin-bottom:6px;letter-spacing:-.2px;color:var(--purple-deep)}
+  p.lead{color:var(--muted);font-size:15px;margin-bottom:20px}
+  .unlock{background:#faf7fc;border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-bottom:20px}
+  .unlock div{display:flex;gap:10px;align-items:flex-start;font-size:14px;padding:5px 0}
+  .unlock .ck{color:var(--pink);font-weight:800}
+  .field{width:100%;border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;font-size:16px;margin-bottom:14px;font-family:inherit}
+  .field:focus{outline:none;border-color:var(--purple)}
+  .consent{display:flex;gap:10px;align-items:flex-start;font-size:13px;color:var(--muted);margin-bottom:16px;cursor:pointer;line-height:1.45}
+  .consent input{margin-top:2px;width:17px;height:17px;flex-shrink:0;accent-color:var(--purple)}
+  .consent a{color:var(--purple);font-weight:600}
+  .err{color:var(--red);font-size:13px;font-weight:600;margin-bottom:12px;min-height:18px}
+  .fineprint{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
+
+  .confirm{text-align:center;padding:8px 0 4px}
+  .confirm .big{font-size:46px;margin-bottom:8px}
+  .confirm p{color:var(--muted);font-size:15px;margin-top:8px}
+  .reveal-divider{display:flex;align-items:center;gap:12px;margin:26px 0 18px;color:var(--muted);font-size:12px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+  .reveal-divider:before,.reveal-divider:after{content:"";flex:1;height:1px;background:var(--line)}
+  .score-ring{display:flex;align-items:center;gap:16px;margin-bottom:8px}
+  .ring{width:78px;height:78px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:22px;color:#fff;flex-shrink:0}
+  .summary{font-size:14px;color:var(--muted);background:#faf7fc;border:1px solid var(--line);border-radius:12px;padding:13px 15px;margin:16px 0 6px}
+  .section-label{font-size:12px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;color:var(--muted);margin:24px 0 6px}
+  .row{display:flex;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}
+  .row:last-child{border-bottom:none}
+  .dot{width:12px;height:12px;border-radius:50%;flex-shrink:0}
+  .row .t{flex:1;font-weight:600;font-size:15px}
+  .row .meta{font-size:12px;color:var(--muted);font-weight:500;margin-right:4px}
+  .row .lvl{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+  .lvl.green{background:#e4f6ec;color:#1f7a4d}
+  .lvl.amber{background:#fbeed7;color:#a86b14}
+  .lvl.red{background:#fbe3e3;color:#b22a2a}
+  .sol{border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+  .sol .head{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px}
+  .sol .qn{font-size:14px;font-weight:700;color:var(--purple-deep);flex:1}
+  .sol .mark{font-size:12px;font-weight:700;padding:3px 10px;border-radius:99px;white-space:nowrap}
+  .mark.right{background:#e4f6ec;color:#1f7a4d}
+  .mark.wrong{background:#fbe3e3;color:#b22a2a}
+  .mark.blank{background:#f1ecf5;color:var(--muted)}
+  .sol .dlg{text-align:center;margin:6px 0 10px}
+  .sol .dlg svg{max-width:100%;height:auto}
+  .sol .yours{font-size:13px;color:var(--muted);margin-bottom:8px}
+  .sol .yours b{color:var(--ink)}
+  .sol .steps{font-size:13.5px;background:#faf7fc;border-radius:10px;padding:12px 14px;line-height:1.6}
+  .sol .steps .final{color:var(--purple);font-weight:700}
+  .priority{background:#faf7fc;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:22px}
+  .priority h3{font-size:15px;margin-bottom:4px;color:var(--purple-deep)}
+  .priority .sub{font-size:13px;color:var(--muted);margin-bottom:12px}
+  .rec{display:flex;gap:12px;align-items:flex-start;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .rec:last-child{border-bottom:none}
+  .rec .num{width:24px;height:24px;border-radius:7px;background:var(--purple);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
+  .rec .body b{display:block;font-size:14px;margin-bottom:2px}
+  .rec .body .ref{font-size:13px;color:var(--pink-dark);font-weight:600}
+  .rec .body .why{font-size:12.5px;color:var(--muted);margin-top:2px}
+  .cta-box{margin-top:24px;text-align:center}
+  .cta-box .price{font-size:14px;color:var(--muted);margin-top:10px}
+  .cta-box .price b{color:var(--ink)}
+  .demo-note{font-size:11px;color:#a99cb6;text-align:center;margin-top:18px}
+  .loader{text-align:center;color:var(--muted);font-size:14px;padding:20px}
+</style>
+</head>
+<body>
+<div class="wrap" id="page">
+
+  <div class="topbar">
+    <div class="brand"><div class="logo">K</div><div class="name">KPC <span>Notes</span></div></div>
+    <div class="tag">kpcnotesmt.com</div>
+  </div>
+
+  <!-- HOMEPAGE -->
+  <section class="screen active" id="s-home">
+    <div class="hero">
+      <div class="pill">Free diagnostic · Built around the Maltese syllabus</div>
+      <h1>Stop guessing what to revise. <span class="hl">Start knowing.</span></h1>
+      <p>Take a short diagnostic, work the problems through, and we'll email you full worked solutions plus a personalised plan mapped straight to KPC Notes.</p>
+      <div class="trust">
+        <span class="stars">★★★★★</span>
+        <span class="item"><b>4.9/5</b> · 435+ reviews</span>
+        <span class="item"><b>6,000+</b> students 🇲🇹</span>
+        <span class="item"><b>92%</b> report grade improvement</span>
+      </div>
+    </div>
+    <div class="section-h">Choose your subject</div>
+    <div class="subjects">
+      <div class="subject" id="subj-physics" onclick="startSubject('Physics')">
+        <div class="ico" style="background:#f3ebf8">⚛️</div>
+        <h3>Physics</h3><p>Forces, energy, waves, electricity &amp; more</p>
+        <span class="go" id="physics-go">Start diagnostic →</span>
+      </div>
+      <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#fdeef3">🧬</div><h3>Biology</h3><p>Cells, systems, genetics &amp; ecology</p></div>
+      <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#f3ebf8">🧪</div><h3>Chemistry</h3><p>Atoms, reactions, bonding &amp; the mole</p></div>
+      <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#fdeef3">📐</div><h3>Mathematics</h3><p>Algebra, geometry, trig &amp; statistics</p></div>
+    </div>
+    <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
+      <a href="#" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
+  </section>
+
+  <!-- QUIZ -->
+  <section class="screen" id="s-quiz">
+    <div class="card">
+      <div class="progress-head"><span id="q-count">Question 1</span><span id="q-pct">0%</span></div>
+      <div class="bar"><i id="q-bar"></i></div>
+      <div class="topic-tag"><span id="q-topic-name"></span><span class="paper-badge" id="q-paper-badge" style="display:none">✏️ Paper question</span></div>
+      <div class="q" id="q-text"></div>
+      <div class="diagram" id="q-diagram" style="display:none"></div>
+      <div class="paper-hint" id="q-paper-hint" style="display:none"><span>✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right — you'll get the full worked solution by email.</span></div>
+      <div id="q-body"></div>
+      <div class="quiz-actions"><button class="btn" id="q-next" onclick="nextQuestion()">Next →</button></div>
+      <div style="text-align:center;margin-top:12px"><a href="#" onclick="skipQuestion(event)" style="font-size:13px;color:var(--muted);text-decoration:none">Skip this question</a></div>
+    </div>
+  </section>
+
+  <!-- EMAIL GATE -->
+  <section class="screen" id="s-email">
+    <div class="card narrow">
+      <div class="pill-lite">Last step — unlock your results</div>
+      <h2>Where should we send your worked solutions?</h2>
+      <p class="lead">You've finished the diagnostic. Enter your email and we'll send you everything you need to improve.</p>
+      <div class="unlock">
+        <div><span class="ck">✓</span><span>Every question <b>fully worked out and corrected</b>, step by step</span></div>
+        <div><span class="ck">✓</span><span>A <b>personalised study plan</b> mapped to exact KPC Notes topics</span></div>
+        <div><span class="ck">✓</span><span>A discount code for the notes that fix your weak areas</span></div>
+      </div>
+      <input class="field" id="email-name" type="text" placeholder="First name" />
+      <input class="field" id="email-addr" type="email" placeholder="Email address" />
+      <label class="consent">
+        <input type="checkbox" id="consent" />
+        <span>I agree to receive my results and study tips from KPC Notes, and I've read the <a href="#" id="consent-privacy" target="_blank" rel="noopener">privacy policy</a>. (If you're under 16, please ask a parent first.)</span>
+      </label>
+      <div class="err" id="email-err"></div>
+      <button class="btn" id="submit-btn" onclick="submitEmail()">Send me my results →</button>
+    </div>
+  </section>
+
+  <!-- CONFIRMATION + REPORT -->
+  <section class="screen" id="s-done">
+    <div class="card">
+      <div class="confirm"><div class="big">📬</div><h2 id="c-head">Check your inbox!</h2>
+        <p id="c-sub">Your full worked solutions and personalised KPC study plan are on their way.</p></div>
+      <div class="reveal-divider">Your results</div>
+      <div class="score-ring"><div class="ring" id="r-ring">—</div>
+        <div><h2 id="r-head">Your physics snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
+      <div class="summary" id="r-summary"></div>
+      <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
+      <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
+      <div class="priority"><h3>🎯 Your priority study plan</h3>
+        <div class="sub">Work through these in order — biggest gaps first.</div><div id="r-recs"></div></div>
+      <div class="cta-box"><button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
+        <div class="price">Tailored bundle · <b>20% off</b> with code <b id="disc-code">DIAGNOSTIC20</b></div></div>
+      <button class="btn secondary" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
+    </div>
+  </section>
+
+</div>
+
+<script>
+/* ===== SVG DIAGRAMS (not secret — rendered for quiz + report) ===== */
+const DIA = {
+  resultant:`<svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg"><rect x="125" y="40" width="70" height="40" rx="7" fill="#f3ebf8" stroke="#7C27AC" stroke-width="2"/><text x="160" y="64" text-anchor="middle" font-size="12" fill="#7a6f86">box</text><line x1="195" y1="60" x2="288" y2="60" stroke="#D6587E" stroke-width="3"/><polygon points="294,60 282,54 282,66" fill="#D6587E"/><text x="244" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">12 N</text><line x1="125" y1="60" x2="38" y2="60" stroke="#341D54" stroke-width="3"/><polygon points="32,60 44,54 44,66" fill="#341D54"/><text x="82" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">5 N</text></svg>`,
+  wave:`<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg"><line x1="15" y1="75" x2="305" y2="75" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 4"/><path d="M20,75 C40,25 70,25 90,75 C110,125 140,125 160,75 C180,25 210,25 230,75 C250,125 280,125 300,75" fill="none" stroke="#7C27AC" stroke-width="3"/><line x1="55" y1="75" x2="55" y2="40" stroke="#D6587E" stroke-width="2"/><polygon points="55,37 51,46 59,46" fill="#D6587E"/><text x="64" y="56" font-size="13" font-weight="700" fill="#D6587E">X</text><line x1="55" y1="120" x2="195" y2="120" stroke="#341D54" stroke-width="2"/><polygon points="52,120 60,116 60,124" fill="#341D54"/><polygon points="198,120 190,116 190,124" fill="#341D54"/><text x="121" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">Y</text></svg>`,
+  circuit:`<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg"><polyline points="45,45 105,45" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="145,45 185,45" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="225,45 275,45 275,115 45,115 45,90" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="45,60 45,45" fill="none" stroke="#341D54" stroke-width="2.5"/><rect x="105" y="34" width="40" height="22" rx="4" fill="#fff" stroke="#7C27AC" stroke-width="2"/><text x="125" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">6Ω</text><rect x="185" y="34" width="40" height="22" rx="4" fill="#fff" stroke="#7C27AC" stroke-width="2"/><text x="205" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">3Ω</text><line x1="30" y1="62" x2="60" y2="62" stroke="#341D54" stroke-width="3"/><line x1="38" y1="74" x2="52" y2="74" stroke="#341D54" stroke-width="6"/><line x1="30" y1="88" x2="60" y2="88" stroke="#341D54" stroke-width="3"/><text x="20" y="79" text-anchor="end" font-size="12" font-weight="700" fill="#D6587E">9 V</text><polygon points="150,115 138,109 138,121" fill="#D6587E"/><text x="165" y="111" font-size="11" font-weight="700" fill="#D6587E">I</text></svg>`,
+  moments:`<svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg"><line x1="35" y1="55" x2="285" y2="55" stroke="#341D54" stroke-width="5" stroke-linecap="round"/><polygon points="160,55 148,82 172,82" fill="#7C27AC"/><line x1="75" y1="55" x2="75" y2="98" stroke="#341D54" stroke-width="2.5"/><polygon points="75,104 70,94 80,94" fill="#341D54"/><text x="75" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">20 N</text><line x1="75" y1="42" x2="160" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="117" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">3 m</text><line x1="235" y1="55" x2="235" y2="98" stroke="#D6587E" stroke-width="2.5"/><polygon points="235,104 230,94 240,94" fill="#D6587E"/><text x="235" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#D6587E">F = ?</text><line x1="160" y1="42" x2="235" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="197" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">2 m</text></svg>`
+};
+const DOT={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
+
+/* ===== STATE ===== */
+let QUESTIONS = [];     // public questions from the API (no answers)
+let idx = 0;
+let responses = [];
+let loaded = false;
+
+/* ===== CONFIG wiring ===== */
+(function applyConfig(){
+  const c = window.KPC_CONFIG || {};
+  ['privacy-link','consent-privacy'].forEach(id=>{ const el=document.getElementById(id); if(el && c.privacyUrl) el.href=c.privacyUrl; });
+  if(c.discountCode) document.getElementById('disc-code').textContent = c.discountCode;
+})();
+
+/* ===== Load questions from backend ===== */
+async function loadQuestions(){
+  try{
+    const res = await fetch('/api/questions');
+    if(!res.ok) throw new Error('status '+res.status);
+    const data = await res.json();
+    QUESTIONS = data.questions || [];
+    loaded = true;
+  }catch(e){
+    console.error('Could not load questions:', e);
+    const go = document.getElementById('physics-go');
+    if(go) go.textContent = 'Unavailable — run the dev server';
+  }
+}
+loadQuestions();
+
+function show(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function startSubject(name){
+  if(name!=='Physics') return;
+  if(!loaded || !QUESTIONS.length){ alert('Questions are still loading. If this persists, the backend (/api/questions) is not running — see the README.'); return; }
+  idx=0; responses = QUESTIONS.map(()=>({given:null,answered:false}));
+  show('s-quiz'); renderQuestion();
+}
+
+function renderQuestion(){
+  const item = QUESTIONS[idx];
+  document.getElementById('q-count').textContent = `Question ${idx+1} of ${QUESTIONS.length}`;
+  const pct = Math.round(idx/QUESTIONS.length*100);
+  document.getElementById('q-pct').textContent = pct + '%';
+  document.getElementById('q-bar').style.width = pct + '%';
+  document.getElementById('q-topic-name').textContent = item.topic;
+
+  const isWork = item.type==='work';
+  document.getElementById('q-paper-badge').style.display = isWork?'inline-block':'none';
+  document.getElementById('q-paper-hint').style.display = isWork?'flex':'none';
+  document.getElementById('q-text').innerHTML = item.q + (item.data?`<span class="data">${item.data}</span>`:'');
+
+  const dWrap=document.getElementById('q-diagram');
+  if(item.dia && DIA[item.dia]){ dWrap.innerHTML = DIA[item.dia]; dWrap.style.display='block'; }
+  else { dWrap.innerHTML=''; dWrap.style.display='none'; }
+
+  const body = document.getElementById('q-body'); body.innerHTML='';
+  const prev = responses[idx];
+
+  if(item.type==='mcq'){
+    item.opts.forEach((o,i)=>{
+      const b=document.createElement('button');
+      b.className='opt'+(prev.given===i?' chosen':'');
+      b.textContent=o;
+      b.onclick=()=>{ body.querySelectorAll('.opt').forEach(x=>x.classList.remove('chosen'));
+        b.classList.add('chosen'); responses[idx]={given:i, answered:true}; };
+      body.appendChild(b);
+    });
+  } else {
+    const inp=document.createElement('input');
+    inp.className='answer-field'; inp.type='text';
+    inp.placeholder='Your final answer'+(item.unit?` (${item.unit})`:'');
+    inp.value = (prev.given!==null && prev.given!==undefined)?prev.given:'';
+    inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; };
+    body.appendChild(inp);
+    const sub=document.createElement('div'); sub.className='answer-sub';
+    sub.textContent='No feedback now — your worked solution arrives by email.';
+    body.appendChild(sub);
+  }
+  document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & get my results →':'Next →';
+}
+
+function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ show('s-email'); } else renderQuestion(); }
+function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
+
+/* ===== Submit to backend ===== */
+async function submitEmail(){
+  const name=document.getElementById('email-name').value.trim();
+  const email=document.getElementById('email-addr').value.trim();
+  const consent=document.getElementById('consent').checked;
+  const err=document.getElementById('email-err');
+  err.textContent='';
+  if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent='Please enter a valid email address.'; return; }
+  if(!consent){ err.textContent='Please tick the consent box so we can send your results.'; return; }
+
+  const btn=document.getElementById('submit-btn');
+  btn.disabled=true; btn.textContent='Sending…';
+
+  try{
+    const res=await fetch('/api/submit',{
+      method:'POST', headers:{'content-type':'application/json'},
+      body:JSON.stringify({ name, email, consent, answers: responses.map(r=>({given:r.given})) })
+    });
+    if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('status '+res.status)); }
+    const report=await res.json();
+    pixel('Lead', {content_name:'Physics Diagnostic'});
+    renderReport(report);
+    show('s-done');
+  }catch(e){
+    err.textContent='Something went wrong sending your results. Please try again.';
+    console.error(e);
+  }finally{
+    btn.disabled=false; btn.textContent='Send me my results →';
+  }
+}
+
+/* ===== Render the server-built report ===== */
+function renderReport(rep){
+  document.getElementById('c-head').textContent = rep.name?`Check your inbox, ${rep.name}!`:'Check your inbox!';
+  const ring=document.getElementById('r-ring');
+  ring.textContent=rep.score+'%';
+  ring.style.background = rep.score>=80?'var(--green)':rep.score>=50?'var(--amber)':'var(--red)';
+  document.getElementById('r-head').textContent = rep.name?`${rep.name}, here's your snapshot`:'Your physics snapshot';
+  document.getElementById('r-sub').textContent = `You scored ${rep.totalCorrect} of ${rep.totalQ}.`;
+  document.getElementById('r-summary').textContent = rep.summary;
+
+  const rows=document.getElementById('r-rows'); rows.innerHTML='';
+  rep.topics.forEach(t=>{
+    const row=document.createElement('div'); row.className='row';
+    row.innerHTML=`<span class="dot" style="background:${DOT[t.level]}"></span><span class="t">${t.name}</span>
+      <span class="meta">${t.c}/${t.n}</span><span class="lvl ${t.level}">${t.label}</span>`;
+    rows.appendChild(row);
+  });
+
+  const sols=document.getElementById('r-solutions'); sols.innerHTML='';
+  rep.solutions.forEach(s=>{
+    const div=document.createElement('div'); div.className='sol';
+    div.innerHTML=`<div class="head"><div class="qn">Q${s.n}. ${s.q}</div><span class="mark ${s.mark}">${s.markText}</span></div>
+      ${s.dia&&DIA[s.dia]?`<div class="dlg">${DIA[s.dia]}</div>`:''}
+      <div class="yours">Your answer: <b>${s.given}</b></div>
+      <div class="steps">${s.steps}</div>`;
+    sols.appendChild(div);
+  });
+
+  const recs=document.getElementById('r-recs'); recs.innerHTML='';
+  if(!rep.recs.length){
+    recs.innerHTML=`<div class="rec"><div class="num">★</div><div class="body"><b>Brilliant — no weak topics!</b><div class="why">You're strong across the board. Keep practising past papers to stay sharp.</div></div></div>`;
+  } else {
+    rep.recs.forEach((w,i)=>{
+      const div=document.createElement('div'); div.className='rec';
+      div.innerHTML=`<div class="num">${i+1}</div><div class="body">
+        <b>${w.topic} <span style="color:${DOT[w.level]}">· ${w.label}</span></b>
+        <div class="ref">→ ${w.ref}</div><div class="why">${w.why}</div></div>`;
+      recs.appendChild(div);
+    });
+  }
+
+  // Shop CTA → Shopify cart with discount pre-applied
+  const c=window.KPC_CONFIG||{};
+  const shop=document.getElementById('shop-btn');
+  shop.onclick=()=>{
+    let url=c.shopBundleUrl||'#';
+    if(c.discountCode && url!=='#') url += (url.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
+    pixel('InitiateCheckout');
+    if(url==='#'){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
+    window.open(url,'_blank','noopener');
+  };
+}
+
+function reset(){
+  document.getElementById('email-name').value='';
+  document.getElementById('email-addr').value='';
+  document.getElementById('consent').checked=false;
+  show('s-home');
+}
+</script>
+</body>
+</html>
