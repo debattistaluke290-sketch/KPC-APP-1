@@ -3,12 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KPC Notes - Free Physics Diagnostic</title>
-<meta name="description" content="Free physics diagnostic from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
+<title>KPC Notes - Free Science Diagnostic</title>
+<meta name="description" content="Free science diagnostics from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
 
 <!-- ============================================================
      META PIXEL  -  replace YOUR_PIXEL_ID with your real ID.
-     Leave as-is to disable during development.
      ============================================================ -->
 <script>
   window.KPC_PIXEL_ID = "YOUR_PIXEL_ID"; // <-- set this
@@ -216,9 +215,13 @@
       <div class="subject" id="subj-physics" onclick="startSubject('Physics')">
         <div class="ico" style="background:#f3ebf8">⚛️</div>
         <h3>Physics</h3><p>Forces, energy, waves, electricity &amp; more</p>
-        <span class="go" id="physics-go">Start diagnostic →</span>
+        <span class="go">Start diagnostic →</span>
       </div>
-      <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#fdeef3">🧬</div><h3>Biology</h3><p>Cells, systems, genetics &amp; ecology</p></div>
+      <div class="subject" id="subj-biology" onclick="startSubject('Biology')">
+        <div class="ico" style="background:#fdeef3">🧬</div>
+        <h3>Biology</h3><p>Cells, transport, genetics &amp; ecology</p>
+        <span class="go">Start diagnostic →</span>
+      </div>
       <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#f3ebf8">🧪</div><h3>Chemistry</h3><p>Atoms, reactions, bonding &amp; the mole</p></div>
       <div class="subject soon"><span class="badge">COMING SOON</span><div class="ico" style="background:#fdeef3">📐</div><h3>Mathematics</h3><p>Algebra, geometry, trig &amp; statistics</p></div>
     </div>
@@ -272,7 +275,7 @@
         <p id="c-sub">Your full worked solutions and personalised KPC study plan are on their way.</p></div>
       <div class="reveal-divider">Your results</div>
       <div class="score-ring"><div class="ring" id="r-ring">-</div>
-        <div><h2 id="r-head">Your physics snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
+        <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
@@ -293,15 +296,19 @@ const DIA = {
   resultant:`<svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg"><rect x="123" y="40" width="74" height="40" rx="7" fill="#f3ebf8" stroke="#7C27AC" stroke-width="2"/><text x="160" y="64" text-anchor="middle" font-size="12" fill="#7a6f86">van</text><line x1="197" y1="60" x2="292" y2="60" stroke="#D6587E" stroke-width="3"/><polygon points="298,60 286,54 286,66" fill="#D6587E"/><text x="246" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">3500 N</text><line x1="123" y1="60" x2="30" y2="60" stroke="#341D54" stroke-width="3"/><polygon points="24,60 36,54 36,66" fill="#341D54"/><text x="76" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">1100 N</text></svg>`,
   wave:`<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg"><line x1="15" y1="75" x2="305" y2="75" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 4"/><path d="M20,75 C40,25 70,25 90,75 C110,125 140,125 160,75 C180,25 210,25 230,75 C250,125 280,125 300,75" fill="none" stroke="#7C27AC" stroke-width="3"/><line x1="55" y1="75" x2="55" y2="40" stroke="#D6587E" stroke-width="2"/><polygon points="55,37 51,46 59,46" fill="#D6587E"/><text x="64" y="56" font-size="13" font-weight="700" fill="#D6587E">X</text><line x1="55" y1="120" x2="195" y2="120" stroke="#341D54" stroke-width="2"/><polygon points="52,120 60,116 60,124" fill="#341D54"/><polygon points="198,120 190,116 190,124" fill="#341D54"/><text x="121" y="138" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">Y</text></svg>`,
   circuit:`<svg viewBox="0 0 320 150" xmlns="http://www.w3.org/2000/svg"><polyline points="45,45 105,45" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="145,45 185,45" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="225,45 275,45 275,115 45,115 45,90" fill="none" stroke="#341D54" stroke-width="2.5"/><polyline points="45,60 45,45" fill="none" stroke="#341D54" stroke-width="2.5"/><rect x="105" y="34" width="40" height="22" rx="4" fill="#fff" stroke="#7C27AC" stroke-width="2"/><text x="125" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">6Ω</text><rect x="185" y="34" width="40" height="22" rx="4" fill="#fff" stroke="#7C27AC" stroke-width="2"/><text x="205" y="49" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">3Ω</text><line x1="30" y1="62" x2="60" y2="62" stroke="#341D54" stroke-width="3"/><line x1="38" y1="74" x2="52" y2="74" stroke="#341D54" stroke-width="6"/><line x1="30" y1="88" x2="60" y2="88" stroke="#341D54" stroke-width="3"/><text x="20" y="79" text-anchor="end" font-size="12" font-weight="700" fill="#D6587E">9 V</text><polygon points="150,115 138,109 138,121" fill="#D6587E"/><text x="165" y="111" font-size="11" font-weight="700" fill="#D6587E">I</text></svg>`,
-  moments:`<svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg"><line x1="35" y1="55" x2="285" y2="55" stroke="#341D54" stroke-width="5" stroke-linecap="round"/><polygon points="160,55 148,82 172,82" fill="#7C27AC"/><line x1="95" y1="55" x2="95" y2="98" stroke="#341D54" stroke-width="2.5"/><polygon points="95,104 90,94 100,94" fill="#341D54"/><text x="95" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">12 N</text><line x1="95" y1="42" x2="160" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="127" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">0.5 m</text><line x1="215" y1="55" x2="215" y2="98" stroke="#D6587E" stroke-width="2.5"/><polygon points="215,104 210,94 220,94" fill="#D6587E"/><text x="215" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#D6587E">F = ?</text><line x1="160" y1="42" x2="215" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="187" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">0.3 m</text></svg>`
+  moments:`<svg viewBox="0 0 320 130" xmlns="http://www.w3.org/2000/svg"><line x1="35" y1="55" x2="285" y2="55" stroke="#341D54" stroke-width="5" stroke-linecap="round"/><polygon points="160,55 148,82 172,82" fill="#7C27AC"/><line x1="95" y1="55" x2="95" y2="98" stroke="#341D54" stroke-width="2.5"/><polygon points="95,104 90,94 100,94" fill="#341D54"/><text x="95" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">12 N</text><line x1="95" y1="42" x2="160" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="127" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">0.5 m</text><line x1="215" y1="55" x2="215" y2="98" stroke="#D6587E" stroke-width="2.5"/><polygon points="215,104 210,94 220,94" fill="#D6587E"/><text x="215" y="120" text-anchor="middle" font-size="12" font-weight="700" fill="#D6587E">F = ?</text><line x1="160" y1="42" x2="215" y2="42" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="187" y="36" text-anchor="middle" font-size="11" fill="#7a6f86">0.3 m</text></svg>`,
+  savcube:`<svg viewBox="0 0 200 165" xmlns="http://www.w3.org/2000/svg"><polygon points="40,50 70,25 150,25 120,50" fill="#e9d9f3" stroke="#7C27AC" stroke-width="2"/><polygon points="120,50 150,25 150,105 120,130" fill="#dcc6ec" stroke="#7C27AC" stroke-width="2"/><rect x="40" y="50" width="80" height="80" fill="#f3ebf8" stroke="#7C27AC" stroke-width="2"/><line x1="40" y1="144" x2="120" y2="144" stroke="#7a6f86" stroke-width="1"/><text x="80" y="159" text-anchor="middle" font-size="12" font-weight="700" fill="#341D54">2 cm</text></svg>`,
+  punnett:`<svg viewBox="0 0 210 195" xmlns="http://www.w3.org/2000/svg"><text x="92" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#341D54">T</text><text x="160" y="28" text-anchor="middle" font-size="15" font-weight="700" fill="#341D54">t</text><text x="40" y="86" text-anchor="middle" font-size="15" font-weight="700" fill="#341D54">T</text><text x="40" y="154" text-anchor="middle" font-size="15" font-weight="700" fill="#341D54">t</text><rect x="58" y="40" width="136" height="136" fill="none" stroke="#7C27AC" stroke-width="2"/><line x1="126" y1="40" x2="126" y2="176" stroke="#7C27AC" stroke-width="2"/><line x1="58" y1="108" x2="194" y2="108" stroke="#7C27AC" stroke-width="2"/><text x="92" y="80" text-anchor="middle" font-size="15" fill="#341D54">TT</text><text x="160" y="80" text-anchor="middle" font-size="15" fill="#341D54">Tt</text><text x="92" y="148" text-anchor="middle" font-size="15" fill="#341D54">Tt</text><text x="160" y="148" text-anchor="middle" font-size="15" font-weight="700" fill="#D6587E">tt</text></svg>`,
+  foodchain:`<svg viewBox="0 0 360 64" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="31" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grass</text><rect x="80" y="18" width="92" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="126" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grasshopper</text><rect x="192" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="221" y="37" text-anchor="middle" font-size="11" fill="#341D54">Lizard</text><rect x="270" y="18" width="66" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="303" y="37" text-anchor="middle" font-size="11" fill="#341D54">Kestrel</text><g stroke="#D6587E" stroke-width="2" fill="#D6587E"><line x1="62" y1="33" x2="74" y2="33"/><polygon points="80,33 73,29 73,37"/><line x1="174" y1="33" x2="186" y2="33"/><polygon points="192,33 185,29 185,37"/><line x1="252" y1="33" x2="264" y2="33"/><polygon points="270,33 263,29 263,37"/></g></svg>`,
+  pyramid:`<svg viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="112" width="200" height="26" fill="#cdbfdb" stroke="#7C27AC" stroke-width="1.5"/><rect x="50" y="82" width="140" height="26" fill="#bba6cf" stroke="#7C27AC" stroke-width="1.5"/><rect x="80" y="52" width="80" height="26" fill="#a98fc2" stroke="#7C27AC" stroke-width="1.5"/><rect x="103" y="22" width="34" height="26" fill="#9678b6" stroke="#7C27AC" stroke-width="1.5"/></svg>`
 };
 const DOT={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
 
 /* ===== STATE ===== */
-let QUESTIONS = [];     // public questions from the API (no answers)
+let QUESTIONS = [];     // public questions for the current subject (no answers)
 let idx = 0;
 let responses = [];
-let loaded = false;
+let currentSubject = "Physics";
 
 /* ===== CONFIG wiring ===== */
 (function applyConfig(){
@@ -310,31 +317,26 @@ let loaded = false;
   if(c.discountCode) document.getElementById('disc-code').textContent = c.discountCode;
 })();
 
-/* ===== Load questions from backend ===== */
-async function loadQuestions(){
-  try{
-    const res = await fetch('/api/questions');
-    if(!res.ok) throw new Error('status '+res.status);
-    const data = await res.json();
-    QUESTIONS = data.questions || [];
-    loaded = true;
-  }catch(e){
-    console.error('Could not load questions:', e);
-    const go = document.getElementById('physics-go');
-    if(go) go.textContent = 'Unavailable - run the dev server';
-  }
-}
-loadQuestions();
-
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
-function startSubject(name){
-  if(name!=='Physics') return;
-  if(!loaded || !QUESTIONS.length){ alert('Questions are still loading. If this persists, the backend (/api/questions) is not running - see the README.'); return; }
+/* ===== Start a subject: load its questions, then run the quiz ===== */
+async function startSubject(name){
+  currentSubject = name;
+  try{
+    const res = await fetch('/api/questions?subject='+encodeURIComponent(name.toLowerCase()));
+    if(!res.ok) throw new Error('status '+res.status);
+    const data = await res.json();
+    QUESTIONS = data.questions || [];
+  }catch(e){
+    console.error('Could not load questions:', e);
+    alert('Sorry, the '+name+' questions could not be loaded just now. Please check your connection and try again.');
+    return;
+  }
+  if(!QUESTIONS.length){ alert('No questions are available for '+name+' yet.'); return; }
   idx=0; responses = QUESTIONS.map(()=>({given:null,answered:false}));
   show('s-quiz'); renderQuestion();
 }
@@ -403,11 +405,11 @@ async function submitEmail(){
   try{
     const res=await fetch('/api/submit',{
       method:'POST', headers:{'content-type':'application/json'},
-      body:JSON.stringify({ name, email, consent, answers: responses.map(r=>({given:r.given})) })
+      body:JSON.stringify({ subject: currentSubject, name, email, consent, answers: responses.map(r=>({given:r.given})) })
     });
     if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('status '+res.status)); }
     const report=await res.json();
-    pixel('Lead', {content_name:'Physics Diagnostic'});
+    pixel('Lead', {content_name: currentSubject+' Diagnostic'});
     renderReport(report);
     show('s-done');
   }catch(e){
@@ -424,7 +426,8 @@ function renderReport(rep){
   const ring=document.getElementById('r-ring');
   ring.textContent=rep.score+'%';
   ring.style.background = rep.score>=80?'var(--green)':rep.score>=50?'var(--amber)':'var(--red)';
-  document.getElementById('r-head').textContent = rep.name?`${rep.name}, here's your snapshot`:'Your physics snapshot';
+  const subj=(rep.subject||'').toLowerCase();
+  document.getElementById('r-head').textContent = rep.name?`${rep.name}, here's your snapshot`:('Your '+subj+' snapshot');
   document.getElementById('r-sub').textContent = `You scored ${rep.totalCorrect} of ${rep.totalQ}.`;
   document.getElementById('r-summary').textContent = rep.summary;
 
