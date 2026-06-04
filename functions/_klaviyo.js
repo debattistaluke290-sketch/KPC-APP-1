@@ -1,13 +1,17 @@
 /* =========================================================================
-   Klaviyo integration (SERVER SIDE)
+   Klaviyo integration (SERVER SIDE) - LEAD CAPTURE ONLY
    -------------------------------------------------------------------------
+   Klaviyo is used ONLY to collect the lead and tag it by subject. The actual
+   results email (worked solutions + study plan) is handled elsewhere, not by
+   a Klaviyo flow.
+
    Best-effort: if KLAVIYO_API_KEY is not set, this no-ops so the app still
    works during development. When the key is present it:
-     1. Creates/updates a Klaviyo profile (tagged by subject + score)
+     1. Creates/updates a Klaviyo profile, tagged with the subject + score
      2. Subscribes the lead to a DEDICATED list (KLAVIYO_LIST_ID) with consent,
         keeping diagnostic leads separate from the main store list
-     3. Records a per-subject event ("Completed <Subject> Diagnostic") carrying
-        the full worked solutions + study plan, so a Klaviyo flow can email them
+     3. Records a light per-subject event ("Completed <Subject> Diagnostic")
+        so leads can be segmented by subject
 
    Cloudflare Pages -> Settings -> Variables and Secrets:
      KLAVIYO_API_KEY  (Secret)   - your Klaviyo private API key (pk_...)
@@ -15,19 +19,6 @@
    ========================================================================= */
 
 const KLAVIYO_REVISION = "2024-10-15";
-
-/* Turn the worked-solution HTML into clean plain text with line breaks,
-   so it renders reliably inside a Klaviyo email (white-space: pre-line). */
-function toText(html) {
-  return String(html || "")
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(p|div|li)>/gi, "\n")
-    .replace(/<[^>]+>/g, "")
-    .replace(/&amp;/g, "&")
-    .replace(/&nbsp;/g, " ")
-    .replace(/\n{3,}/g, "\n\n")
-    .trim();
-}
 
 export async function syncKlaviyo(env, body, report) {
   const key = env && env.KLAVIYO_API_KEY;
@@ -57,25 +48,6 @@ export async function syncKlaviyo(env, body, report) {
       weak_topics: report.weakTopics,
       date_taken: new Date().toISOString()
     }
-  };
-
-  // Rich, email-ready content for the flow.
-  const plan = (report.recs || []).map(w => ({
-    topic: w.topic, level: w.label, ref: w.ref, why: w.why
-  }));
-  const solutions = (report.solutions || []).map(s => ({
-    n: s.n, q: s.q, mark: s.markText, given: s.given, steps_text: toText(s.steps)
-  }));
-
-  const eventProperties = {
-    subject: report.subject,
-    score: report.score,
-    correct: report.totalCorrect,
-    total: report.totalQ,
-    weak_topics: report.weakTopics,
-    weak_topics_str: (report.weakTopics || []).join(", "),
-    plan,
-    solutions
   };
 
   // 1) Upsert the profile (custom properties for tagging / segmentation)
@@ -119,7 +91,7 @@ export async function syncKlaviyo(env, body, report) {
     }
   }
 
-  // 3) Record the per-subject event the flow triggers on
+  // 3) Record a light per-subject event (for segmentation by subject)
   try {
     const res = await fetch("https://a.klaviyo.com/api/events", {
       method: "POST",
@@ -128,7 +100,13 @@ export async function syncKlaviyo(env, body, report) {
         data: {
           type: "event",
           attributes: {
-            properties: eventProperties,
+            properties: {
+              subject: report.subject,
+              score: report.score,
+              correct: report.totalCorrect,
+              total: report.totalQ,
+              weak_topics: report.weakTopics
+            },
             metric: { data: { type: "metric", attributes: { name: metricName } } },
             profile: { data: { type: "profile", attributes: profileAttributes } }
           }
