@@ -32,9 +32,10 @@ export const onRequestPost = async ({ request, env }) => {
 
   const report = gradeAndReport(body.name, Array.isArray(body.answers) ? body.answers : []);
 
-  // Fire lead capture to Klaviyo. Do not let a Klaviyo hiccup break the user's result.
+  // Fire lead capture to Klaviyo. Pass consent through so the list subscription
+  // step runs. Do not let a Klaviyo hiccup break the user's result.
   try {
-    await syncKlaviyo(env, { name: body.name, email }, report);
+    await syncKlaviyo(env, { name: body.name, email, consent: !!body.consent }, report);
   } catch (e) {
     console.log("[submit] klaviyo sync failed:", e);
   }
