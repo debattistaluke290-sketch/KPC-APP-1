@@ -3,23 +3,23 @@
    -------------------------------------------------------------------------
    Best-effort: if KLAVIYO_API_KEY is not set, this no-ops so the app still
    works during development. When the key is present it:
-     1. Creates/updates a Klaviyo profile for the email (with custom props)
-     2. Records a "Completed Physics Diagnostic" event
+     1. Creates/updates a Klaviyo profile (tagged by subject + score)
+     2. Subscribes the lead to a DEDICATED list (KLAVIYO_LIST_ID) with consent,
+        keeping diagnostic leads separate from the main store list
+     3. Records a per-subject event ("Completed <Subject> Diagnostic") that a
+        Klaviyo flow can trigger the results email from
 
-   Build ONE flow in Klaviyo triggered by that event to send the results
-   email (worked solutions + study plan + Shopify discount link).
-
-   Set the key in Cloudflare Pages:
-     Settings → Environment variables → KLAVIYO_API_KEY (Encrypted)
+   Cloudflare Pages → Settings → Variables and Secrets:
+     KLAVIYO_API_KEY  (Secret)   - your Klaviyo private API key (pk_...)
+     KLAVIYO_LIST_ID  (Plain)    - the ID of the "KPC Diagnostic Leads" list
    ========================================================================= */
 
 const KLAVIYO_REVISION = "2024-10-15";
-const METRIC_NAME = "Completed Physics Diagnostic";
 
 export async function syncKlaviyo(env, body, report) {
   const key = env && env.KLAVIYO_API_KEY;
   if (!key) {
-    console.log("[klaviyo] no KLAVIYO_API_KEY set — skipping sync (dev mode).");
+    console.log("[klaviyo] no KLAVIYO_API_KEY set - skipping sync (dev mode).");
     return { skipped: true };
   }
   if (!body.email) return { skipped: true, reason: "no email" };
@@ -31,10 +31,14 @@ export async function syncKlaviyo(env, body, report) {
     "accept": "application/json"
   };
 
+  const listId = (env && env.KLAVIYO_LIST_ID) || "";
+  const metricName = `Completed ${report.subject} Diagnostic`;
+
   const profileAttributes = {
     email: body.email,
     first_name: report.name || body.name || "",
     properties: {
+      lead_source: "Diagnostic App",
       last_diagnostic_subject: report.subject,
       diagnostic_score: report.score,
       weak_topics: report.weakTopics,
@@ -42,7 +46,7 @@ export async function syncKlaviyo(env, body, report) {
     }
   };
 
-  // 1) Upsert the profile (so segments/props are reliable even if the event lags)
+  // 1) Upsert the profile (custom properties for tagging / segmentation)
   try {
     await fetch("https://a.klaviyo.com/api/profile-import", {
       method: "POST",
@@ -53,7 +57,38 @@ export async function syncKlaviyo(env, body, report) {
     console.log("[klaviyo] profile upsert error:", e);
   }
 
-  // 2) Record the event the flow triggers on
+  // 2) Subscribe to the dedicated diagnostic list (with marketing consent).
+  //    Only runs if a list ID is configured and the student ticked consent.
+  if (listId && body.consent) {
+    try {
+      const res = await fetch("https://a.klaviyo.com/api/profile-subscription-bulk-create-jobs", {
+        method: "POST",
+        headers,
+        body: JSON.stringify({
+          data: {
+            type: "profile-subscription-bulk-create-job",
+            attributes: {
+              profiles: {
+                data: [{
+                  type: "profile",
+                  attributes: {
+                    email: body.email,
+                    subscriptions: { email: { marketing: { consent: "SUBSCRIBED" } } }
+                  }
+                }]
+              }
+            },
+            relationships: { list: { data: { type: "list", id: listId } } }
+          }
+        })
+      });
+      if (!res.ok) console.log("[klaviyo] subscribe status:", res.status, await res.text());
+    } catch (e) {
+      console.log("[klaviyo] subscribe error:", e);
+    }
+  }
+
+  // 3) Record the per-subject event the flow triggers on
   try {
     const res = await fetch("https://a.klaviyo.com/api/events", {
       method: "POST",
@@ -69,7 +104,7 @@ export async function syncKlaviyo(env, body, report) {
               total: report.totalQ,
               weak_topics: report.weakTopics
             },
-            metric: { data: { type: "metric", attributes: { name: METRIC_NAME } } },
+            metric: { data: { type: "metric", attributes: { name: metricName } } },
             profile: { data: { type: "profile", attributes: profileAttributes } }
           }
         }
