@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KPC Notes — Free Physics Diagnostic</title>
+<title>KPC Notes - Free Physics Diagnostic</title>
 <meta name="description" content="Free physics diagnostic from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
 
 <!-- ============================================================
-     META PIXEL  —  replace YOUR_PIXEL_ID with your real ID.
+     META PIXEL  -  replace YOUR_PIXEL_ID with your real ID.
      Leave as-is to disable during development.
      ============================================================ -->
 <script>
@@ -30,7 +30,7 @@
 </script>
 
 <!-- ============================================================
-     CONFIG — fill these in for production.
+     CONFIG - fill these in for production.
      ============================================================ -->
 <script>
   window.KPC_CONFIG = {
@@ -233,7 +233,7 @@
       <div class="topic-tag"><span id="q-topic-name"></span><span class="paper-badge" id="q-paper-badge" style="display:none">✏️ Paper question</span></div>
       <div class="q" id="q-text"></div>
       <div class="diagram" id="q-diagram" style="display:none"></div>
-      <div class="paper-hint" id="q-paper-hint" style="display:none"><span>✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right — you'll get the full worked solution by email.</span></div>
+      <div class="paper-hint" id="q-paper-hint" style="display:none"><span>✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll get the full worked solution by email.</span></div>
       <div id="q-body"></div>
       <div class="quiz-actions"><button class="btn" id="q-next" onclick="nextQuestion()">Next →</button></div>
       <div style="text-align:center;margin-top:12px"><a href="#" onclick="skipQuestion(event)" style="font-size:13px;color:var(--muted);text-decoration:none">Skip this question</a></div>
@@ -243,7 +243,7 @@
   <!-- EMAIL GATE -->
   <section class="screen" id="s-email">
     <div class="card narrow">
-      <div class="pill-lite">Last step — unlock your results</div>
+      <div class="pill-lite">Last step - unlock your results</div>
       <h2>Where should we send your worked solutions?</h2>
       <p class="lead">You've finished the diagnostic. Enter your email and we'll send you everything you need to improve.</p>
       <div class="unlock">
@@ -268,13 +268,13 @@
       <div class="confirm"><div class="big">📬</div><h2 id="c-head">Check your inbox!</h2>
         <p id="c-sub">Your full worked solutions and personalised KPC study plan are on their way.</p></div>
       <div class="reveal-divider">Your results</div>
-      <div class="score-ring"><div class="ring" id="r-ring">—</div>
+      <div class="score-ring"><div class="ring" id="r-ring">-</div>
         <div><h2 id="r-head">Your physics snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
       <div class="priority"><h3>🎯 Your priority study plan</h3>
-        <div class="sub">Work through these in order — biggest gaps first.</div><div id="r-recs"></div></div>
+        <div class="sub">Work through these in order - biggest gaps first.</div><div id="r-recs"></div></div>
       <div class="cta-box"><button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
         <div class="price">Tailored bundle · <b>20% off</b> with code <b id="disc-code">DIAGNOSTIC20</b></div></div>
       <button class="btn secondary" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
@@ -284,7 +284,7 @@
 </div>
 
 <script>
-/* ===== SVG DIAGRAMS (not secret — rendered for quiz + report) ===== */
+/* ===== SVG DIAGRAMS (not secret - rendered for quiz + report) ===== */
 const DIA = {
   vtgraph:`<svg viewBox="0 0 340 200" xmlns="http://www.w3.org/2000/svg"><line x1="45" y1="160" x2="45" y2="22" stroke="#341D54" stroke-width="2"/><line x1="45" y1="160" x2="315" y2="160" stroke="#341D54" stroke-width="2"/><polygon points="45,18 41,28 49,28" fill="#341D54"/><polygon points="319,160 309,156 309,164" fill="#341D54"/><polyline points="45,160 147,45 300,45" fill="none" stroke="#7C27AC" stroke-width="3"/><line x1="147" y1="45" x2="147" y2="160" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><line x1="45" y1="45" x2="147" y2="45" stroke="#cdbfdb" stroke-width="1" stroke-dasharray="4 3"/><text x="38" y="49" text-anchor="end" font-size="12" fill="#341D54">16</text><text x="147" y="174" text-anchor="middle" font-size="12" fill="#341D54">8</text><text x="300" y="174" text-anchor="middle" font-size="12" fill="#341D54">20</text><text x="20" y="95" font-size="11" fill="#7a6f86" transform="rotate(-90 20 95)">velocity / m/s</text><text x="180" y="192" text-anchor="middle" font-size="11" fill="#7a6f86">time / s</text></svg>`,
   resultant:`<svg viewBox="0 0 320 110" xmlns="http://www.w3.org/2000/svg"><rect x="125" y="40" width="70" height="40" rx="7" fill="#f3ebf8" stroke="#7C27AC" stroke-width="2"/><text x="160" y="64" text-anchor="middle" font-size="12" fill="#7a6f86">box</text><line x1="195" y1="60" x2="288" y2="60" stroke="#D6587E" stroke-width="3"/><polygon points="294,60 282,54 282,66" fill="#D6587E"/><text x="244" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">12 N</text><line x1="125" y1="60" x2="38" y2="60" stroke="#341D54" stroke-width="3"/><polygon points="32,60 44,54 44,66" fill="#341D54"/><text x="82" y="48" text-anchor="middle" font-size="13" font-weight="700" fill="#341D54">5 N</text></svg>`,
@@ -318,7 +318,7 @@ async function loadQuestions(){
   }catch(e){
     console.error('Could not load questions:', e);
     const go = document.getElementById('physics-go');
-    if(go) go.textContent = 'Unavailable — run the dev server';
+    if(go) go.textContent = 'Unavailable - run the dev server';
   }
 }
 loadQuestions();
@@ -331,7 +331,7 @@ function show(id){
 
 function startSubject(name){
   if(name!=='Physics') return;
-  if(!loaded || !QUESTIONS.length){ alert('Questions are still loading. If this persists, the backend (/api/questions) is not running — see the README.'); return; }
+  if(!loaded || !QUESTIONS.length){ alert('Questions are still loading. If this persists, the backend (/api/questions) is not running - see the README.'); return; }
   idx=0; responses = QUESTIONS.map(()=>({given:null,answered:false}));
   show('s-quiz'); renderQuestion();
 }
@@ -373,7 +373,7 @@ function renderQuestion(){
     inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; };
     body.appendChild(inp);
     const sub=document.createElement('div'); sub.className='answer-sub';
-    sub.textContent='No feedback now — your worked solution arrives by email.';
+    sub.textContent='No feedback now - your worked solution arrives by email.';
     body.appendChild(sub);
   }
   document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & get my results →':'Next →';
@@ -443,7 +443,7 @@ function renderReport(rep){
 
   const recs=document.getElementById('r-recs'); recs.innerHTML='';
   if(!rep.recs.length){
-    recs.innerHTML=`<div class="rec"><div class="num">★</div><div class="body"><b>Brilliant — no weak topics!</b><div class="why">You're strong across the board. Keep practising past papers to stay sharp.</div></div></div>`;
+    recs.innerHTML=`<div class="rec"><div class="num">★</div><div class="body"><b>Brilliant - no weak topics!</b><div class="why">You're strong across the board. Keep practising past papers to stay sharp.</div></div></div>`;
   } else {
     rep.recs.forEach((w,i)=>{
       const div=document.createElement('div'); div.className='rec';
