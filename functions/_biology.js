@@ -3,9 +3,10 @@
    -------------------------------------------------------------------------
    SEC / MATSEC O-Level Biology. 10 topics x 4 questions = 40.
    Per topic: 1 foundation, 2 standard, 1 hard.
-   Mostly multiple-choice (Biology is recall/description heavy) with a couple
-   of genuine numeric questions. All ORIGINAL (SEC style; no MATSEC text).
-   Never served to the browser with answers - see publicQuestions().
+   Mix of multiple-choice, two numeric questions, and typed short-answer
+   questions that are marked LENIENTLY (typos + synonyms via edit-distance,
+   with a Cloudflare Workers AI fallback judge for unusual phrasings).
+   All ORIGINAL (SEC style; no MATSEC text). publicQuestions() hides answers.
    ========================================================================= */
 
 export const SUBJECT = "Biology";
@@ -23,13 +24,17 @@ export const TOPIC_ORDER = [
   "Classification, Variation & Evolution"
 ];
 
+/* Question types:
+   "mcq"  -> opts + correct
+   "work" -> numeric accept[] (tolerance)
+   "text" -> typed short answer, accept[] (lenient: typos/synonyms + AI judge) */
 export const QUESTIONS = [
   /* ===== TOPIC 1 - CELLS & TRANSPORT ===== */
   { topic:"Cells & Transport", ref:"KPC Biology - Cells & Transport", product:"biology-cells",
-    difficulty:"foundation", type:"mcq",
-    q:"Which structure is found in a plant cell but NOT in an animal cell?",
-    opts:["Cell membrane","Cell wall","Nucleus","Mitochondria"], correct:1,
-    steps:`Plant cells have a rigid <b>cell wall</b> (made of cellulose) outside the membrane; animal cells do not. Both have a membrane, nucleus and mitochondria.<br><span class="final">Answer: Cell wall</span>` },
+    difficulty:"foundation", type:"text",
+    q:"Name the structure that is found in a plant cell but NOT in an animal cell.",
+    data:"Type your answer (a word or short phrase).", accept:["cell wall"],
+    steps:`Plant cells have a rigid <b>cell wall</b> (made of cellulose) outside the membrane; animal cells do not.<br><span class="final">Answer: Cell wall</span>` },
 
   { topic:"Cells & Transport", ref:"KPC Biology - Cells & Transport", product:"biology-cells",
     difficulty:"standard", type:"mcq",
@@ -63,10 +68,10 @@ export const QUESTIONS = [
     steps:`High temperatures change the shape of an enzyme's active site so the substrate no longer fits. The enzyme is <b>denatured</b> and can no longer catalyse the reaction. This change is permanent.<br><span class="final">Answer: They denature and stop working</span>` },
 
   { topic:"Nutrition, Molecules & Enzymes", ref:"KPC Biology - Nutrition, Molecules & Enzymes", product:"biology-nutrition",
-    difficulty:"standard", type:"mcq",
-    q:"In which part of the digestive system is most digested food absorbed into the bloodstream?",
-    opts:["Stomach","Small intestine","Large intestine","Oesophagus"], correct:1,
-    steps:`The <b>small intestine</b> (ileum) is lined with villi that give a huge surface area for absorbing digested food into the blood. The large intestine mainly absorbs water.<br><span class="final">Answer: Small intestine</span>` },
+    difficulty:"standard", type:"text",
+    q:"Name the organ where most digested food is absorbed into the bloodstream.",
+    data:"Type your answer (a word or short phrase).", accept:["small intestine","ileum"],
+    steps:`The <b>small intestine</b> (ileum) is lined with villi that give a huge surface area for absorbing digested food into the blood.<br><span class="final">Answer: Small intestine (ileum)</span>` },
 
   { topic:"Nutrition, Molecules & Enzymes", ref:"KPC Biology - Nutrition, Molecules & Enzymes", product:"biology-nutrition",
     difficulty:"hard", type:"mcq",
@@ -82,16 +87,16 @@ export const QUESTIONS = [
     steps:`The word equation is: carbon dioxide + water -> <b>glucose</b> + oxygen (using light energy trapped by chlorophyll). The glucose can later be stored as starch.<br><span class="final">Answer: Glucose</span>` },
 
   { topic:"Photosynthesis & Plant Transport", ref:"KPC Biology - Photosynthesis & Plant Transport", product:"biology-plants",
-    difficulty:"standard", type:"mcq",
-    q:"Most of the water that evaporates from a leaf is lost through small pores. What are these pores called?",
-    opts:["Stomata","Cuticle","Xylem","Root hairs"], correct:0,
-    steps:`Water vapour leaves the leaf through the <b>stomata</b> (mostly on the lower surface), a process called transpiration. Guard cells open and close them.<br><span class="final">Answer: Stomata</span>` },
+    difficulty:"standard", type:"text",
+    q:"Name the small pores in a leaf through which most water vapour is lost during transpiration.",
+    data:"Type your answer (a word or short phrase).", accept:["stomata","stoma"],
+    steps:`Water vapour leaves the leaf through the <b>stomata</b> (mostly on the lower surface). Guard cells open and close them.<br><span class="final">Answer: Stomata</span>` },
 
   { topic:"Photosynthesis & Plant Transport", ref:"KPC Biology - Photosynthesis & Plant Transport", product:"biology-plants",
-    difficulty:"standard", type:"mcq",
-    q:"Which plant tissue transports water and dissolved minerals upwards from the roots to the leaves?",
-    opts:["Phloem","Xylem","Cuticle","Epidermis"], correct:1,
-    steps:`<b>Xylem</b> carries water and minerals up from the roots. Phloem carries dissolved sugars (made in the leaves) around the plant.<br><span class="final">Answer: Xylem</span>` },
+    difficulty:"standard", type:"text",
+    q:"Name the plant tissue that transports water and dissolved minerals upwards from the roots to the leaves.",
+    data:"Type your answer (a word).", accept:["xylem","xylem vessels","xylem tissue"],
+    steps:`<b>Xylem</b> carries water and minerals up from the roots. Phloem carries dissolved sugars around the plant.<br><span class="final">Answer: Xylem</span>` },
 
   { topic:"Photosynthesis & Plant Transport", ref:"KPC Biology - Photosynthesis & Plant Transport", product:"biology-plants",
     difficulty:"hard", type:"mcq",
@@ -101,10 +106,10 @@ export const QUESTIONS = [
 
   /* ===== TOPIC 4 - RESPIRATION & GAS EXCHANGE ===== */
   { topic:"Respiration & Gas Exchange", ref:"KPC Biology - Respiration & Gas Exchange", product:"biology-respiration",
-    difficulty:"foundation", type:"mcq",
-    q:"Aerobic respiration releases energy by breaking down glucose using which gas?",
-    opts:["Carbon dioxide","Nitrogen","Oxygen","Hydrogen"], correct:2,
-    steps:`Aerobic respiration: glucose + <b>oxygen</b> -> carbon dioxide + water (+ energy released). It needs oxygen, unlike anaerobic respiration.<br><span class="final">Answer: Oxygen</span>` },
+    difficulty:"foundation", type:"text",
+    q:"Name the gas that is needed for aerobic respiration.",
+    data:"Type your answer (a word).", accept:["oxygen"],
+    steps:`Aerobic respiration: glucose + <b>oxygen</b> -> carbon dioxide + water (+ energy). It needs oxygen, unlike anaerobic respiration.<br><span class="final">Answer: Oxygen</span>` },
 
   { topic:"Respiration & Gas Exchange", ref:"KPC Biology - Respiration & Gas Exchange", product:"biology-respiration",
     difficulty:"standard", type:"mcq",
@@ -113,9 +118,9 @@ export const QUESTIONS = [
     steps:`In human muscle, anaerobic respiration produces <b>lactic acid</b> (which causes fatigue and an oxygen debt). In yeast, anaerobic respiration instead produces ethanol and carbon dioxide.<br><span class="final">Answer: Lactic acid</span>` },
 
   { topic:"Respiration & Gas Exchange", ref:"KPC Biology - Respiration & Gas Exchange", product:"biology-respiration",
-    difficulty:"standard", type:"mcq",
-    q:"In human lungs, gas exchange between air and blood takes place in tiny air sacs. What are they called?",
-    opts:["Bronchi","Alveoli","Trachea","Cilia"], correct:1,
+    difficulty:"standard", type:"text",
+    q:"Name the tiny air sacs in the lungs where gas exchange takes place between the air and the blood.",
+    data:"Type your answer (a word).", accept:["alveoli","alveolus","air sacs"],
     steps:`The <b>alveoli</b> are the site of gas exchange: oxygen diffuses into the blood and carbon dioxide diffuses out.<br><span class="final">Answer: Alveoli</span>` },
 
   { topic:"Respiration & Gas Exchange", ref:"KPC Biology - Respiration & Gas Exchange", product:"biology-respiration",
@@ -126,9 +131,9 @@ export const QUESTIONS = [
 
   /* ===== TOPIC 5 - CIRCULATION IN ANIMALS ===== */
   { topic:"Circulation in Animals", ref:"KPC Biology - Circulation in Animals", product:"biology-circulation",
-    difficulty:"foundation", type:"mcq",
-    q:"Which type of blood vessel carries blood AWAY from the heart?",
-    opts:["Vein","Artery","Capillary","Alveolus"], correct:1,
+    difficulty:"foundation", type:"text",
+    q:"Name the type of blood vessel that carries blood AWAY from the heart.",
+    data:"Type your answer (a word).", accept:["artery","arteries"],
     steps:`<b>Arteries</b> carry blood away from the heart, usually at high pressure, so they have thick muscular walls. Veins carry blood back to the heart.<br><span class="final">Answer: Artery</span>` },
 
   { topic:"Circulation in Animals", ref:"KPC Biology - Circulation in Animals", product:"biology-circulation",
@@ -151,15 +156,15 @@ export const QUESTIONS = [
 
   /* ===== TOPIC 6 - HOMEOSTASIS & COORDINATION ===== */
   { topic:"Homeostasis & Coordination", ref:"KPC Biology - Homeostasis & Coordination", product:"biology-homeostasis",
-    difficulty:"foundation", type:"mcq",
-    q:"Which organ filters the blood to remove urea and produce urine?",
-    opts:["Liver","Kidney","Lungs","Bladder"], correct:1,
+    difficulty:"foundation", type:"text",
+    q:"Name the organ that filters the blood to remove urea and produce urine.",
+    data:"Type your answer (a word).", accept:["kidney","kidneys"],
     steps:`The <b>kidneys</b> filter the blood, removing urea and excess water and salts as urine. The bladder only stores urine.<br><span class="final">Answer: Kidney</span>` },
 
   { topic:"Homeostasis & Coordination", ref:"KPC Biology - Homeostasis & Coordination", product:"biology-homeostasis",
-    difficulty:"standard", type:"mcq",
-    q:"The maintenance of a constant internal environment in the body (such as temperature and water content) is called what?",
-    opts:["Homeostasis","Photosynthesis","Respiration","Digestion"], correct:0,
+    difficulty:"standard", type:"text",
+    q:"What is the name for keeping a constant internal environment in the body (such as temperature and water content)?",
+    data:"Type your answer (a word).", accept:["homeostasis"],
     steps:`<b>Homeostasis</b> keeps internal conditions (temperature, blood glucose, water and ion balance) steady, so cells and enzymes can work properly.<br><span class="final">Answer: Homeostasis</span>` },
 
   { topic:"Homeostasis & Coordination", ref:"KPC Biology - Homeostasis & Coordination", product:"biology-homeostasis",
@@ -176,9 +181,9 @@ export const QUESTIONS = [
 
   /* ===== TOPIC 7 - REPRODUCTION ===== */
   { topic:"Reproduction", ref:"KPC Biology - Reproduction", product:"biology-reproduction",
-    difficulty:"foundation", type:"mcq",
-    q:"In a flowering plant, which part produces pollen?",
-    opts:["Stigma","Anther","Ovary","Petal"], correct:1,
+    difficulty:"foundation", type:"text",
+    q:"In a flowering plant, name the part that produces pollen.",
+    data:"Type your answer (a word).", accept:["anther","anthers"],
     steps:`The <b>anther</b> (part of the stamen, the male part) produces pollen grains. The stigma receives pollen; the ovary contains ovules.<br><span class="final">Answer: Anther</span>` },
 
   { topic:"Reproduction", ref:"KPC Biology - Reproduction", product:"biology-reproduction",
@@ -201,9 +206,9 @@ export const QUESTIONS = [
 
   /* ===== TOPIC 8 - GENETICS & INHERITANCE ===== */
   { topic:"Genetics & Inheritance", ref:"KPC Biology - Genetics & Inheritance", product:"biology-genetics",
-    difficulty:"foundation", type:"mcq",
-    q:"Which molecule carries the genetic information in the chromosomes of a cell?",
-    opts:["Protein","DNA","Glucose","Water"], correct:1,
+    difficulty:"foundation", type:"text",
+    q:"Name the molecule that carries the genetic information in the chromosomes of a cell.",
+    data:"Type your answer (a word or its full name).", accept:["dna","deoxyribonucleic acid"],
     steps:`<b>DNA</b> (deoxyribonucleic acid) carries the genetic code. A gene is a section of DNA that codes for a particular characteristic.<br><span class="final">Answer: DNA</span>` },
 
   { topic:"Genetics & Inheritance", ref:"KPC Biology - Genetics & Inheritance", product:"biology-genetics",
@@ -238,9 +243,9 @@ export const QUESTIONS = [
     steps:`At each level, organisms use most of the energy for life processes and lose it to the surroundings (mainly as <b>heat from respiration</b>, plus movement and undigested waste). So less energy passes to the next level, which is why food chains are usually short.<br><span class="final">Answer: Energy is lost, mainly as heat from respiration</span>` },
 
   { topic:"Ecology & Human Impact", ref:"KPC Biology - Ecology & Human Impact", product:"biology-ecology",
-    difficulty:"standard", type:"mcq",
-    q:"Excess fertiliser washes off fields into a pond. Algae grow rapidly, then later many fish die from lack of oxygen. What is this process called?",
-    opts:["Photosynthesis","Eutrophication","Pollination","Respiration"], correct:1,
+    difficulty:"standard", type:"text",
+    q:"Excess fertiliser washes into a pond, algae grow rapidly, then later many fish die from lack of oxygen. Name this process.",
+    data:"Type your answer (a word).", accept:["eutrophication"],
     steps:`This is <b>eutrophication</b>. Extra nutrients cause an algal bloom; when the algae die, bacteria decompose them and use up the dissolved oxygen, so fish and other animals suffocate.<br><span class="final">Answer: Eutrophication</span>` },
 
   { topic:"Ecology & Human Impact", ref:"KPC Biology - Ecology & Human Impact", product:"biology-ecology",
@@ -257,15 +262,15 @@ export const QUESTIONS = [
     steps:`From largest to smallest the main groups are: <b>kingdom</b> -> phylum -> class -> order -> family -> genus -> species. So kingdom is the largest.<br><span class="final">Answer: Kingdom</span>` },
 
   { topic:"Classification, Variation & Evolution", ref:"KPC Biology - Classification, Variation & Evolution", product:"biology-classification",
-    difficulty:"standard", type:"mcq",
-    q:"Each species is given a two-part Latin name, such as Homo sapiens. What is this naming system called?",
-    opts:["The binomial system","The food-web system","The dominant system","The cell theory"], correct:0,
+    difficulty:"standard", type:"text",
+    q:"What is the name of the system that gives each species a two-part Latin name, such as Homo sapiens?",
+    data:"Type your answer (one or two words).", accept:["binomial","binomial system","binomial naming","binomial nomenclature"],
     steps:`The <b>binomial system</b> gives every species a two-part name: the genus (capital letter) followed by the species. It is used worldwide so scientists agree on which organism is meant.<br><span class="final">Answer: The binomial system</span>` },
 
   { topic:"Classification, Variation & Evolution", ref:"KPC Biology - Classification, Variation & Evolution", product:"biology-classification",
-    difficulty:"standard", type:"mcq",
-    q:"The differences that exist between individuals of the same species (such as height in humans) are known as what?",
-    opts:["Adaptation","Variation","Respiration","Classification"], correct:1,
+    difficulty:"standard", type:"text",
+    q:"What is the name for the differences that exist between individuals of the same species (such as height in humans)?",
+    data:"Type your answer (a word).", accept:["variation"],
     steps:`<b>Variation</b> describes the differences between individuals of the same species. It can be inherited (genetic) or caused by the environment, and it is the raw material for natural selection.<br><span class="final">Answer: Variation</span>` },
 
   { topic:"Classification, Variation & Evolution", ref:"KPC Biology - Classification, Variation & Evolution", product:"biology-classification",
@@ -318,6 +323,71 @@ function checkWork(item, val) {
   if (num === null) return false;
   return item.accept.some(a => Math.abs(num - a) <= Math.max(0.15, Math.abs(a) * 0.03));
 }
+
+/* -------- Lenient text matching (typos + synonyms) -------- */
+function normText(s) {
+  return String(s || "").toLowerCase()
+    .replace(/[.,;:!?'"()\[\]\-\/]/g, " ")
+    .replace(/\b(the|a|an)\b/g, " ")
+    .replace(/\s+/g, " ").trim();
+}
+function levenshtein(a, b) {
+  const m = a.length, n = b.length;
+  if (!m) return n; if (!n) return m;
+  const d = Array.from({ length: m + 1 }, (_, i) => [i, ...Array(n).fill(0)]);
+  for (let j = 0; j <= n; j++) d[0][j] = j;
+  for (let i = 1; i <= m; i++) {
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+    }
+  }
+  return d[m][n];
+}
+function tolFor(s) { return s.length <= 4 ? 1 : (s.length <= 8 ? 2 : 3); }
+
+async function checkText(item, val, env) {
+  const n = normText(val);
+  if (!n) return false;
+  const ns = n.replace(/ /g, ""); // space-stripped (handles "D.N.A" -> "dna")
+  const accepts = (item.accept || []).map(normText).filter(Boolean);
+  for (const a of accepts) {
+    const as = a.replace(/ /g, "");
+    if (ns === as) return true;
+    if (levenshtein(ns, as) <= tolFor(as)) return true;
+    if (n === a) return true;
+    if (levenshtein(n, a) <= tolFor(a)) return true;
+    // single-word accepted answer: allow it to appear (typo-tolerant) as a token
+    if (!a.includes(" ")) {
+      for (const tok of n.split(" ")) {
+        if (tok === a || levenshtein(tok, a) <= tolFor(a)) return true;
+      }
+    }
+  }
+  // Fallback: ask Cloudflare Workers AI to judge (only if the AI binding exists)
+  if (env && env.AI) {
+    try {
+      const prompt =
+        "You are marking a short-answer O-Level Biology question for a 15-16 year old. " +
+        "Decide if the student's answer is essentially correct, allowing spelling mistakes, " +
+        "synonyms and extra words. Reply with ONLY one word: YES or NO.\n" +
+        "Question: " + item.q + "\n" +
+        "Accepted correct answer(s): " + (item.accept || []).join(" / ") + "\n" +
+        "Student's answer: " + val;
+      const out = await env.AI.run("@cf/meta/llama-3.1-8b-instruct", {
+        messages: [{ role: "user", content: prompt }],
+        max_tokens: 4
+      });
+      const txt = ((out && (out.response || out.result || out.text)) || "") + "";
+      return /\byes\b/i.test(txt);
+    } catch (e) {
+      console.log("[ai judge] error:", e);
+      return false;
+    }
+  }
+  return false;
+}
+
 function levelFor(correct, total) {
   const r = total ? correct / total : 0;
   if (r >= 0.75) return "green";
@@ -325,14 +395,18 @@ function levelFor(correct, total) {
   return "red";
 }
 
-export function gradeAndReport(name, answers = []) {
+/* gradeAndReport is ASYNC because text answers may use an AI judge. */
+export async function gradeAndReport(name, answers = [], env) {
   const tally = {};
   TOPIC_ORDER.forEach(t => (tally[t] = { c: 0, n: 0 }));
 
-  const solutions = QUESTIONS.map((q, i) => {
+  const solutions = [];
+  for (let i = 0; i < QUESTIONS.length; i++) {
+    const q = QUESTIONS[i];
     const a = answers[i] || {};
     const given = a.given;
     let answered = false, correct = false, givenDisplay = "-";
+
     if (q.type === "mcq") {
       if (given !== null && given !== undefined && given !== "") {
         answered = true;
@@ -341,17 +415,22 @@ export function gradeAndReport(name, answers = []) {
       }
     } else {
       const s = (given == null) ? "" : String(given).trim();
-      if (s.length > 0) { answered = true; correct = checkWork(q, s); givenDisplay = s; }
+      if (s.length > 0) {
+        answered = true;
+        givenDisplay = s;
+        correct = q.type === "text" ? await checkText(q, s, env) : checkWork(q, s);
+      }
     }
+
     tally[q.topic].n++;
     if (correct) tally[q.topic].c++;
-    return {
+    solutions.push({
       n: i + 1, q: q.q, dia: q.dia || null,
       mark: answered ? (correct ? "right" : "wrong") : "blank",
       markText: answered ? (correct ? "Correct" : "Incorrect") : "Not attempted",
       given: givenDisplay, steps: q.steps
-    };
-  });
+    });
+  }
 
   const totalQ = QUESTIONS.length;
   const totalCorrect = solutions.filter(s => s.mark === "right").length;
