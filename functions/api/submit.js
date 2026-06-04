@@ -32,7 +32,10 @@ export const onRequestPost = async ({ request, env }) => {
 
   const subject = (body.subject || "physics").toLowerCase();
   const grade = subject === "biology" ? gradeBiology : gradePhysics;
-  const report = grade(body.name, Array.isArray(body.answers) ? body.answers : []);
+  const answers = Array.isArray(body.answers) ? body.answers : [];
+  // Biology grading is async (lenient text matching + optional Workers AI judge);
+  // physics grading is sync but awaiting a plain value is harmless.
+  const report = await grade(body.name, answers, env);
 
   // Fire lead capture to Klaviyo. Pass consent through so the list subscription
   // step runs. Do not let a Klaviyo hiccup break the user's result.
