@@ -7,10 +7,24 @@
 <meta name="description" content="Free science diagnostics from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
 
 <!-- ============================================================
-     META PIXEL  -  replace YOUR_PIXEL_ID with your real ID.
+     CONFIG - fill these in for production.
      ============================================================ -->
 <script>
-  window.KPC_PIXEL_ID = "YOUR_PIXEL_ID"; // <-- set this
+  window.KPC_CONFIG = {
+    privacyUrl: "https://kpcnotesmt.com/policies/privacy-policy", // real Shopify privacy policy
+    shopBundleUrl: "https://kpcnotesmt.com/cart",                 // Shopify cart/collection link
+    discountCode: "DIAGNOSTIC20",
+    siteUrl: "kpcnotesmt.com"
+  };
+  // Pixel / analytics IDs - set these to switch tracking on.
+  window.KPC_PIXEL_ID = "YOUR_PIXEL_ID"; // Meta pixel id
+  window.KPC_GA4_ID  = "G-XXXXXXXXXX";   // Google Analytics 4 id (optional)
+</script>
+
+<!-- ============================================================
+     META PIXEL
+     ============================================================ -->
+<script>
   (function(){
     if(!window.KPC_PIXEL_ID || window.KPC_PIXEL_ID==="YOUR_PIXEL_ID") return;
     !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
@@ -21,22 +35,41 @@
     fbq('init', window.KPC_PIXEL_ID);
     fbq('track', 'PageView');
   })();
-  function pixel(event, params){
-    if(window.fbq && window.KPC_PIXEL_ID && window.KPC_PIXEL_ID!=="YOUR_PIXEL_ID"){
-      window.fbq('track', event, params||{});
-    }
-  }
 </script>
 
 <!-- ============================================================
-     CONFIG - fill these in for production.
+     GOOGLE ANALYTICS 4 (optional)
      ============================================================ -->
 <script>
-  window.KPC_CONFIG = {
-    privacyUrl: "https://kpcnotesmt.com/privacy",       // <-- your privacy policy
-    shopBundleUrl: "https://kpcnotesmt.com/cart",        // <-- Shopify cart/collection link
-    discountCode: "DIAGNOSTIC20"
-  };
+  (function(){
+    var id = window.KPC_GA4_ID;
+    if(!id || id==="G-XXXXXXXXXX") return;
+    var s=document.createElement('script'); s.async=true;
+    s.src='https://www.googletagmanager.com/gtag/js?id='+id;
+    document.head.appendChild(s);
+    window.dataLayer=window.dataLayer||[];
+    window.gtag=function(){dataLayer.push(arguments);};
+    gtag('js', new Date()); gtag('config', id);
+  })();
+</script>
+
+<!-- ============================================================
+     UNIFIED EVENT TRACKING
+     Fires the same funnel event to Meta (custom or standard) and GA4.
+     Safe no-op until the IDs above are set.
+     ============================================================ -->
+<script>
+  function track(name, params){
+    params = params || {};
+    try{
+      if(window.fbq && window.KPC_PIXEL_ID && window.KPC_PIXEL_ID!=="YOUR_PIXEL_ID"){
+        var std = { email_submitted:'Lead', shop_clicked:'InitiateCheckout' };
+        if(std[name]) fbq('track', std[name], params);
+        else fbq('trackCustom', name, params);
+      }
+    }catch(e){}
+    try{ if(window.gtag) window.gtag('event', name, params); }catch(e){}
+  }
 </script>
 
 <style>
@@ -141,6 +174,12 @@
   .err{color:var(--red);font-size:13px;font-weight:600;margin-bottom:12px;min-height:18px}
   .fineprint{font-size:12px;color:var(--muted);margin-top:12px;text-align:center}
 
+  /* teaser (pre-gate) */
+  .teaser-weak{background:#fdf2f6;border:1px solid #f3d4e0;color:#9c2249;border-radius:12px;padding:12px 14px;margin:14px 0;font-size:14px;line-height:1.5}
+  .teaser-weak b{color:#7d1c3c}
+  .locked .lk{filter:grayscale(.1)}
+  .gate-h{font-size:18px;margin:18px 0 4px;color:var(--purple-deep)}
+
   .confirm{text-align:center;padding:8px 0 4px}
   .confirm .big{font-size:46px;margin-bottom:8px}
   .confirm p{color:var(--muted);font-size:15px;margin-top:8px}
@@ -184,6 +223,7 @@
   .cta-box{margin-top:24px;text-align:center}
   .cta-box .price{font-size:14px;color:var(--muted);margin-top:10px}
   .cta-box .price b{color:var(--ink)}
+  .share-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
   .demo-note{font-size:11px;color:#a99cb6;text-align:center;margin-top:18px}
   .loader{text-align:center;color:var(--muted);font-size:14px;padding:20px}
   .test-skip{display:block;text-align:center;margin-top:10px;font-size:12px;color:var(--red);text-decoration:none}
@@ -254,25 +294,33 @@
     </div>
   </section>
 
-  <!-- EMAIL GATE -->
+  <!-- TEASER + EMAIL GATE -->
   <section class="screen" id="s-email">
     <div class="card narrow">
-      <div class="pill-lite">Last step - unlock your results</div>
-      <h2>Where should we send your worked solutions?</h2>
-      <p class="lead">You've finished the diagnostic. Enter your email and we'll send you everything you need to improve.</p>
-      <div class="unlock">
-        <div><span class="ck">✓</span><span>Every question <b>fully worked out and corrected</b>, step by step</span></div>
-        <div><span class="ck">✓</span><span>A <b>personalised study plan</b> mapped to exact KPC Notes topics</span></div>
-        <div><span class="ck">✓</span><span>A discount code for the notes that fix your weak areas</span></div>
+      <div class="pill-lite">Your results are ready</div>
+      <div class="score-ring">
+        <div class="ring" id="t-ring">–</div>
+        <div><h2 id="t-head">Your snapshot</h2><p class="lead" style="margin:0" id="t-sub">Scoring your answers…</p></div>
       </div>
+      <div class="teaser-weak" id="t-weak" style="display:none"></div>
+
+      <div class="unlock locked">
+        <div><span class="ck lk">🔒</span><span>Every topic graded <b>green / amber / red</b></span></div>
+        <div><span class="ck lk">🔒</span><span>All worked solutions, <b>step by step</b></span></div>
+        <div><span class="ck lk">🔒</span><span>A <b>personalised study plan</b> + a discount on the right notes</span></div>
+      </div>
+
+      <h2 class="gate-h">Enter your email to unlock everything</h2>
       <input class="field" id="email-name" type="text" placeholder="First name" />
       <input class="field" id="email-addr" type="email" placeholder="Email address" />
+      <!-- honeypot: hidden from humans, bots fill it -->
+      <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
       <label class="consent">
         <input type="checkbox" id="consent" />
         <span>I agree to receive my results and study tips from KPC Notes, and I've read the <a href="#" id="consent-privacy" target="_blank" rel="noopener">privacy policy</a>. (If you're under 16, please ask a parent first.)</span>
       </label>
       <div class="err" id="email-err"></div>
-      <button class="btn" id="submit-btn" onclick="submitEmail()">Send me my results →</button>
+      <button class="btn" id="submit-btn" onclick="submitEmail()">Unlock my full results →</button>
     </div>
   </section>
 
@@ -285,6 +333,8 @@
       <div class="score-ring"><div class="ring" id="r-ring">-</div>
         <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
+      <button class="btn secondary" style="margin-top:14px" onclick="shareResult()">📲 Share my result</button>
+      <div class="share-note">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
       <div class="priority"><h3>🎯 Your priority study plan</h3>
@@ -317,6 +367,7 @@ let QUESTIONS = [];     // public questions for the current subject (no answers)
 let idx = 0;
 let responses = [];
 let currentSubject = "Physics";
+let LAST_REPORT = null;
 
 /* ===== CONFIG wiring ===== */
 (function applyConfig(){
@@ -346,6 +397,7 @@ async function startSubject(name){
   }
   if(!QUESTIONS.length){ alert('No questions are available for '+name+' yet.'); return; }
   idx=0; responses = QUESTIONS.map(()=>({given:null,answered:false}));
+  track('quiz_started', {subject:name});
   show('s-quiz'); renderQuestion();
 }
 
@@ -389,26 +441,66 @@ function renderQuestion(){
     sub.textContent='No feedback now - your worked solution arrives by email.';
     body.appendChild(sub);
   }
-  document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & get my results →':'Next →';
+  document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & see my score →':'Next →';
 }
 
-function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ show('s-email'); } else renderQuestion(); }
+function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
 /* TEMP: jump straight to the email step for testing. Remove before launch. */
-function skipToEnd(e){ if(e) e.preventDefault(); show('s-email'); }
+function skipToEnd(e){ if(e) e.preventDefault(); goToEmail(); }
 
-/* ===== Submit to backend ===== */
+/* ===== Finish quiz: fetch a teaser (no solutions) then show the gate ===== */
+async function goToEmail(){
+  track('quiz_completed', {subject: currentSubject});
+  // reset teaser to loading state
+  document.getElementById('t-ring').textContent='–';
+  document.getElementById('t-ring').style.background='#cdbfdb';
+  document.getElementById('t-head').textContent='Your snapshot';
+  document.getElementById('t-sub').textContent='Scoring your answers…';
+  document.getElementById('t-weak').style.display='none';
+  show('s-email');
+  try{
+    const res = await fetch('/api/preview',{
+      method:'POST', headers:{'content-type':'application/json'},
+      body:JSON.stringify({ subject: currentSubject, answers: responses.map(r=>({given:r.given})) })
+    });
+    if(!res.ok) throw new Error('status '+res.status);
+    const t = await res.json();
+    renderTeaser(t);
+    track('results_previewed', {subject: currentSubject, score: t.score});
+  }catch(e){
+    console.error('preview failed:', e);
+    document.getElementById('t-sub').textContent='Your results are ready to unlock below.';
+  }
+}
+
+function renderTeaser(t){
+  const ring=document.getElementById('t-ring');
+  ring.textContent=t.score+'%';
+  ring.style.background = t.score>=80?'var(--green)':t.score>=50?'var(--amber)':'var(--red)';
+  document.getElementById('t-head').textContent='Your '+(t.subject||'').toLowerCase()+' snapshot';
+  document.getElementById('t-sub').textContent='You scored '+t.totalCorrect+' of '+t.totalQ+'.';
+  const w=document.getElementById('t-weak');
+  if(t.weakest){
+    w.style.display='block';
+    w.innerHTML='Your biggest gap right now looks like <b>'+t.weakest+'</b>. Unlock your full breakdown below to see every topic and exactly how to fix it.';
+  } else { w.style.display='none'; }
+}
+
+/* ===== Submit to backend (captures lead + returns full report) ===== */
 async function submitEmail(){
   const name=document.getElementById('email-name').value.trim();
   const email=document.getElementById('email-addr').value.trim();
   const consent=document.getElementById('consent').checked;
+  const honeypot=document.getElementById('company').value;
   const err=document.getElementById('email-err');
   err.textContent='';
+  if(honeypot){ return; } // bot trap: silently drop
   if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){ err.textContent='Please enter a valid email address.'; return; }
   if(!consent){ err.textContent='Please tick the consent box so we can send your results.'; return; }
 
   const btn=document.getElementById('submit-btn');
-  btn.disabled=true; btn.textContent='Sending…';
+  btn.disabled=true; btn.textContent='Unlocking…';
 
   try{
     const res=await fetch('/api/submit',{
@@ -417,19 +509,20 @@ async function submitEmail(){
     });
     if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('status '+res.status)); }
     const report=await res.json();
-    pixel('Lead', {content_name: currentSubject+' Diagnostic'});
+    track('email_submitted', {subject: currentSubject, content_name: currentSubject+' Diagnostic'});
     renderReport(report);
     show('s-done');
   }catch(e){
     err.textContent='Something went wrong sending your results. Please try again.';
     console.error(e);
   }finally{
-    btn.disabled=false; btn.textContent='Send me my results →';
+    btn.disabled=false; btn.textContent='Unlock my full results →';
   }
 }
 
 /* ===== Render the server-built report ===== */
 function renderReport(rep){
+  LAST_REPORT = rep;
   document.getElementById('c-head').textContent = rep.name?`Check your inbox, ${rep.name}!`:'Check your inbox!';
   const ring=document.getElementById('r-ring');
   ring.textContent=rep.score+'%';
@@ -476,10 +569,68 @@ function renderReport(rep){
   shop.onclick=()=>{
     let url=c.shopBundleUrl||'#';
     if(c.discountCode && url!=='#') url += (url.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
-    pixel('InitiateCheckout');
+    track('shop_clicked', {subject: currentSubject});
     if(url==='#'){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
     window.open(url,'_blank','noopener');
   };
+}
+
+/* ===== Shareable result card (canvas -> Web Share or download) ===== */
+function wrapText(ctx,text,x,y,maxW,lh){
+  const words=String(text).split(' '); let line=''; let yy=y;
+  for(let i=0;i<words.length;i++){
+    const test=line+words[i]+' ';
+    if(ctx.measureText(test).width>maxW && i>0){ ctx.fillText(line.trim(),x,yy); line=words[i]+' '; yy+=lh; }
+    else line=test;
+  }
+  ctx.fillText(line.trim(),x,yy);
+}
+
+function shareResult(){
+  const rep=LAST_REPORT; if(!rep) return;
+  const subject=(rep.subject||'').toString();
+  const site=(window.KPC_CONFIG&&window.KPC_CONFIG.siteUrl)||'kpcnotesmt.com';
+  const W=1080,H=1080;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H;
+  const x=cv.getContext('2d');
+  const g=x.createLinearGradient(0,0,W,H); g.addColorStop(0,'#341D54'); g.addColorStop(1,'#1A0F2E');
+  x.fillStyle=g; x.fillRect(0,0,W,H);
+  x.globalAlpha=.30; x.fillStyle='#7C27AC'; x.beginPath(); x.arc(120,150,190,0,7); x.fill();
+  x.fillStyle='#D6587E'; x.beginPath(); x.arc(980,950,210,0,7); x.fill(); x.globalAlpha=1;
+  x.textAlign='center';
+  x.fillStyle='#fff'; x.font='800 46px -apple-system,Arial'; x.fillText('KPC NOTES MALTA', W/2, 150);
+  x.fillStyle='#D6587E'; x.font='700 30px Arial'; x.fillText('FREE '+subject.toUpperCase()+' DIAGNOSTIC', W/2, 200);
+  const cx=W/2, cy=470, r=175;
+  const col= rep.score>=80?'#2fa566':rep.score>=50?'#e0982f':'#cf3b3b';
+  x.lineWidth=36; x.lineCap='round';
+  x.strokeStyle='rgba(255,255,255,.15)'; x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.stroke();
+  x.strokeStyle=col; x.beginPath(); x.arc(cx,cy,r,-Math.PI/2, -Math.PI/2 + Math.PI*2*(rep.score/100)); x.stroke();
+  x.fillStyle='#fff'; x.font='800 150px Arial'; x.fillText(rep.score+'%', cx, cy+48);
+  x.font='600 34px Arial'; x.fillStyle='#d8cce4'; x.fillText('scored '+rep.totalCorrect+' of '+rep.totalQ, cx, cy+165);
+  const weak=(rep.weakTopics&&rep.weakTopics[0])||(rep.recs&&rep.recs[0]&&rep.recs[0].topic)||'';
+  let footY=820;
+  if(weak){
+    x.fillStyle='#fff'; x.font='600 38px Arial'; x.fillText('My biggest gap to fix:', W/2, 770);
+    x.fillStyle='#D6587E'; x.font='800 46px Arial'; wrapText(x, weak, W/2, 830, 920, 56);
+    footY=960;
+  }
+  x.fillStyle='#fff'; x.font='700 38px Arial'; x.fillText('Find yours free at', W/2, footY);
+  x.fillStyle='#D6587E'; x.font='800 48px Arial'; x.fillText(site, W/2, footY+58);
+
+  cv.toBlob(function(blob){
+    if(!blob){ alert('Could not create the image on this device.'); return; }
+    const file=new File([blob],'kpc-'+subject.toLowerCase()+'-result.png',{type:'image/png'});
+    const caption='I scored '+rep.score+'% on the free KPC Notes '+subject+' diagnostic 🇲🇹 Find your weak spots and fix them: '+site;
+    track('result_shared', {subject});
+    if(navigator.canShare && navigator.canShare({files:[file]})){
+      navigator.share({files:[file], text:caption}).catch(function(){});
+    } else {
+      const a=document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=file.name;
+      document.body.appendChild(a); a.click(); a.remove();
+      if(navigator.clipboard && navigator.clipboard.writeText){ navigator.clipboard.writeText(caption).catch(function(){}); }
+      alert('Your result image was downloaded and the caption copied. Paste it into your Instagram or TikTok story!');
+    }
+  },'image/png');
 }
 
 function reset(){
