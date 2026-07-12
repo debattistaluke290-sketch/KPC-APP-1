@@ -1,295 +1,310 @@
-/* =========================================================================
-   KPC Diagnostic - Question Bank + Grading (SERVER SIDE ONLY)
-   -------------------------------------------------------------------------
-   Never served to the browser. Correct answers, accepted values and worked
-   solutions stay private. The browser only receives publicQuestions().
-
-   SEC / MATSEC O-Level Physics. 9 topics x 4 questions = 36.
-   Per topic: 1 foundation, 2 standard, 1 hard (so 100% is rare).
-   All questions ORIGINAL (written in SEC style; no MATSEC text reproduced).
-
-   TO EDIT CONTENT: edit the QUESTIONS array. The "ref" (KPC note) and
-   "product" (Shopify) fields are placeholders to be filled with real values.
-
-   Grading + report building live in the shared engine (./_grade.js); this
-   file only supplies the content config. Physics has no "text" questions
-   today, but the shared engine supports them, so you can add typed
-   short-answer questions here later with no other changes.
-   ========================================================================= */
 import { publicQuestions as pub, gradeAndReport as grade } from "./_grade.js";
 
+/* =========================================================================
+   KPC Diagnostic — PHYSICS candidate bank (CALIBRATED, SERVER-SIDE ONLY)
+   SEC 24 (2026) syllabus-aligned. 10 topics × 4 = 40 core questions.
+   Composition per topic: 1 foundation, 2 standard_exam (1 application), 1 upper_exam.
+   status:"candidate" — awaiting teacher review + student pilot (NOT empirically validated).
+   All wording/values/contexts independently authored; no MATSEC material reproduced.
+   Diagrams reused are original KPC SVGs already in public/index.html (dia keys).
+   Every numeric answer independently recomputed (see 05_PHYSICS_BLIND_SOLVE_REPORT.md).
+   ========================================================================= */
 export const SUBJECT = "Physics";
 
 export const TOPIC_ORDER = [
   "Motion & Forces",
-  "Moments, Density & Pressure",
+  "Forces, Moments & Pressure",
   "Energy, Work & Power",
   "Thermal Physics",
-  "Waves, Light & Sound",
+  "Waves & Sound",
+  "Light & Optics",
   "Electricity & Circuits",
   "Magnetism & Electromagnetism",
   "Radioactivity",
   "Earth & Space"
 ];
 
-/* Question fields:
-   topic, ref, product, difficulty (foundation|standard|hard),
-   type ("mcq"|"work"), q, data, dia (frontend SVG key),
-   opts + correct (mcq)  [PRIVATE: correct]
-   accept + unit (work)  [PRIVATE: accept]
-   steps (worked solution HTML)  [PRIVATE]
-*/
+// Shared metadata defaults applied per question below via helper spread.
+const M = (o) => ({ status:"candidate", version:1, originalityStatus:"independently_drafted",
+  humanReviewStatus:"pending", pilotStatus:"not_piloted", marks:1, ...o });
+
 export const QUESTIONS = [
-  /* ===================== TOPIC 1 - MOTION & FORCES ===================== */
-  { topic:"Motion & Forces", ref:"KPC Physics - Motion & Forces", product:"physics-motion-forces",
-    difficulty:"foundation", type:"work", dia:"vtgraph",
-    q:"The velocity–time graph shows a bus pulling away from a stop along the Sliema seafront. Use the graph to calculate the acceleration of the bus during the first 8 seconds.",
-    data:"Give your answer in m/s².", accept:[2], unit:"m/s²",
-    steps:`On a velocity–time graph, acceleration is the <b>gradient</b> of the line.<br>a = change in velocity ÷ time = (16 − 0) ÷ 8<br><span class="final">a = 2 m/s²</span><br><br>✓ <b>Tip:</b> a straight slanted line means constant acceleration.<br>✗ <b>Common mistake:</b> reading off a single velocity (16) instead of the change over time.` },
+  /* ===== T1 Motion & Forces (LO2) ===== */
+  M({ id:"phy-t1-f", topic:"Motion & Forces", subtopic:"Interpreting motion graphs", syllabusReference:"LO2 / AC2.1", difficulty:"foundation", cognitiveSkill:"recall", type:"mcq", marks:1, expectedTimeSeconds:40,
+    q:"On a velocity–time graph, what does the gradient (steepness) of the line represent?",
+    opts:["The total distance travelled","The acceleration of the object","The average speed","The force on the object"], correct:1,
+    commonMisconception:"Confusing gradient (acceleration) with area (distance).",
+    steps:`On a velocity–time graph the gradient = change in velocity ÷ time = <b>acceleration</b>. The <i>area</i> under the line gives the distance.<br><span class="final">Answer: acceleration</span>`,
+    ref:"KPC Physics — Motion & Forces", product:"physics-motion-forces" }),
+  M({ id:"phy-t1-s", topic:"Motion & Forces", subtopic:"Acceleration", syllabusReference:"LO2 / AC2.2", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:80,
+    q:"A cyclist speeds up uniformly from 4 m/s to 16 m/s in 6 seconds. Calculate the acceleration.",
+    data:"Give your answer in m/s².", accept:[2], acceptedUnits:["m/s^2","m/s2","ms-2"], unit:"m/s²", tolerance:0.05,
+    commonMisconception:"Using final velocity (16) instead of the change (16−4).",
+    steps:`a = change in velocity ÷ time = (16 − 4) ÷ 6 = 12 ÷ 6<br><span class="final">a = 2 m/s²</span>`,
+    ref:"KPC Physics — Motion & Forces", product:"physics-motion-forces" }),
+  M({ id:"phy-t1-a", topic:"Motion & Forces", subtopic:"Newton's second law", syllabusReference:"LO2 / AC2.3", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"A crate of mass 25 kg is pushed across a floor with a force of 90 N. Friction opposing the motion is 15 N. Calculate the acceleration of the crate.",
+    data:"Give your answer in m/s².", accept:[3], acceptedUnits:["m/s^2","m/s2"], unit:"m/s²", tolerance:0.05,
+    commonMisconception:"Forgetting to subtract friction before using F = ma.",
+    steps:`Resultant force = 90 − 15 = <b>75 N</b>. Then a = F ÷ m = 75 ÷ 25<br><span class="final">a = 3 m/s²</span>`,
+    ref:"KPC Physics — Motion & Forces", product:"physics-motion-forces" }),
+  M({ id:"phy-t1-u", topic:"Motion & Forces", subtopic:"Braking force + unit conversion", syllabusReference:"LO2 / AC2.3", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"A motorcycle of mass 200 kg travelling at 72 km/h brakes to a stop in 5.0 s. Calculate the size of the braking force.",
+    data:"Give your answer in newtons (N). Convert the speed to m/s first.", accept:[800], acceptedUnits:["N"], unit:"N", tolerance:5,
+    commonMisconception:"Not converting km/h to m/s (÷3.6).",
+    steps:`72 km/h ÷ 3.6 = <b>20 m/s</b>. a = (0 − 20) ÷ 5 = −4 m/s². F = m a = 200 × 4<br><span class="final">Braking force = 800 N</span>`,
+    ref:"KPC Physics — Motion & Forces", product:"physics-motion-forces" }),
 
-  { topic:"Motion & Forces", ref:"KPC Physics - Motion & Forces", product:"physics-motion-forces",
-    difficulty:"standard", type:"work", dia:"resultant",
-    q:"A delivery van has a total mass of 1500 kg. Its engine provides a forward driving force of 3500 N, while air resistance and friction together produce 1100 N of resistive force. Calculate the acceleration of the van.",
-    data:"Give your answer in m/s².", accept:[1.6], unit:"m/s²",
-    steps:`First find the resultant (net) force: 3500 − 1100 = <b>2400 N</b> forwards.<br>Then use F = m × a, rearranged: a = F ÷ m = 2400 ÷ 1500<br><span class="final">a = 1.6 m/s²</span><br><br>✓ <b>Tip:</b> always find the resultant force before using F = ma.<br>✗ <b>Common mistake:</b> using 3500 N and forgetting to subtract the resistance.` },
+  /* ===== T2 Forces, Moments & Pressure (LO2) ===== */
+  M({ id:"phy-t2-f", topic:"Forces, Moments & Pressure", subtopic:"Density", syllabusReference:"LO2", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:50,
+    q:"A rock has a mass of 300 g and a volume of 60 cm³. Calculate its density.",
+    data:"Give your answer in g/cm³.", accept:[5], acceptedUnits:["g/cm^3","g/cm3"], unit:"g/cm³", tolerance:0.05,
+    commonMisconception:"Dividing volume by mass instead of mass by volume.",
+    steps:`ρ = mass ÷ volume = 300 ÷ 60<br><span class="final">ρ = 5 g/cm³</span>`,
+    ref:"KPC Physics — Forces, Moments & Pressure", product:"physics-moments-density-pressure" }),
+  M({ id:"phy-t2-s", topic:"Forces, Moments & Pressure", subtopic:"Principle of moments", syllabusReference:"LO2", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:90,
+    q:"A uniform beam balances on a central pivot. A 15 N weight hangs 0.40 m to the left of the pivot. A force F acts 0.60 m to the right of the pivot. Calculate F needed to keep the beam balanced.",
+    data:"Give your answer in newtons (N).", accept:[10], acceptedUnits:["N"], unit:"N", tolerance:0.2,
+    commonMisconception:"Adding the distances instead of using moment = force × distance.",
+    steps:`Balanced: F × 0.60 = 15 × 0.40 = 6 Nm → F = 6 ÷ 0.60<br><span class="final">F = 10 N</span>`,
+    ref:"KPC Physics — Forces, Moments & Pressure", product:"physics-moments-density-pressure" }),
+  M({ id:"phy-t2-a", topic:"Forces, Moments & Pressure", subtopic:"Pressure in a liquid", syllabusReference:"LO2", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"A swimmer is 5.0 m below the surface of a pool. The density of the water is 1000 kg/m³ and g = 10 N/kg. Calculate the pressure on the swimmer due to the water above.",
+    data:"Give your answer in pascals (Pa).", accept:[50000], acceptedUnits:["Pa"], unit:"Pa", tolerance:100,
+    commonMisconception:"Forgetting to multiply all three of h, ρ and g.",
+    steps:`P = h ρ g = 5.0 × 1000 × 10<br><span class="final">P = 50 000 Pa</span>`,
+    ref:"KPC Physics — Forces, Moments & Pressure", product:"physics-moments-density-pressure" }),
+  M({ id:"phy-t2-u", topic:"Forces, Moments & Pressure", subtopic:"Density with unit conversion", syllabusReference:"LO2", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"A rectangular concrete block measures 50 cm × 20 cm × 10 cm and has a mass of 30 kg. Calculate its density in kg/m³.",
+    data:"Give your answer in kg/m³.", accept:[3000], acceptedUnits:["kg/m^3","kg/m3"], unit:"kg/m³", tolerance:20,
+    commonMisconception:"Leaving the volume in cm³ instead of converting to m³.",
+    steps:`Volume = 0.50 × 0.20 × 0.10 = <b>0.010 m³</b>. ρ = 30 ÷ 0.010<br><span class="final">ρ = 3000 kg/m³</span>`,
+    ref:"KPC Physics — Forces, Moments & Pressure", product:"physics-moments-density-pressure" }),
 
-  { topic:"Motion & Forces", ref:"KPC Physics - Motion & Forces", product:"physics-motion-forces",
-    difficulty:"standard", type:"mcq",
-    q:"Modern cars are built with a “crumple zone” at the front that folds in a crash. How does a crumple zone help reduce injury to the people inside?",
-    opts:[
-      "It increases the force on the passengers.",
-      "It increases the time the car takes to stop, which reduces the force on the passengers.",
-      "It increases the mass of the car so it stops more quickly.",
-      "It reduces the car's momentum to zero instantly."
-    ], correct:1,
-    steps:`In a crash the car's momentum must fall to zero. A crumple zone makes the car take <b>longer</b> to stop.<br>Since force = change in momentum ÷ time, a longer time gives a <b>smaller force</b> on the passengers.<br><span class="final">Answer: B - more stopping time means less force.</span><br><br>✗ <b>Why the others fail:</b> A is the opposite; C confuses mass with safety; D “instantly” would mean a huge force.` },
+  /* ===== T3 Energy, Work & Power (LO2) ===== */
+  M({ id:"phy-t3-f", topic:"Energy, Work & Power", subtopic:"Gravitational PE", syllabusReference:"LO2", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:50,
+    q:"A 5 kg bag is lifted straight up onto a shelf 3 m high. Taking g = 10 N/kg, calculate the gravitational potential energy gained.",
+    data:"Give your answer in joules (J).", accept:[150], acceptedUnits:["J"], unit:"J", tolerance:1,
+    commonMisconception:"Forgetting to multiply by g.",
+    steps:`GPE = m g h = 5 × 10 × 3<br><span class="final">= 150 J</span>`,
+    ref:"KPC Physics — Energy, Work & Power", product:"physics-energy" }),
+  M({ id:"phy-t3-s", topic:"Energy, Work & Power", subtopic:"Energy conservation", syllabusReference:"LO2", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"A 0.5 kg stone is dropped from a height of 20 m. Taking g = 10 N/kg and ignoring air resistance, calculate its speed just before it hits the ground.",
+    data:"Give your answer in m/s.", accept:[20], acceptedUnits:["m/s"], unit:"m/s", tolerance:0.3,
+    commonMisconception:"Forgetting the square root, or thinking mass matters.",
+    steps:`GPE → KE: v = √(2 g h) = √(2 × 10 × 20) = √400<br><span class="final">v = 20 m/s</span> (mass cancels)`,
+    ref:"KPC Physics — Energy, Work & Power", product:"physics-energy" }),
+  M({ id:"phy-t3-a", topic:"Energy, Work & Power", subtopic:"Power", syllabusReference:"LO2", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:110,
+    q:"A lift motor raises a 400 kg load through a height of 6 m in 8 s. Taking g = 10 N/kg, calculate the useful power output of the motor.",
+    data:"Give your answer in watts (W).", accept:[3000], acceptedUnits:["W"], unit:"W", tolerance:20,
+    commonMisconception:"Confusing energy (J) with power (W = J/s).",
+    steps:`Work = m g h = 400 × 10 × 6 = 24 000 J. Power = 24 000 ÷ 8<br><span class="final">P = 3000 W</span>`,
+    ref:"KPC Physics — Energy, Work & Power", product:"physics-energy" }),
+  M({ id:"phy-t3-u", topic:"Energy, Work & Power", subtopic:"Efficiency", syllabusReference:"LO2", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
+    q:"A pump is 75% efficient. Its useful power output is 600 W. Calculate the electrical power it draws from the supply.",
+    data:"Give your answer in watts (W).", accept:[800], acceptedUnits:["W"], unit:"W", tolerance:5,
+    commonMisconception:"Multiplying by 0.75 instead of dividing.",
+    steps:`Efficiency = useful ÷ input, so input = useful ÷ efficiency = 600 ÷ 0.75<br><span class="final">= 800 W</span>`,
+    ref:"KPC Physics — Energy, Work & Power", product:"physics-energy" }),
 
-  { topic:"Motion & Forces", ref:"KPC Physics - Motion & Forces", product:"physics-motion-forces",
-    difficulty:"hard", type:"work",
-    q:"A car of mass 1100 kg is travelling at 54 km/h when the driver brakes sharply, bringing it to rest in 3.0 s. Calculate the size of the braking force.",
-    data:"Give your answer in newtons (N). Tip: convert the speed to m/s first.", accept:[5500], unit:"N",
-    steps:`Convert the speed: 54 km/h ÷ 3.6 = <b>15 m/s</b>.<br>Acceleration: a = (v − u) ÷ t = (0 − 15) ÷ 3.0 = <b>−5 m/s²</b> (the minus sign shows it is slowing down).<br>Force: F = m × a = 1100 × (−5) = −5500 N<br><span class="final">Size of braking force = 5500 N</span> (acting backwards).<br><br>✗ <b>Common mistake:</b> forgetting to convert km/h (÷3.6), or dropping the negative sign that shows the force opposes the motion.` },
-
-  /* ============ TOPIC 2 - MOMENTS, DENSITY & PRESSURE ============ */
-  { topic:"Moments, Density & Pressure", ref:"KPC Physics - Moments, Density & Pressure", product:"physics-moments-density-pressure",
-    difficulty:"foundation", type:"work",
-    q:"A small metal block has a mass of 240 g and a volume of 30 cm³. Calculate its density.",
-    data:"Give your answer in g/cm³.", accept:[8], unit:"g/cm³",
-    steps:`Density = mass ÷ volume<br>ρ = 240 ÷ 30<br><span class="final">ρ = 8 g/cm³</span><br><br>✓ <b>Tip:</b> if density is greater than the surrounding liquid, the object sinks.` },
-
-  { topic:"Moments, Density & Pressure", ref:"KPC Physics - Moments, Density & Pressure", product:"physics-moments-density-pressure",
-    difficulty:"standard", type:"work", dia:"moments",
-    q:"A uniform beam is balanced on a pivot. A 12 N weight hangs 0.5 m to the left of the pivot. Calculate the force needed 0.3 m to the right of the pivot to keep the beam balanced.",
-    data:"Give your answer in newtons (N).", accept:[20], unit:"N",
-    steps:`Principle of moments: clockwise moment = anticlockwise moment.<br>Anticlockwise moment = 12 × 0.5 = <b>6 Nm</b><br>So: F × 0.3 = 6 → F = 6 ÷ 0.3<br><span class="final">F = 20 N</span><br><br>✓ <b>Tip:</b> moment = force × perpendicular distance from the pivot.` },
-
-  { topic:"Moments, Density & Pressure", ref:"KPC Physics - Moments, Density & Pressure", product:"physics-moments-density-pressure",
-    difficulty:"standard", type:"work",
-    q:"A diver is swimming 8 m below the surface of the sea. The density of sea water is 1030 kg/m³ and g = 10 N/kg. Calculate the pressure on the diver caused by the water above them.",
-    data:"Give your answer in pascals (Pa).", accept:[82400, 82000], unit:"Pa",
-    steps:`Pressure from a liquid: P = h × ρ × g<br>P = 8 × 1030 × 10<br><span class="final">P = 82 400 Pa</span> (about 82 kPa)<br><br>✓ <b>Tip:</b> this is the pressure due to the water only - the real total also includes atmospheric pressure.` },
-
-  { topic:"Moments, Density & Pressure", ref:"KPC Physics - Moments, Density & Pressure", product:"physics-moments-density-pressure",
-    difficulty:"hard", type:"work",
-    q:"A rectangular metal block measures 20 cm × 10 cm × 5 cm and has a mass of 8 kg. Calculate its density in kg/m³.",
-    data:"Give your answer in kg/m³.", accept:[8000], unit:"kg/m³",
-    steps:`First convert the volume to m³.<br>Volume = 0.20 × 0.10 × 0.05 = <b>0.001 m³</b><br>Density = mass ÷ volume = 8 ÷ 0.001<br><span class="final">ρ = 8000 kg/m³</span><br><br>✗ <b>Common mistake:</b> leaving the sides in cm. 20×10×5 = 1000 cm³, which is 0.001 m³ (divide cm³ by 1 000 000).` },
-
-  /* ============ TOPIC 3 - ENERGY, WORK & POWER ============ */
-  { topic:"Energy, Work & Power", ref:"KPC Physics - Energy, Work & Power", product:"physics-energy",
-    difficulty:"foundation", type:"work",
-    q:"A 3 kg box is lifted straight up onto a shelf 2 m high. Taking g = 10 N/kg, calculate the gravitational potential energy it gains.",
-    data:"Give your answer in joules (J).", accept:[60], unit:"J",
-    steps:`Gravitational PE gained = m × g × h<br>= 3 × 10 × 2<br><span class="final">= 60 J</span>` },
-
-  { topic:"Energy, Work & Power", ref:"KPC Physics - Energy, Work & Power", product:"physics-energy",
-    difficulty:"standard", type:"work",
-    q:"A 0.2 kg ball is dropped from a height of 5 m. Taking g = 10 N/kg and ignoring air resistance, calculate its speed just before it hits the ground.",
-    data:"Give your answer in m/s.", accept:[10], unit:"m/s",
-    steps:`Energy is conserved: gravitational PE → kinetic energy.<br>½mv² = mgh, so v = √(2gh)<br>v = √(2 × 10 × 5) = √100<br><span class="final">v = 10 m/s</span><br><br>✓ <b>Tip:</b> the mass cancels out - all objects reach the same speed when air resistance is ignored.` },
-
-  { topic:"Energy, Work & Power", ref:"KPC Physics - Energy, Work & Power", product:"physics-energy",
-    difficulty:"standard", type:"work",
-    q:"An electric motor lifts a 50 kg load through a height of 4 m in 10 seconds. Taking g = 10 N/kg, calculate the useful power output of the motor.",
-    data:"Give your answer in watts (W).", accept:[200], unit:"W",
-    steps:`Work done (energy transferred) = m × g × h = 50 × 10 × 4 = <b>2000 J</b><br>Power = energy ÷ time = 2000 ÷ 10<br><span class="final">P = 200 W</span><br><br>✓ <b>Tip:</b> power is how fast energy is transferred - 1 watt = 1 joule per second.` },
-
-  { topic:"Energy, Work & Power", ref:"KPC Physics - Energy, Work & Power", product:"physics-energy",
-    difficulty:"hard", type:"work",
-    q:"A crane motor has a useful power output of 2.0 kW and is 80% efficient. If it runs for 30 seconds, calculate the total electrical energy it consumes.",
-    data:"Give your answer in joules (J).", accept:[75000], unit:"J",
-    steps:`Useful energy output = power × time = 2000 × 30 = <b>60 000 J</b><br>Efficiency = useful ÷ total, so total input = useful ÷ efficiency = 60 000 ÷ 0.80<br><span class="final">= 75 000 J</span><br><br>✗ <b>Common mistake:</b> forgetting that 2.0 kW = 2000 W, or dividing by 80 instead of 0.80.` },
-
-  /* ============ TOPIC 4 - THERMAL PHYSICS ============ */
-  { topic:"Thermal Physics", ref:"KPC Physics - Thermal Physics", product:"physics-thermal",
-    difficulty:"foundation", type:"mcq",
-    q:"Heat from the Sun reaches the Earth through the vacuum of space. Which method of heat transfer is this?",
+  /* ===== T4 Thermal Physics (LO3) ===== */
+  M({ id:"phy-t4-f", topic:"Thermal Physics", subtopic:"Heat transfer methods", syllabusReference:"LO3", difficulty:"foundation", cognitiveSkill:"understanding", type:"mcq", marks:1, expectedTimeSeconds:40,
+    q:"Which method of heat transfer can travel through a vacuum (empty space)?",
     opts:["Conduction","Convection","Radiation","Evaporation"], correct:2,
-    steps:`Conduction and convection both need particles (a medium). Space is a vacuum, so heat can only travel as <b>infrared radiation</b>.<br><span class="final">Answer: Radiation</span>` },
+    commonMisconception:"Thinking conduction/convection work without particles.",
+    steps:`Conduction and convection both need particles. A vacuum has none, so heat travels only as infrared <b>radiation</b>.<br><span class="final">Answer: Radiation</span>`,
+    ref:"KPC Physics — Thermal Physics", product:"physics-thermal" }),
+  M({ id:"phy-t4-s", topic:"Thermal Physics", subtopic:"Specific heat capacity", syllabusReference:"LO3", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:90,
+    q:"Calculate the energy needed to raise the temperature of 3 kg of water by 30 °C. The specific heat capacity of water is 4200 J/kg°C.",
+    data:"Give your answer in joules (J).", accept:[378000], acceptedUnits:["J"], unit:"J", tolerance:500,
+    commonMisconception:"Using a final temperature instead of the change Δθ.",
+    steps:`Q = m c Δθ = 3 × 4200 × 30<br><span class="final">Q = 378 000 J</span>`,
+    ref:"KPC Physics — Thermal Physics", product:"physics-thermal" }),
+  M({ id:"phy-t4-a", topic:"Thermal Physics", subtopic:"Emitters of radiation", syllabusReference:"LO3", difficulty:"standard_exam", cognitiveSkill:"application", type:"mcq", marks:2, expectedTimeSeconds:70,
+    q:"Four identical cups are filled with hot water. Which surface keeps the water warm the LONGEST, because it is the poorest emitter of infrared radiation?",
+    opts:["Matt black","Dull dark grey","Shiny silver","Matt dark green"], correct:2,
+    commonMisconception:"Thinking dark surfaces retain heat best (they emit best, so cool fastest).",
+    steps:`Shiny, light surfaces are poor emitters, so a <b>shiny silver</b> cup loses heat slowest and stays warm longest.<br><span class="final">Answer: Shiny silver</span>`,
+    ref:"KPC Physics — Thermal Physics", product:"physics-thermal" }),
+  M({ id:"phy-t4-u", topic:"Thermal Physics", subtopic:"Heating time from power", syllabusReference:"LO3", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"A 1500 W immersion heater warms 2 kg of water. Assuming no heat is lost, calculate the time taken to raise the water temperature by 35 °C. The specific heat capacity of water is 4200 J/kg°C.",
+    data:"Give your answer in seconds (s).", accept:[196], acceptedUnits:["s"], unit:"s", tolerance:2,
+    commonMisconception:"Mixing up which value is power and which is energy.",
+    steps:`Energy Q = m c Δθ = 2 × 4200 × 35 = 294 000 J. Time = Q ÷ P = 294 000 ÷ 1500<br><span class="final">t = 196 s</span>`,
+    ref:"KPC Physics — Thermal Physics", product:"physics-thermal" }),
 
-  { topic:"Thermal Physics", ref:"KPC Physics - Thermal Physics", product:"physics-thermal",
-    difficulty:"standard", type:"work",
-    q:"Calculate the energy needed to heat 2 kg of water from 20 °C to 70 °C. The specific heat capacity of water is 4200 J/kg°C.",
-    data:"Give your answer in joules (J).", accept:[420000], unit:"J",
-    steps:`Energy: Q = m × c × Δθ<br>Temperature change Δθ = 70 − 20 = <b>50 °C</b><br>Q = 2 × 4200 × 50<br><span class="final">Q = 420 000 J</span><br><br>✓ <b>Tip:</b> Δθ is the change in temperature, not the final temperature.` },
+  /* ===== T5 Waves & Sound (LO1) ===== */
+  M({ id:"phy-t5-f", topic:"Waves & Sound", subtopic:"Wave equation", syllabusReference:"LO1 / AC1.2e", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:50,
+    q:"A wave has a frequency of 5 Hz and a wavelength of 0.6 m. Calculate its speed.",
+    data:"Give your answer in m/s.", accept:[3], acceptedUnits:["m/s"], unit:"m/s", tolerance:0.05,
+    commonMisconception:"Dividing instead of multiplying f and λ.",
+    steps:`v = f λ = 5 × 0.6<br><span class="final">v = 3 m/s</span>`,
+    ref:"KPC Physics — Waves & Sound", product:"physics-waves" }),
+  M({ id:"phy-t5-s", topic:"Waves & Sound", subtopic:"Amplitude vs wavelength", syllabusReference:"LO1 / AC1.2b", difficulty:"standard_exam", cognitiveSkill:"understanding", type:"mcq", marks:2, expectedTimeSeconds:70, dia:"wave",
+    q:"The diagram shows a transverse wave. Which labelled distance represents the wavelength?",
+    opts:["Distance X","Distance Y","Both X and Y","Neither"], correct:1,
+    commonMisconception:"Confusing amplitude (rest→crest) with wavelength (crest→crest).",
+    steps:`The wavelength is the distance for one complete cycle (crest to crest) — distance Y. Distance X (rest to crest) is the amplitude.<br><span class="final">Answer: Distance Y</span>`,
+    ref:"KPC Physics — Waves & Sound", product:"physics-waves" }),
+  M({ id:"phy-t5-a", topic:"Waves & Sound", subtopic:"Sound wavelength", syllabusReference:"LO1 / AC1.2e", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"A sound wave travels through air at 340 m/s. A tuning fork produces a note with a frequency of 425 Hz. Calculate the wavelength of the sound.",
+    data:"Give your answer in metres (m).", accept:[0.8], acceptedUnits:["m"], unit:"m", tolerance:0.02,
+    commonMisconception:"Multiplying instead of rearranging λ = v ÷ f.",
+    steps:`λ = v ÷ f = 340 ÷ 425<br><span class="final">λ = 0.8 m</span>`,
+    ref:"KPC Physics — Waves & Sound", product:"physics-waves" }),
+  M({ id:"phy-t5-u", topic:"Waves & Sound", subtopic:"Radio wavelength + prefixes", syllabusReference:"LO1 / AC1.3e", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
+    q:"A radio station broadcasts at a frequency of 150 MHz. Radio waves travel at 3 × 10⁸ m/s. Calculate the wavelength. (1 MHz = 1 × 10⁶ Hz.)",
+    data:"Give your answer in metres (m).", accept:[2], acceptedUnits:["m"], unit:"m", tolerance:0.05,
+    commonMisconception:"Forgetting that MHz means × 10⁶.",
+    steps:`f = 150 × 10⁶ = 1.5 × 10⁸ Hz. λ = v ÷ f = (3 × 10⁸) ÷ (1.5 × 10⁸)<br><span class="final">λ = 2 m</span>`,
+    ref:"KPC Physics — Waves & Sound", product:"physics-waves" }),
 
-  { topic:"Thermal Physics", ref:"KPC Physics - Thermal Physics", product:"physics-thermal",
-    difficulty:"standard", type:"mcq",
-    q:"Four identical metal cans are filled with hot water. Which surface will cool down the fastest, because it is the best emitter of infrared radiation?",
-    opts:["Shiny silver","Matt black","Shiny white","Polished gold"], correct:1,
-    steps:`Dull, dark surfaces are the best <b>emitters</b> (and absorbers) of infrared radiation; shiny, light surfaces are poor emitters.<br><span class="final">Answer: Matt black</span><br><br>✓ <b>Tip:</b> the same rule explains why radiators and cooling fins are often painted matt black.` },
+  /* ===== T6 Light & Optics (LO1) — NEW TOPIC ===== */
+  M({ id:"phy-t6-f", topic:"Light & Optics", subtopic:"Reflection & the normal", syllabusReference:"LO1", difficulty:"foundation", cognitiveSkill:"recall", type:"mcq", marks:1, expectedTimeSeconds:45,
+    q:"When a ray of light hits a plane mirror, the angle of incidence is measured between the ray and which line?",
+    opts:["The mirror surface","The normal (the line perpendicular to the surface)","The reflected ray","The vertical"], correct:1,
+    commonMisconception:"Measuring the angle from the surface instead of the normal.",
+    steps:`Angles of incidence and reflection are always measured from the <b>normal</b> — the line at 90° to the surface.<br><span class="final">Answer: The normal</span>`,
+    ref:"KPC Physics — Light & Optics", product:"physics-light-optics" }),
+  M({ id:"phy-t6-s", topic:"Light & Optics", subtopic:"Refractive index from speed", syllabusReference:"LO1", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:90,
+    q:"Light travels at 3 × 10⁸ m/s in air and slows to 2 × 10⁸ m/s inside a glass block. Calculate the refractive index of the glass. (n = speed in air ÷ speed in glass.)",
+    data:"Give your answer as a number (no units).", accept:[1.5], acceptedUnits:[], unit:"", tolerance:0.02,
+    commonMisconception:"Dividing glass speed by air speed (giving less than 1).",
+    steps:`n = speed in air ÷ speed in glass = (3 × 10⁸) ÷ (2 × 10⁸)<br><span class="final">n = 1.5</span>`,
+    ref:"KPC Physics — Light & Optics", product:"physics-light-optics" }),
+  M({ id:"phy-t6-a", topic:"Light & Optics", subtopic:"Total internal reflection", syllabusReference:"LO1", difficulty:"standard_exam", cognitiveSkill:"application", type:"mcq", marks:2, expectedTimeSeconds:80,
+    q:"A ray of light travelling inside a glass block strikes the surface at an angle (to the normal) greater than the critical angle. What happens to the ray?",
+    opts:["It all passes straight out into the air","It is totally internally reflected back into the glass","It stops at the surface","It splits into colours"], correct:1,
+    commonMisconception:"Thinking light always escapes, ignoring the critical angle.",
+    steps:`Beyond the critical angle none of the light refracts out — it is all reflected back inside. This is <b>total internal reflection</b> (used in optical fibres).<br><span class="final">Answer: Totally internally reflected</span>`,
+    ref:"KPC Physics — Light & Optics", product:"physics-light-optics" }),
+  M({ id:"phy-t6-u", topic:"Light & Optics", subtopic:"Magnification", syllabusReference:"LO1", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:130,
+    q:"A converging lens produces an image with a magnification of 2.5. The image is 20 cm tall. Calculate the height of the object.",
+    data:"Give your answer in centimetres (cm).", accept:[8], acceptedUnits:["cm"], unit:"cm", tolerance:0.1,
+    commonMisconception:"Multiplying by the magnification instead of dividing.",
+    steps:`magnification = image height ÷ object height, so object = image ÷ m = 20 ÷ 2.5<br><span class="final">= 8 cm</span>`,
+    ref:"KPC Physics — Light & Optics", product:"physics-light-optics" }),
 
-  { topic:"Thermal Physics", ref:"KPC Physics - Thermal Physics", product:"physics-thermal",
-    difficulty:"hard", type:"work",
-    q:"A 2000 W electric kettle is used to heat 1.5 kg of water. Assuming no energy is lost to the surroundings, calculate the time taken to raise the water temperature by 60 °C. The specific heat capacity of water is 4200 J/kg°C.",
-    data:"Give your answer in seconds (s).", accept:[189], unit:"s",
-    steps:`Energy needed: Q = m × c × Δθ = 1.5 × 4200 × 60 = <b>378 000 J</b><br>Time = energy ÷ power = 378 000 ÷ 2000<br><span class="final">t = 189 s</span> (about 3 minutes)<br><br>✗ <b>Common mistake:</b> mixing up which value is the power (2000 W) and which is the energy.` },
-
-  /* ============ TOPIC 5 - WAVES, LIGHT & SOUND ============ */
-  { topic:"Waves, Light & Sound", ref:"KPC Physics - Waves, Light & Sound", product:"physics-waves",
-    difficulty:"foundation", type:"work",
-    q:"A water wave has a frequency of 8 Hz and a wavelength of 0.5 m. Calculate its speed.",
-    data:"Give your answer in m/s.", accept:[4], unit:"m/s",
-    steps:`Wave equation: v = f × λ<br>v = 8 × 0.5<br><span class="final">v = 4 m/s</span>` },
-
-  { topic:"Waves, Light & Sound", ref:"KPC Physics - Waves, Light & Sound", product:"physics-waves",
-    difficulty:"standard", type:"mcq", dia:"wave",
-    q:"The diagram shows a transverse wave. Which labelled distance represents the amplitude of the wave?",
-    opts:["Distance X","Distance Y","Both X and Y","Neither"], correct:0,
-    steps:`The <b>amplitude</b> is the maximum distance from the rest (middle) position to a crest or trough - that is distance X. Distance Y, from one crest to the next, is the <b>wavelength</b>.<br><span class="final">Answer: Distance X</span>` },
-
-  { topic:"Waves, Light & Sound", ref:"KPC Physics - Waves, Light & Sound", product:"physics-waves",
-    difficulty:"standard", type:"work",
-    q:"A sound wave travels through air at 340 m/s with a frequency of 500 Hz. Calculate its wavelength.",
-    data:"Give your answer in metres (m).", accept:[0.68], unit:"m",
-    steps:`Rearrange the wave equation: λ = v ÷ f<br>λ = 340 ÷ 500<br><span class="final">λ = 0.68 m</span><br><br>✓ <b>Tip:</b> sound is a longitudinal wave, but the equation v = fλ still applies.` },
-
-  { topic:"Waves, Light & Sound", ref:"KPC Physics - Waves, Light & Sound", product:"physics-waves",
-    difficulty:"hard", type:"work",
-    q:"A radio station broadcasts at a frequency of 100 MHz. Radio waves travel at 3 × 10⁸ m/s. Calculate the wavelength of these radio waves.",
-    data:"Give your answer in metres (m). (1 MHz = 1 × 10⁶ Hz.)", accept:[3], unit:"m",
-    steps:`Convert the frequency: 100 MHz = 100 × 10⁶ = <b>1 × 10⁸ Hz</b>.<br>λ = v ÷ f = (3 × 10⁸) ÷ (1 × 10⁸)<br><span class="final">λ = 3 m</span><br><br>✗ <b>Common mistake:</b> forgetting that “M” (mega) means × 10⁶, which leaves the powers of ten wrong.` },
-
-  /* ============ TOPIC 6 - ELECTRICITY & CIRCUITS ============ */
-  { topic:"Electricity & Circuits", ref:"KPC Physics - Electricity & Circuits", product:"physics-electricity",
-    difficulty:"foundation", type:"work",
-    q:"A 12 V battery is connected across a 4 Ω resistor. Calculate the current flowing through the resistor.",
-    data:"Give your answer in amperes (A).", accept:[3], unit:"A",
-    steps:`Ohm's law: V = I × R, rearranged I = V ÷ R<br>I = 12 ÷ 4<br><span class="final">I = 3 A</span>` },
-
-  { topic:"Electricity & Circuits", ref:"KPC Physics - Electricity & Circuits", product:"physics-electricity",
-    difficulty:"standard", type:"work", dia:"circuit",
-    q:"The circuit shows a 6 Ω resistor and a 3 Ω resistor connected in series across a 9 V supply. Calculate the current flowing in the circuit.",
-    data:"Give your answer in amperes (A).", accept:[1], unit:"A",
-    steps:`In series, resistances add: R = 6 + 3 = <b>9 Ω</b><br>Ohm's law: I = V ÷ R = 9 ÷ 9<br><span class="final">I = 1 A</span><br><br>✓ <b>Tip:</b> in a series circuit the current is the same everywhere.` },
-
-  { topic:"Electricity & Circuits", ref:"KPC Physics - Electricity & Circuits", product:"physics-electricity",
-    difficulty:"standard", type:"mcq",
-    q:"An electric heater is rated at 2300 W and runs from the 230 V mains. Fuses are available in 3 A, 5 A and 13 A. Which fuse should be fitted?",
+  /* ===== T7 Electricity & Circuits (LO4) ===== */
+  M({ id:"phy-t7-f", topic:"Electricity & Circuits", subtopic:"Ohm's law", syllabusReference:"LO4", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:50,
+    q:"A 24 V battery is connected across a 6 Ω resistor. Calculate the current in the resistor.",
+    data:"Give your answer in amperes (A).", accept:[4], acceptedUnits:["A"], unit:"A", tolerance:0.05,
+    commonMisconception:"Multiplying V and R instead of dividing.",
+    steps:`I = V ÷ R = 24 ÷ 6<br><span class="final">I = 4 A</span>`,
+    ref:"KPC Physics — Electricity & Circuits", product:"physics-electricity" }),
+  M({ id:"phy-t7-s", topic:"Electricity & Circuits", subtopic:"Series circuit p.d.", syllabusReference:"LO4", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:110, dia:"circuit",
+    q:"The circuit shows a 6 Ω resistor in series with a 3 Ω resistor across a 9 V supply. Calculate the potential difference across the 6 Ω resistor.",
+    data:"Give your answer in volts (V).", accept:[6], acceptedUnits:["V"], unit:"V", tolerance:0.1,
+    commonMisconception:"Thinking the 9 V is shared equally regardless of resistance.",
+    steps:`Total R = 6 + 3 = 9 Ω. Current I = 9 ÷ 9 = 1 A (same everywhere in series). p.d. across 6 Ω = I R = 1 × 6<br><span class="final">= 6 V</span>`,
+    ref:"KPC Physics — Electricity & Circuits", product:"physics-electricity" }),
+  M({ id:"phy-t7-a", topic:"Electricity & Circuits", subtopic:"Mains power & fuses", syllabusReference:"LO4", difficulty:"standard_exam", cognitiveSkill:"application", type:"mcq", marks:2, expectedTimeSeconds:90,
+    q:"An electric kettle is rated 2760 W and runs from the 230 V mains. Fuses available are 3 A, 5 A and 13 A. Which fuse is most suitable?",
     opts:["3 A","5 A","13 A","No fuse is needed"], correct:2,
-    steps:`Find the normal current: I = P ÷ V = 2300 ÷ 230 = <b>10 A</b>.<br>The fuse must be just above the normal current, so the 13 A fuse is correct (a 3 A or 5 A fuse would blow immediately).<br><span class="final">Answer: 13 A</span>` },
+    commonMisconception:"Choosing a fuse below the normal working current.",
+    steps:`Normal current I = P ÷ V = 2760 ÷ 230 = 12 A. The fuse must be just above this, so <b>13 A</b>.<br><span class="final">Answer: 13 A</span>`,
+    ref:"KPC Physics — Electricity & Circuits", product:"physics-electricity" }),
+  M({ id:"phy-t7-u", topic:"Electricity & Circuits", subtopic:"Parallel circuit current", syllabusReference:"LO4", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
+    q:"A 4 Ω resistor and a 12 Ω resistor are connected in parallel across a 24 V supply. Calculate the total current drawn from the supply.",
+    data:"Give your answer in amperes (A).", accept:[8], acceptedUnits:["A"], unit:"A", tolerance:0.1,
+    commonMisconception:"Adding parallel resistances as if in series.",
+    steps:`Each resistor has the full 24 V. I₁ = 24 ÷ 4 = 6 A; I₂ = 24 ÷ 12 = 2 A. Total = 6 + 2<br><span class="final">I = 8 A</span>`,
+    ref:"KPC Physics — Electricity & Circuits", product:"physics-electricity" }),
 
-  { topic:"Electricity & Circuits", ref:"KPC Physics - Electricity & Circuits", product:"physics-electricity",
-    difficulty:"hard", type:"work",
-    q:"A 6 Ω resistor and a 3 Ω resistor are connected in parallel across a 12 V supply. Calculate the total current drawn from the supply.",
-    data:"Give your answer in amperes (A).", accept:[6], unit:"A",
-    steps:`In parallel, each resistor has the full 12 V across it. Find each branch current:<br>Through 6 Ω: I = 12 ÷ 6 = 2 A<br>Through 3 Ω: I = 12 ÷ 3 = 4 A<br>Total current = 2 + 4<br><span class="final">I = 6 A</span><br><br>✗ <b>Common mistake:</b> adding parallel resistances like series. In parallel the total resistance is actually smaller (here 2 Ω), so the current is larger.` },
-
-  /* ============ TOPIC 7 - MAGNETISM & ELECTROMAGNETISM ============ */
-  { topic:"Magnetism & Electromagnetism", ref:"KPC Physics - Magnetism & Electromagnetism", product:"physics-magnetism",
-    difficulty:"foundation", type:"mcq",
-    q:"Two bar magnets are brought together so that their north poles face each other. What happens?",
+  /* ===== T8 Magnetism & Electromagnetism (LO5) ===== */
+  M({ id:"phy-t8-f", topic:"Magnetism & Electromagnetism", subtopic:"Magnetic poles", syllabusReference:"LO5", difficulty:"foundation", cognitiveSkill:"recall", type:"mcq", marks:1, expectedTimeSeconds:40,
+    q:"The south pole of one bar magnet is brought close to the south pole of another. What happens?",
     opts:["They attract","They repel","Nothing happens","They lose their magnetism"], correct:1,
-    steps:`Like poles (N–N or S–S) repel; opposite poles (N–S) attract.<br><span class="final">Answer: They repel</span>` },
+    commonMisconception:"Thinking all poles attract.",
+    steps:`Like poles (S–S or N–N) <b>repel</b>; only opposite poles attract.<br><span class="final">Answer: They repel</span>`,
+    ref:"KPC Physics — Magnetism & Electromagnetism", product:"physics-magnetism" }),
+  M({ id:"phy-t8-s", topic:"Magnetism & Electromagnetism", subtopic:"Transformer type", syllabusReference:"LO5", difficulty:"standard_exam", cognitiveSkill:"understanding", type:"mcq", marks:2, expectedTimeSeconds:70,
+    q:"A transformer has more turns on its secondary coil than on its primary coil. What does it do to the voltage?",
+    opts:["Increases it (step-up)","Decreases it (step-down)","Leaves it unchanged","Reverses its direction"], correct:0,
+    commonMisconception:"Associating more turns with lower voltage.",
+    steps:`Voltage ratio = turns ratio. More secondary turns → higher output voltage → a <b>step-up</b> transformer.<br><span class="final">Answer: Increases it (step-up)</span>`,
+    ref:"KPC Physics — Magnetism & Electromagnetism", product:"physics-magnetism" }),
+  M({ id:"phy-t8-a", topic:"Magnetism & Electromagnetism", subtopic:"Transformer turns ratio", syllabusReference:"LO5", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"A transformer has 500 turns on the primary coil and 1500 turns on the secondary coil. The primary is connected to a 230 V supply. Calculate the secondary (output) voltage.",
+    data:"Give your answer in volts (V).", accept:[690], acceptedUnits:["V"], unit:"V", tolerance:2,
+    commonMisconception:"Inverting the turns ratio.",
+    steps:`Vs = Vp × (Ns ÷ Np) = 230 × (1500 ÷ 500) = 230 × 3<br><span class="final">Vs = 690 V</span>`,
+    ref:"KPC Physics — Magnetism & Electromagnetism", product:"physics-magnetism" }),
+  M({ id:"phy-t8-u", topic:"Magnetism & Electromagnetism", subtopic:"Ideal transformer power", syllabusReference:"LO5", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"An ideal (100% efficient) transformer steps 240 V down to 12 V. The output (secondary) current is 4 A. Calculate the input (primary) current.",
+    data:"Give your answer in amperes (A).", accept:[0.2], acceptedUnits:["A"], unit:"A", tolerance:0.01,
+    commonMisconception:"Assuming the current is unchanged.",
+    steps:`Power in = power out: Vp Ip = Vs Is → Ip = (12 × 4) ÷ 240 = 48 ÷ 240<br><span class="final">Ip = 0.2 A</span>`,
+    ref:"KPC Physics — Magnetism & Electromagnetism", product:"physics-magnetism" }),
 
-  { topic:"Magnetism & Electromagnetism", ref:"KPC Physics - Magnetism & Electromagnetism", product:"physics-magnetism",
-    difficulty:"standard", type:"mcq",
-    q:"A transformer has fewer turns on its secondary coil than on its primary coil. What does this transformer do to the voltage?",
-    opts:["Increases it (step-up)","Decreases it (step-down)","Leaves it unchanged","Turns it off"], correct:1,
-    steps:`In a transformer the voltage ratio matches the turns ratio. Fewer secondary turns means a lower output voltage - a <b>step-down</b> transformer.<br><span class="final">Answer: Decreases it (step-down)</span>` },
-
-  { topic:"Magnetism & Electromagnetism", ref:"KPC Physics - Magnetism & Electromagnetism", product:"physics-magnetism",
-    difficulty:"standard", type:"work",
-    q:"A transformer has 2000 turns on its primary coil and 100 turns on its secondary coil. The primary coil is connected to a 230 V supply. Calculate the secondary (output) voltage.",
-    data:"Give your answer in volts (V).", accept:[11.5], unit:"V",
-    steps:`Turns ratio rule: Vs ÷ Vp = Ns ÷ Np<br>Vs = Vp × (Ns ÷ Np) = 230 × (100 ÷ 2000)<br><span class="final">Vs = 11.5 V</span>` },
-
-  { topic:"Magnetism & Electromagnetism", ref:"KPC Physics - Magnetism & Electromagnetism", product:"physics-magnetism",
-    difficulty:"hard", type:"work",
-    q:"An ideal (100% efficient) step-down transformer reduces 230 V to 23 V. The output (secondary) current is 5 A. Calculate the input (primary) current.",
-    data:"Give your answer in amperes (A).", accept:[0.5], unit:"A",
-    steps:`For an ideal transformer, power in = power out: Vp × Ip = Vs × Is<br>Ip = (Vs × Is) ÷ Vp = (23 × 5) ÷ 230 = 115 ÷ 230<br><span class="final">Ip = 0.5 A</span><br><br>✗ <b>Common mistake:</b> assuming the current stays the same. A step-down transformer lowers voltage but <i>raises</i> current - so the primary current is smaller than the secondary.` },
-
-  /* ============ TOPIC 8 - RADIOACTIVITY ============ */
-  { topic:"Radioactivity", ref:"KPC Physics - Radioactivity", product:"physics-radioactivity",
-    difficulty:"foundation", type:"mcq",
+  /* ===== T9 Radioactivity (LO6) ===== */
+  M({ id:"phy-t9-f", topic:"Radioactivity", subtopic:"Penetration of radiation", syllabusReference:"LO6", difficulty:"foundation", cognitiveSkill:"recall", type:"mcq", marks:1, expectedTimeSeconds:40,
     q:"Which type of nuclear radiation is the least penetrating and can be stopped by a single sheet of paper?",
     opts:["Alpha","Beta","Gamma","X-rays"], correct:0,
-    steps:`Alpha is the least penetrating (stopped by paper or a few cm of air). Beta is stopped by thin aluminium; gamma is the most penetrating (needs thick lead/concrete).<br><span class="final">Answer: Alpha</span>` },
-
-  { topic:"Radioactivity", ref:"KPC Physics - Radioactivity", product:"physics-radioactivity",
-    difficulty:"standard", type:"work",
-    q:"A radioactive sample has an activity of 800 Bq. The half-life of the sample is 2 hours. Calculate its activity after 6 hours.",
-    data:"Give your answer in becquerels (Bq).", accept:[100], unit:"Bq",
-    steps:`Number of half-lives in 6 hours = 6 ÷ 2 = <b>3</b>.<br>Halve the activity three times: 800 → 400 → 200 → 100.<br><span class="final">Activity = 100 Bq</span>` },
-
-  { topic:"Radioactivity", ref:"KPC Physics - Radioactivity", product:"physics-radioactivity",
-    difficulty:"standard", type:"mcq",
+    commonMisconception:"Confusing alpha (least penetrating) with gamma (most).",
+    steps:`Alpha is the least penetrating — stopped by paper. Beta needs thin aluminium; gamma needs thick lead/concrete.<br><span class="final">Answer: Alpha</span>`,
+    ref:"KPC Physics — Radioactivity", product:"physics-radioactivity" }),
+  M({ id:"phy-t9-s", topic:"Radioactivity", subtopic:"Half-life", syllabusReference:"LO6", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:90,
+    q:"A radioactive source has an activity of 2400 Bq. Its half-life is 5 hours. Calculate its activity after 15 hours.",
+    data:"Give your answer in becquerels (Bq).", accept:[300], acceptedUnits:["Bq"], unit:"Bq", tolerance:1,
+    commonMisconception:"Dividing by the number of hours instead of halving per half-life.",
+    steps:`15 ÷ 5 = 3 half-lives. Halve three times: 2400 → 1200 → 600 → 300<br><span class="final">Activity = 300 Bq</span>`,
+    ref:"KPC Physics — Radioactivity", product:"physics-radioactivity" }),
+  M({ id:"phy-t9-a", topic:"Radioactivity", subtopic:"Isotopes", syllabusReference:"LO6", difficulty:"standard_exam", cognitiveSkill:"understanding", type:"mcq", marks:2, expectedTimeSeconds:70,
     q:"Two atoms are isotopes of the same element. This means they have…",
-    opts:[
-      "the same number of protons but a different number of neutrons",
-      "the same number of neutrons but a different number of protons",
-      "a different number of protons and electrons",
-      "exactly the same mass"
-    ], correct:0,
-    steps:`Isotopes are atoms of the <b>same element</b>, so they have the same number of protons (same atomic number), but a different number of neutrons (so a different mass number).<br><span class="final">Answer: same protons, different neutrons</span>` },
+    opts:["the same number of protons but a different number of neutrons","the same number of neutrons but a different number of protons","different numbers of protons and electrons","exactly the same mass"], correct:0,
+    commonMisconception:"Swapping the roles of protons and neutrons.",
+    steps:`Isotopes are the same element (same protons) but with different numbers of neutrons, so a different mass number.<br><span class="final">Answer: same protons, different neutrons</span>`,
+    ref:"KPC Physics — Radioactivity", product:"physics-radioactivity" }),
+  M({ id:"phy-t9-u", topic:"Radioactivity", subtopic:"Half-life from ratio", syllabusReference:"LO6", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"The activity of a source falls from 8000 Bq to 500 Bq. The half-life of the source is 12 minutes. Calculate how long this decrease took.",
+    data:"Give your answer in minutes.", accept:[48], acceptedUnits:["min","minutes"], unit:"min", tolerance:0.5,
+    commonMisconception:"Not counting the number of halvings correctly.",
+    steps:`8000 → 4000 → 2000 → 1000 → 500 = 4 half-lives. Time = 4 × 12<br><span class="final">= 48 minutes</span> (8000 ÷ 500 = 16 = 2⁴)`,
+    ref:"KPC Physics — Radioactivity", product:"physics-radioactivity" }),
 
-  { topic:"Radioactivity", ref:"KPC Physics - Radioactivity", product:"physics-radioactivity",
-    difficulty:"hard", type:"work",
-    q:"The activity of a radioactive source falls from 6400 Bq to 200 Bq. The half-life of the source is 15 minutes. Calculate how long this decrease took.",
-    data:"Give your answer in minutes.", accept:[75], unit:"min",
-    steps:`Count the halvings from 6400 down to 200:<br>6400 → 3200 → 1600 → 800 → 400 → 200 = <b>5 half-lives</b>.<br>Time = 5 × 15<br><span class="final">= 75 minutes</span><br><br>✓ <b>Tip:</b> 6400 ÷ 200 = 32 = 2⁵, confirming 5 half-lives.` },
-
-  /* ============ TOPIC 9 - EARTH & SPACE ============ */
-  { topic:"Earth & Space", ref:"KPC Physics - Earth & Space", product:"physics-earth-space",
-    difficulty:"foundation", type:"mcq",
+  /* ===== T10 Earth & Space (LO7) ===== */
+  M({ id:"phy-t10-f", topic:"Earth & Space", subtopic:"Light-year", syllabusReference:"LO7", difficulty:"foundation", cognitiveSkill:"recall", type:"mcq", marks:1, expectedTimeSeconds:35,
     q:"In astronomy, a “light-year” is a unit of…",
-    opts:["time","distance","speed","mass"], correct:1,
-    steps:`A light-year is the <b>distance</b> that light travels in one year. Despite the word “year”, it measures distance, not time.<br><span class="final">Answer: distance</span>` },
-
-  { topic:"Earth & Space", ref:"KPC Physics - Earth & Space", product:"physics-earth-space",
-    difficulty:"standard", type:"work",
-    q:"Light from the Sun takes about 500 seconds to reach the Earth. Light travels at 3 × 10⁸ m/s. Calculate the distance from the Sun to the Earth.",
-    data:"Give your answer in metres (m), in standard form.", accept:[1.5e11], unit:"m",
-    steps:`Distance = speed × time<br>d = (3 × 10⁸) × 500<br><span class="final">d = 1.5 × 10¹¹ m</span> (150 billion metres)` },
-
-  { topic:"Earth & Space", ref:"KPC Physics - Earth & Space", product:"physics-earth-space",
-    difficulty:"standard", type:"mcq",
-    q:"Order these from smallest to largest: star, galaxy, planet, solar system. Which is the LARGEST?",
-    opts:["Planet","Star","Solar system","Galaxy"], correct:3,
-    steps:`From smallest to largest: planet → star → solar system → galaxy. A galaxy contains billions of stars and their solar systems.<br><span class="final">Answer: Galaxy</span>` },
-
-  { topic:"Earth & Space", ref:"KPC Physics - Earth & Space", product:"physics-earth-space",
-    difficulty:"hard", type:"work",
-    q:"Calculate the distance, in metres, that light travels in one year. Use a speed of light of 3 × 10⁸ m/s and take 1 year to be 3.15 × 10⁷ seconds.",
-    data:"Give your answer in metres (m), in standard form.", accept:[9.45e15], unit:"m",
-    steps:`Distance = speed × time<br>d = (3 × 10⁸) × (3.15 × 10⁷)<br>Multiply the numbers: 3 × 3.15 = 9.45. Add the powers: 10⁸ × 10⁷ = 10¹⁵.<br><span class="final">d = 9.45 × 10¹⁵ m</span><br><br>✓ <b>Tip:</b> this huge number is exactly one light-year - which is why astronomers use light-years instead of metres.` },
+    opts:["time","distance","speed","brightness"], correct:1,
+    commonMisconception:"Assuming a light-year measures time because of the word 'year'.",
+    steps:`A light-year is the <b>distance</b> light travels in one year.<br><span class="final">Answer: distance</span>`,
+    ref:"KPC Physics — Earth & Space", product:"physics-earth-space" }),
+  M({ id:"phy-t10-s", topic:"Earth & Space", subtopic:"Distance = speed × time", syllabusReference:"LO7", difficulty:"standard_exam", cognitiveSkill:"application", type:"work", marks:2, expectedTimeSeconds:100,
+    q:"Light takes about 1200 seconds to travel from the Sun to Mars. Light travels at 3 × 10⁸ m/s. Calculate the Sun–Mars distance.",
+    data:"Give your answer in metres (m), in standard form.", accept:[3.6e11], acceptedUnits:["m"], unit:"m", tolerance:0.05e11,
+    commonMisconception:"Errors handling the powers of ten.",
+    steps:`d = speed × time = (3 × 10⁸) × 1200 = (3 × 10⁸) × (1.2 × 10³)<br><span class="final">d = 3.6 × 10¹¹ m</span>`,
+    ref:"KPC Physics — Earth & Space", product:"physics-earth-space" }),
+  M({ id:"phy-t10-a", topic:"Earth & Space", subtopic:"Scale of the universe", syllabusReference:"LO7", difficulty:"standard_exam", cognitiveSkill:"understanding", type:"mcq", marks:2, expectedTimeSeconds:60,
+    q:"Which of these is the LARGEST?",
+    opts:["A planet","A star","The Solar System","A galaxy"], correct:3,
+    commonMisconception:"Thinking a star is larger than the whole Solar System or galaxy.",
+    steps:`From smallest to largest: planet → star → Solar System → galaxy. A galaxy contains billions of stars.<br><span class="final">Answer: A galaxy</span>`,
+    ref:"KPC Physics — Earth & Space", product:"physics-earth-space" }),
+  M({ id:"phy-t10-u", topic:"Earth & Space", subtopic:"Light-year in metres", syllabusReference:"LO7", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"Calculate the distance light travels in one year. Use a speed of light of 3 × 10⁸ m/s and take 1 year to be 3.2 × 10⁷ seconds.",
+    data:"Give your answer in metres (m), in standard form.", accept:[9.6e15], acceptedUnits:["m"], unit:"m", tolerance:0.05e15,
+    commonMisconception:"Adding the powers incorrectly or mishandling 3 × 3.2.",
+    steps:`d = (3 × 10⁸) × (3.2 × 10⁷). Numbers: 3 × 3.2 = 9.6. Powers: 10⁸ × 10⁷ = 10¹⁵.<br><span class="final">d = 9.6 × 10¹⁵ m</span>`,
+    ref:"KPC Physics — Earth & Space", product:"physics-earth-space" }),
 ];
 
-/* Short "why" line per topic, used in the study plan. */
-const WHY = {
-  "Motion & Forces":"Revise velocity-time graphs, resultant forces, F = ma and momentum.",
-  "Moments, Density & Pressure":"Practise the principle of moments, density and liquid pressure (watch unit conversions).",
-  "Energy, Work & Power":"Tighten up GPE/KE, conservation of energy, power and efficiency.",
-  "Thermal Physics":"Review Q = mcΔθ, the methods of heat transfer and good/poor emitters.",
-  "Waves, Light & Sound":"Focus on v = fλ, amplitude vs wavelength, and the wave equation in standard form.",
-  "Electricity & Circuits":"Practise Ohm's law, series vs parallel circuits and mains fuse ratings.",
-  "Magnetism & Electromagnetism":"Revise poles and fields, and transformer voltage/current calculations.",
-  "Radioactivity":"Work on half-life calculations, isotopes and the penetrating power of radiation.",
-  "Earth & Space":"Review the light-year, distance = speed × time, and the scale of the Universe."
+/* Short study-plan line per topic. */
+export const WHY = {
+  "Motion & Forces":"Revise velocity–time graphs, resultant force and F = ma (watch unit conversions).",
+  "Forces, Moments & Pressure":"Practise the principle of moments, density and liquid pressure P = hρg.",
+  "Energy, Work & Power":"Tighten GPE/KE, power = energy ÷ time and efficiency.",
+  "Thermal Physics":"Review Q = mcΔθ, the three heat-transfer methods and good/poor emitters.",
+  "Waves & Sound":"Focus on v = fλ, amplitude vs wavelength and prefixes (MHz).",
+  "Light & Optics":"Revise reflection from the normal, refraction/refractive index, total internal reflection and magnification.",
+  "Electricity & Circuits":"Practise Ohm's law, series vs parallel and mains power/fuses.",
+  "Magnetism & Electromagnetism":"Revise poles and transformer voltage/current relationships.",
+  "Radioactivity":"Work on penetration, isotopes and half-life calculations.",
+  "Earth & Space":"Review the light-year, distance = speed × time and the scale of the Universe."
 };
 
-/* -------- Wire the content into the shared grading engine -------- */
+/* -------- wire into the shared grading engine -------- */
 const CFG = { SUBJECT, TOPIC_ORDER, QUESTIONS, WHY };
 export function publicQuestions() { return pub(CFG); }
 export function gradeAndReport(name, answers, env) { return grade(CFG, name, answers, env); }
