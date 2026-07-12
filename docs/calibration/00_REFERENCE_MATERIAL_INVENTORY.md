@@ -13,7 +13,7 @@ committed to Git.
 - Subject codes: **SEC 24 = Physics**, **SEC 23 = Mathematics**.
 - The exam-code suffix encodes year + session (e.g. `.24m` = 2024 Main/May, `.23s` = 2023 September).
 - **Exam-structure change from 2025:** 2025 papers carry the new code `…/1L1-2-3` ("Level 1-2-3"); 2021–2024 papers use the older `…/1`, `…/1a`, `…/1b` codes.
-- A **Physics syllabus (SEC 24, 2026 edition, updated April 2024)** is present. **No Mathematics syllabus** was supplied.
+- Current syllabi are present for **both** subjects: **Physics** (SEC 24, 2026 edition, updated April 2024) and **Mathematics** (SEC 23, 2026 edition). *(The Maths syllabus was added on 2026-07-12, after the first draft of this inventory.)*
 - Marking schemes and examiners' reports exist for **Main (May) sessions only** — this is normal MATSEC practice; September resit papers are not accompanied by published schemes/reports.
 
 ---
@@ -60,7 +60,7 @@ Physics totals: **1 syllabus, 10 papers, 2 marking schemes, 5 examiners' reports
 
 ## B. Mathematics documents
 
-**Syllabus:** **NOT SUPPLIED.** No Mathematics syllabus is present anywhere under `reference/maths/`.
+**Syllabus:** `reference/maths/Mathematics_SEC_2026_Syllabus.pdf` — *SEC 23 Syllabus (2026): Mathematics*, 69 pp. Sections: Introduction, Subject Foci, Learning Outcomes, Programme Level Descriptors, Learning Outcomes & Assessment Criteria (pp 7–64), Scheme of Assessment, General Notes, Table of Formulae (p 69). **This is the current applicable syllabus** (same 2026 generation as the Physics syllabus). *Added 2026-07-12.*
 
 **Past papers** (all Paper I; `reference/maths/past-papers/`)
 
@@ -97,7 +97,7 @@ Physics totals: **1 syllabus, 10 papers, 2 marking schemes, 5 examiners' reports
 | 2024 | Mathematics_SEC_2024_Examiners_Report.pdf | 19 |
 | 2025 | Mathematics_SEC_2025_Examiners_Report.pdf | 17 |
 
-Mathematics totals: **0 syllabus, 10 papers, 3 marking schemes, 5 examiners' reports (18 documents).**
+Mathematics totals: **1 syllabus, 10 papers, 3 marking schemes, 5 examiners' reports (19 documents).**
 
 ---
 
@@ -144,8 +144,8 @@ Legend: ✅ present · ❌ missing · — not published by MATSEC (September ses
 3. (Optional) the previous Physics syllabus edition, to document exactly what changed into the 2026 syllabus.
 
 ### Mathematics
-1. **The Mathematics syllabus** — *highest priority, currently absent.* Without it we cannot confirm the applicable syllabus, verify topic scope, or build a coverage matrix. (Physics has its 2026 syllabus; Maths has none.)
-2. Main-session marking schemes for **2021 and 2022** (we hold 2023, 2024, 2025 — good recent coverage).
+1. ~~The Mathematics syllabus~~ — **RESOLVED 2026-07-12:** the SEC 23 (2026) Mathematics syllabus is now present in `reference/maths/`.
+2. Main-session marking schemes for **2021 and 2022** (we hold 2023, 2024, 2025 — good recent coverage). Not essential.
 
 *Not "missing":* September marking schemes/reports (MATSEC does not publish these), and 2026 papers (2026 main-session papers may not be released yet).
 
@@ -160,8 +160,9 @@ Legend: ✅ present · ❌ missing · — not published by MATSEC (September ses
 - Both available marking schemes (2021, 2024) are **old-format**; useful for marking conventions but not for new-format structure.
 
 ### Mathematics
-- **No syllabus supplied → compatibility cannot be verified.** The 2025 papers use the new "Level 1-2-3" format (mirroring Physics), while 2021–2024 are older format.
-- The **2025 marking scheme IS available** (new format), which partly offsets the missing syllabus for mark-allocation purposes — but topic-coverage mapping is blocked until the Maths syllabus is added.
+- **Current syllabus now available:** SEC 23 (2026) — governs the current cohort, same generation as the Physics 2026 syllabus.
+- The **2025 papers use the new "Level 1-2-3" format** matching this syllabus generation → **2025 papers are the best structural match**; 2021–2024 are older format (relevant-with-caution, as for Physics).
+- Mathematics is now the **best-equipped subject**: current syllabus + full 2021–2025 paper run + three recent marking schemes (2023, 2024, 2025 — including the new-format 2025) + five examiners' reports. Coverage mapping is no longer blocked.
 
 *Per the brief, the detailed "topics added/removed/changed" comparison is deferred to the academic blueprint stage and is not attempted in this readiness check. The 2025 code-format change is the signal to investigate there.*
 
@@ -208,7 +209,7 @@ reference PDFs must never be committed to Git, deployed, or redistributed.
 | Subject | Syllabus | Papers | Schemes | Reports | Ready to begin calibration? |
 | ------- | :------: | :----: | :-----: | :-----: | --------------------------- |
 | **Physics** | ✅ 2026 (current) | ✅ 10 (2021–2025) | ⚠️ 2 (old-format only) | ✅ 5 | **Yes, with caution** — strong syllabus + full paper run + examiner insight; main limitation is no new-format marking scheme. |
-| **Mathematics** | ❌ none | ✅ 10 (2021–2025) | ✅ 3 (incl. 2025 new-format) | ✅ 5 | **Partially** — excellent recent complete sets, but a **syllabus is required** before coverage mapping. |
+| **Mathematics** | ✅ 2026 (current) | ✅ 10 (2021–2025) | ✅ 3 (incl. 2025 new-format) | ✅ 5 | **Yes** — current syllabus + full paper run + three recent schemes (incl. new-format 2025) + all reports. Now the best-equipped subject. |
 
 ---
 
@@ -237,6 +238,7 @@ All reference files were renamed to `Subject_SEC_Year_Session_Type.pdf`. Reversi
 - `PhysicsER(ready).pdf` → `Physics_SEC_2025_Examiners_Report.pdf`
 
 **Mathematics**
+- `Syllabus20-20SEC202320Mathematics202026 (2).pdf` *(copied from Downloads 2026-07-12; original left in place)* → `Mathematics_SEC_2026_Syllabus.pdf`
 - `SEC202320Mathematics20202120May (1).pdf` → `Mathematics_SEC_2021_May_Paper.pdf`
 - `SEC202320Mathematics20202120Sep.pdf` → `Mathematics_SEC_2021_Sep_Paper.pdf`
 - `SEC202320Mathematics20202220May.pdf` → `Mathematics_SEC_2022_May_Paper.pdf`
