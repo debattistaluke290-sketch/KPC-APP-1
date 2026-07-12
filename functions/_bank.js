@@ -10,7 +10,13 @@
 
    TO EDIT CONTENT: edit the QUESTIONS array. The "ref" (KPC note) and
    "product" (Shopify) fields are placeholders to be filled with real values.
+
+   Grading + report building live in the shared engine (./_grade.js); this
+   file only supplies the content config. Physics has no "text" questions
+   today, but the shared engine supports them, so you can add typed
+   short-answer questions here later with no other changes.
    ========================================================================= */
+import { publicQuestions as pub, gradeAndReport as grade } from "./_grade.js";
 
 export const SUBJECT = "Physics";
 
@@ -283,130 +289,7 @@ const WHY = {
   "Earth & Space":"Review the light-year, distance = speed × time, and the scale of the Universe."
 };
 
-const LABEL = { green:"Strong", amber:"Okay", red:"Needs work" };
-
-/* -------- PUBLIC payload: everything the browser needs, no answers -------- */
-export function publicQuestions() {
-  return {
-    subject: SUBJECT,
-    topicOrder: TOPIC_ORDER,
-    questions: QUESTIONS.map(q => ({
-      topic: q.topic,
-      type: q.type,
-      q: q.q,
-      data: q.data || null,
-      dia: q.dia || null,
-      opts: q.type === "mcq" ? q.opts : null,
-      unit: q.unit || null
-      // correct, accept, steps, ref, product, difficulty are intentionally omitted.
-    }))
-  };
-}
-
-/* -------- Numeric parsing (handles plain + scientific notation) -------- */
-function parseNum(val) {
-  if (val == null) return null;
-  let s = String(val).toLowerCase().trim();
-  s = s.replace(/\s+/g, "");
-  s = s.replace(/,/g, "");
-  // 9.45x10^15 / 9.45*10^15 / 9.45×10^15  ->  9.45e15
-  s = s.replace(/(×|x|\*)10\^?/g, "e");
-  // a bare "10^15" -> "1e15"
-  s = s.replace(/(^|[^0-9.])10\^/g, "$11e");
-  s = s.replace(/[^0-9.\-e+]/g, "");
-  const n = parseFloat(s);
-  return isNaN(n) ? null : n;
-}
-
-/* -------- Grading helpers -------- */
-function checkWork(item, val) {
-  const num = parseNum(val);
-  if (num === null) return false;
-  return item.accept.some(a => Math.abs(num - a) <= Math.max(0.15, Math.abs(a) * 0.03));
-}
-function levelFor(correct, total) {
-  const r = total ? correct / total : 0;
-  if (r >= 0.75) return "green";   // 3-4 of 4
-  if (r >= 0.5) return "amber";    // 2 of 4
-  return "red";                    // 0-1 of 4
-}
-
-/* -------- Grade answers and build the full report -------- */
-export function gradeAndReport(name, answers = []) {
-  const tally = {};
-  TOPIC_ORDER.forEach(t => (tally[t] = { c: 0, n: 0 }));
-
-  const solutions = QUESTIONS.map((q, i) => {
-    const a = answers[i] || {};
-    const given = a.given;
-    let answered = false, correct = false, givenDisplay = "-";
-
-    if (q.type === "mcq") {
-      if (given !== null && given !== undefined && given !== "") {
-        answered = true;
-        correct = Number(given) === q.correct;
-        givenDisplay = q.opts[Number(given)] ?? "-";
-      }
-    } else {
-      const s = (given == null) ? "" : String(given).trim();
-      if (s.length > 0) {
-        answered = true;
-        correct = checkWork(q, s);
-        givenDisplay = s;
-      }
-    }
-
-    tally[q.topic].n++;
-    if (correct) tally[q.topic].c++;
-
-    return {
-      n: i + 1,
-      q: q.q,
-      dia: q.dia || null,
-      mark: answered ? (correct ? "right" : "wrong") : "blank",
-      markText: answered ? (correct ? "Correct" : "Incorrect") : "Not attempted",
-      given: givenDisplay,
-      steps: q.steps
-    };
-  });
-
-  const totalQ = QUESTIONS.length;
-  const totalCorrect = solutions.filter(s => s.mark === "right").length;
-  const pct = Math.round((totalCorrect / totalQ) * 100);
-
-  const topics = [];
-  const weak = [];
-  TOPIC_ORDER.forEach(t => {
-    const { c, n } = tally[t];
-    const lvl = levelFor(c, n);
-    topics.push({ name: t, c, n, level: lvl, label: LABEL[lvl] });
-    if (lvl !== "green") weak.push({ topic: t, level: lvl });
-  });
-
-  weak.sort((a, b) => (a.level === "red" ? 0 : 1) - (b.level === "red" ? 0 : 1));
-  const recs = weak.map(w => {
-    const src = QUESTIONS.find(q => q.topic === w.topic);
-    return {
-      topic: w.topic, level: w.level, label: LABEL[w.level],
-      ref: src.ref, product: src.product, why: WHY[w.topic] || ""
-    };
-  });
-
-  const summary =
-    pct >= 80 ? "Excellent work - you're strong across nearly every topic. A little polish on any amber areas and you're set."
-    : pct >= 50 ? "A solid base, but a few topics are pulling your mark down. Your priority plan below shows exactly where to focus."
-    : "There's real room to grow here - and that's good news, because the plan below tells you precisely what to study to climb fast.";
-
-  return {
-    name: (name || "").trim(),
-    subject: SUBJECT,
-    score: pct,
-    totalCorrect,
-    totalQ,
-    summary,
-    topics,
-    solutions,
-    recs,
-    weakTopics: weak.map(w => w.topic)
-  };
-}
+/* -------- Wire the content into the shared grading engine -------- */
+const CFG = { SUBJECT, TOPIC_ORDER, QUESTIONS, WHY };
+export function publicQuestions() { return pub(CFG); }
+export function gradeAndReport(name, answers, env) { return grade(CFG, name, answers, env); }

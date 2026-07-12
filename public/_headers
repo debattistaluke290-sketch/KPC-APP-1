@@ -1,0 +1,8 @@
+# Cloudflare Pages response headers (https://developers.cloudflare.com/pages/configuration/headers/)
+# Conservative hardening only: no Content-Security-Policy (would need tuning for
+# the Meta Pixel / GA / Shopify), and no X-Frame-Options (so the diagnostic can
+# still be embedded on kpcnotesmt.com if you ever want that).
+/*
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()

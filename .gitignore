@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# Cloudflare / Wrangler
+.wrangler/
+.dev.vars
+.dev.vars.*
+
+# Local env / secrets (never commit your Klaviyo key)
+.env
+.env.*
+
+# OS / editor cruft
+.DS_Store
+Thumbs.db
+*.log
+
+# Private calibration reference material — official MATSEC syllabi, past papers,
+# marking schemes and examiners' reports live here for LOCAL use only.
+# Never commit copyrighted examination documents.
+reference/
