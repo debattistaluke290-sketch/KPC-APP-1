@@ -348,13 +348,15 @@
       <div class="score-ring"><div class="ring" id="r-ring">-</div>
         <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
+      <div id="r-scores"></div>
       <button class="btn secondary" style="margin-top:14px" onclick="shareResult()">📲 Share my result</button>
       <div class="share-note">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
       <div class="priority"><h3>🎯 Your priority study plan</h3>
         <div class="sub">Work through these in order - biggest gaps first.</div><div id="r-recs"></div></div>
-      <div class="cta-box"><button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
+      <div class="cta-box" id="cta-box"><div id="cta-none" style="display:none;font-size:14px;color:var(--muted);background:#f3f8f4;border:1px solid #d7ebdd;border-radius:12px;padding:13px 15px">✅ <b>No priority gaps on this sample</b> — you look in good shape, so there's nothing you need to buy right now. Keep practising past papers. You can still browse the notes if you'd like.</div>
+        <button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
         <div class="price" id="disc-line" style="display:none">Tailored bundle · <b id="disc-pct">20%</b> off with code <b id="disc-code"></b></div></div>
       <button class="btn secondary" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
     </div>
@@ -559,6 +561,17 @@ function renderReport(rep){
   document.getElementById('r-sub').textContent = `You scored ${rep.totalCorrect} of ${rep.totalQ}.`;
   document.getElementById('r-summary').textContent = rep.summary;
 
+  // Dual scores: estimated exam-level + stricter secure-readiness, clearly distinguished.
+  const sc=document.getElementById('r-scores');
+  if(sc){
+    const exam=(rep.examScore!=null)?rep.examScore:rep.score;
+    const ready=(rep.readinessScore!=null)?rep.readinessScore:null;
+    sc.innerHTML =
+      `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px"><span>Estimated exam-level score</span><b style="font-size:17px;color:var(--purple-deep)">${exam}%</b></div>`+
+      (ready!=null?`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:14px"><span>Secure-readiness <span style="color:var(--muted)">(stricter — not a predicted exam mark)</span></span><b style="font-size:17px;color:var(--purple-deep)">${ready}%</b></div>`:'')+
+      `<div style="font-size:12px;color:var(--muted);margin-top:6px">Based on a short ${rep.totalQ}-question sample (${rep.totalCorrect} correct) — a guide to where to focus, not a formal prediction.</div>`;
+  }
+
   const rows=document.getElementById('r-rows'); rows.innerHTML='';
   rep.topics.forEach(t=>{
     const row=document.createElement('div'); row.className='row';
@@ -583,16 +596,25 @@ function renderReport(rep){
   } else {
     rep.recs.forEach((w,i)=>{
       const div=document.createElement('div'); div.className='rec';
+      const tier=w.tier||'Recommended';
+      const tCol = tier==='Essential' ? ['#fbe3e3','#b22a2a'] : ['#fbeed7','#a86b14'];
       div.innerHTML=`<div class="num">${i+1}</div><div class="body">
-        <b>${w.topic} <span style="color:${DOT[w.level]}">· ${w.label}</span></b>
+        <b>${w.topic}</b> <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:${tCol[0]};color:${tCol[1]}">${tier}</span>
+        <div style="font-size:12.5px;color:${DOT[w.level]};font-weight:600;margin-top:2px">${w.label}</div>
         <div class="ref">→ ${w.ref}</div><div class="why">${w.why}</div></div>`;
       recs.appendChild(div);
     });
   }
 
-  // Shop CTA → Shopify collection (discount appended only if one is configured)
+  // Shop CTA → Shopify collection (discount appended only if one is configured).
+  // Secure students are NOT pushed to buy: soften the CTA and show a "no notes needed" note.
   const c=window.KPC_CONFIG||{};
+  const none = rep.recommendationState==='none_needed';
+  const ctaNone=document.getElementById('cta-none');
+  if(ctaNone) ctaNone.style.display = none?'block':'none';
   const shop=document.getElementById('shop-btn');
+  shop.textContent = none ? 'Browse the KPC notes anyway →' : 'Get the KPC notes for my weak topics →';
+  shop.className = none ? 'btn secondary' : 'btn';
   shop.onclick=()=>{
     let url=c.shopBundleUrl||'';
     if(!url){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
