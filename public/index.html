@@ -6,19 +6,33 @@
 <title>KPC Notes - Free Science Diagnostic</title>
 <meta name="description" content="Free science diagnostics from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
 
+<!-- social share preview -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="KPC Notes Malta">
+<meta property="og:title" content="Free Science Diagnostic - KPC Notes Malta">
+<meta property="og:description" content="Take a short diagnostic and find out exactly what to revise. Full worked solutions + a personalised study plan, free.">
+<meta property="og:url" content="https://kpc-app-1.pages.dev/">
+<meta property="og:image" content="https://kpcnotesmt.com/cdn/shop/files/Title_1.png?v=1731144923">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Free Science Diagnostic - KPC Notes Malta">
+<meta name="twitter:description" content="Find your weak topics in minutes. Free worked solutions + a study plan.">
+<meta name="twitter:image" content="https://kpcnotesmt.com/cdn/shop/files/Title_1.png?v=1731144923">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23341D54'/%3E%3Ctext x='50' y='71' font-size='62' font-weight='bold' text-anchor='middle' fill='%23D6587E' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
+
 <!-- ============================================================
-     CONFIG - fill these in for production.
+     CONFIG - production values.
      ============================================================ -->
 <script>
   window.KPC_CONFIG = {
     privacyUrl: "https://kpcnotesmt.com/policies/privacy-policy", // real Shopify privacy policy
-    shopBundleUrl: "https://kpcnotesmt.com/cart",                 // Shopify cart/collection link
-    discountCode: "DIAGNOSTIC20",
+    shopBundleUrl: "https://kpcnotesmt.com/collections/sec-subjects", // O-Level collection
+    discountCode: "",          // set to "DIAGNOSTIC20" once the code exists in Shopify
+    discountPercent: "20%",    // only shown when discountCode is set
     siteUrl: "kpcnotesmt.com"
   };
   // Pixel / analytics IDs - set these to switch tracking on.
-  window.KPC_PIXEL_ID = "YOUR_PIXEL_ID"; // Meta pixel id
-  window.KPC_GA4_ID  = "G-XXXXXXXXXX";   // Google Analytics 4 id (optional)
+  window.KPC_PIXEL_ID = "873533720601876"; // Meta pixel: "KPC Notes Malta's pixel"
+  window.KPC_GA4_ID  = "G-XXXXXXXXXX";     // Google Analytics 4 id (optional)
 </script>
 
 <!-- ============================================================
@@ -159,6 +173,7 @@
   .answer-field:focus{outline:none;border-color:var(--purple)}
   .answer-sub{font-size:12px;color:var(--muted);margin-bottom:14px}
   .quiz-actions{margin-top:10px}
+  .quiz-actions .btn.secondary{margin-top:8px}
 
   .pill-lite{display:inline-block;background:#f3ebf8;color:var(--purple);font-weight:600;font-size:13px;padding:5px 12px;border-radius:999px;margin-bottom:16px}
   h2{font-size:21px;margin-bottom:6px;letter-spacing:-.2px;color:var(--purple-deep)}
@@ -226,7 +241,6 @@
   .share-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
   .demo-note{font-size:11px;color:#a99cb6;text-align:center;margin-top:18px}
   .loader{text-align:center;color:var(--muted);font-size:14px;padding:20px}
-  .test-skip{display:block;text-align:center;margin-top:10px;font-size:12px;color:var(--red);text-decoration:none}
 </style>
 </head>
 <body>
@@ -274,7 +288,7 @@
       </div>
     </div>
     <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
-      <a href="#" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
+      <a href="https://kpcnotesmt.com/policies/privacy-policy" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
   </section>
 
   <!-- QUIZ -->
@@ -287,10 +301,11 @@
       <div class="diagram" id="q-diagram" style="display:none"></div>
       <div class="paper-hint" id="q-paper-hint" style="display:none"><span>✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll get the full worked solution by email.</span></div>
       <div id="q-body"></div>
-      <div class="quiz-actions"><button class="btn" id="q-next" onclick="nextQuestion()">Next →</button></div>
+      <div class="quiz-actions">
+        <button class="btn" id="q-next" onclick="nextQuestion()">Next →</button>
+        <button class="btn secondary" id="q-back" onclick="prevQuestion()" style="display:none">← Back</button>
+      </div>
       <div style="text-align:center;margin-top:12px"><a href="#" onclick="skipQuestion(event)" style="font-size:13px;color:var(--muted);text-decoration:none">Skip this question</a></div>
-      <!-- TEMP test helper: jump straight to the email step. Remove before launch. -->
-      <a href="#" class="test-skip" onclick="skipToEnd(event)">⏭ TEST: skip to email step</a>
     </div>
   </section>
 
@@ -307,7 +322,7 @@
       <div class="unlock locked">
         <div><span class="ck lk">🔒</span><span>Every topic graded <b>green / amber / red</b></span></div>
         <div><span class="ck lk">🔒</span><span>All worked solutions, <b>step by step</b></span></div>
-        <div><span class="ck lk">🔒</span><span>A <b>personalised study plan</b> + a discount on the right notes</span></div>
+        <div><span class="ck lk">🔒</span><span>A <b>personalised study plan</b> mapped to KPC notes</span></div>
       </div>
 
       <h2 class="gate-h">Enter your email to unlock everything</h2>
@@ -317,7 +332,7 @@
       <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
       <label class="consent">
         <input type="checkbox" id="consent" />
-        <span>I agree to receive my results and study tips from KPC Notes, and I've read the <a href="#" id="consent-privacy" target="_blank" rel="noopener">privacy policy</a>. (If you're under 16, please ask a parent first.)</span>
+        <span>I agree to receive my results and study tips from KPC Notes, and I've read the <a href="https://kpcnotesmt.com/policies/privacy-policy" id="consent-privacy" target="_blank" rel="noopener">privacy policy</a>. (If you're under 16, please ask a parent first.)</span>
       </label>
       <div class="err" id="email-err"></div>
       <button class="btn" id="submit-btn" onclick="submitEmail()">Unlock my full results →</button>
@@ -340,7 +355,7 @@
       <div class="priority"><h3>🎯 Your priority study plan</h3>
         <div class="sub">Work through these in order - biggest gaps first.</div><div id="r-recs"></div></div>
       <div class="cta-box"><button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
-        <div class="price">Tailored bundle · <b>20% off</b> with code <b id="disc-code">DIAGNOSTIC20</b></div></div>
+        <div class="price" id="disc-line" style="display:none">Tailored bundle · <b id="disc-pct">20%</b> off with code <b id="disc-code"></b></div></div>
       <button class="btn secondary" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
     </div>
   </section>
@@ -373,7 +388,15 @@ let LAST_REPORT = null;
 (function applyConfig(){
   const c = window.KPC_CONFIG || {};
   ['privacy-link','consent-privacy'].forEach(id=>{ const el=document.getElementById(id); if(el && c.privacyUrl) el.href=c.privacyUrl; });
-  if(c.discountCode) document.getElementById('disc-code').textContent = c.discountCode;
+  // Only advertise a discount if one actually exists in Shopify.
+  const line=document.getElementById('disc-line');
+  if(c.discountCode){
+    document.getElementById('disc-code').textContent = c.discountCode;
+    if(c.discountPercent) document.getElementById('disc-pct').textContent = c.discountPercent;
+    line.style.display='block';
+  } else {
+    line.style.display='none';
+  }
 })();
 
 function show(id){
@@ -408,6 +431,7 @@ function renderQuestion(){
   document.getElementById('q-pct').textContent = pct + '%';
   document.getElementById('q-bar').style.width = pct + '%';
   document.getElementById('q-topic-name').textContent = item.topic;
+  document.getElementById('q-back').style.display = idx>0 ? 'block' : 'none';
 
   const isWork = item.type==='work';
   document.getElementById('q-paper-badge').style.display = isWork?'inline-block':'none';
@@ -445,9 +469,8 @@ function renderQuestion(){
 }
 
 function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
+function prevQuestion(){ if(idx>0){ idx--; renderQuestion(); } }
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
-/* TEMP: jump straight to the email step for testing. Remove before launch. */
-function skipToEnd(e){ if(e) e.preventDefault(); goToEmail(); }
 
 /* ===== Finish quiz: fetch a teaser (no solutions) then show the gate ===== */
 async function goToEmail(){
@@ -563,14 +586,14 @@ function renderReport(rep){
     });
   }
 
-  // Shop CTA → Shopify cart with discount pre-applied
+  // Shop CTA → Shopify collection (discount appended only if one is configured)
   const c=window.KPC_CONFIG||{};
   const shop=document.getElementById('shop-btn');
   shop.onclick=()=>{
-    let url=c.shopBundleUrl||'#';
-    if(c.discountCode && url!=='#') url += (url.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
+    let url=c.shopBundleUrl||'';
+    if(!url){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
+    if(c.discountCode) url += (url.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
     track('shop_clicked', {subject: currentSubject});
-    if(url==='#'){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
     window.open(url,'_blank','noopener');
   };
 }
