@@ -88,10 +88,45 @@
 
 <style>
   :root{
-    --purple-deep:#341D54; --purple-near:#1A0F2E; --purple:#7C27AC;
-    --pink:#D6587E; --pink-dark:#c0436a; --white:#fff; --bg:#F5F2EA;
-    --card:#fff; --ink:#341D54; --muted:#7a6f86; --line:#e8def0;
-    --green:#2fa566; --amber:#e0982f; --red:#cf3b3b;
+    /* ===== Design system tokens ("Calm Academic" — see DESIGN_SYSTEM.md) ===== */
+    /* Brand */
+    --ink:#341D54; --ink-hover:#2A1745;
+    --primary:#7C27AC; --primary-hover:#6A1F94; --primary-active:#59187C;
+    --primary-soft:#F3EBF8; --primary-ring:rgba(124,39,172,.35);
+    --accent:#D6587E; --accent-soft:#FCEEF3;
+    /* Neutrals (warm paper) */
+    --n-0:#FFFFFF; --n-25:#FBFAF7; --n-50:#F7F5F0; --n-100:#EFECE6;
+    --n-200:#E6E1DC; --n-300:#D8D2CB; --n-400:#B4AEA6; --n-500:#8B8698;
+    --n-600:#6A6475; --n-800:#2C2739; --n-900:#211B2E;
+    --text-primary:#211B2E; --text-secondary:#6A6475; --text-tertiary:#8B8698;
+    --text-heading:#341D54; --border-brand:#E7DEF0;
+    /* Semantic status */
+    --success:#1F7A4D; --success-bg:#E4F6EC; --success-border:#BCE6CC;
+    --danger:#C0392B;  --danger-bg:#FBE7E7;  --danger-border:#F1CACA;
+    --warning:#A66A00; --warning-bg:#FBF0DA; --warning-border:#F0DCB0;
+    --info:#2563A8;    --info-bg:#E7F0FB;    --info-border:#C6DBF3;
+    /* Type scale */
+    --font-sans:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    --text-xs:12px; --text-sm:14px; --text-base:16px; --text-md:18px;
+    --text-lg:20px; --text-xl:24px; --text-2xl:30px; --text-3xl:38px;
+    /* Spacing (4px base) */
+    --space-1:4px; --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px;
+    --space-6:24px; --space-8:32px; --space-10:40px; --space-12:48px; --space-16:64px;
+    /* Radius */
+    --radius-sm:6px; --radius-md:10px; --radius-lg:14px; --radius-xl:18px; --radius-pill:999px;
+    /* Shadow (purple-tinted, restrained) */
+    --shadow-xs:0 1px 2px rgba(52,29,84,.06);
+    --shadow-sm:0 2px 8px rgba(52,29,84,.06);
+    --shadow-md:0 8px 24px rgba(52,29,84,.10);
+    --shadow-lg:0 20px 48px rgba(52,29,84,.16);
+    /* Layout + motion */
+    --container-reading:680px; --container-content:760px; --container-wide:1080px;
+    --ease:cubic-bezier(.2,.7,.2,1); --dur:180ms;
+    /* ===== Back-compat aliases (existing CSS + JS inline styles reference these) ===== */
+    --purple-deep:var(--ink); --purple-near:#1A0F2E; --purple:var(--primary);
+    --pink:var(--accent); --pink-dark:#c0436a; --white:#fff; --bg:var(--n-50);
+    --card:var(--n-0); --muted:var(--text-secondary); --line:var(--n-200);
+    --green:var(--success); --amber:var(--warning); --red:var(--danger);
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
@@ -241,6 +276,69 @@
   .share-note{font-size:12px;color:var(--muted);text-align:center;margin-top:8px}
   .demo-note{font-size:11px;color:#a99cb6;text-align:center;margin-top:18px}
   .loader{text-align:center;color:var(--muted);font-size:14px;padding:20px}
+
+  /* ===================== DESIGN-SYSTEM FOUNDATION (shared primitives) =====================
+     Additive only. Tokens above drive a subtle global refresh; existing screens are
+     NOT restructured here (page redesigns happen in later phases). */
+
+  /* Keyboard focus ring for every interactive element (mouse users unaffected) */
+  a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+  textarea:focus-visible, [tabindex]:focus-visible, .opt:focus-visible, .subject:focus-visible{
+    outline:2px solid var(--primary); outline-offset:2px; border-radius:var(--radius-sm);
+  }
+
+  /* Text (tertiary) button variant */
+  .btn.text{background:transparent;color:var(--primary);box-shadow:none;border:none;width:auto;padding:8px 10px;font-size:var(--text-sm)}
+  .btn.text:hover{background:transparent;text-decoration:underline}
+
+  /* Unified Badge (harmonises the pill/status families going forward) */
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:var(--text-xs);font-weight:700;
+    padding:3px 10px;border-radius:var(--radius-pill);line-height:1.4;white-space:nowrap}
+  .badge.success{background:var(--success-bg);color:var(--success)}
+  .badge.danger{background:var(--danger-bg);color:var(--danger)}
+  .badge.warning{background:var(--warning-bg);color:var(--warning)}
+  .badge.info{background:var(--info-bg);color:var(--info)}
+  .badge.neutral{background:var(--n-100);color:var(--text-secondary)}
+
+  /* Alert / FeedbackPanel (icon + text, never colour-only) */
+  .alert{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-radius:var(--radius-md);
+    font-size:var(--text-sm);line-height:1.5;border:1px solid transparent}
+  .alert .ico{flex-shrink:0;font-weight:800}
+  .alert.info{background:var(--info-bg);border-color:var(--info-border);color:#1c3a5e}
+  .alert.success{background:var(--success-bg);border-color:var(--success-border);color:#14532d}
+  .alert.danger{background:var(--danger-bg);border-color:var(--danger-border);color:#7f1d1d}
+  .alert.warning{background:var(--warning-bg);border-color:var(--warning-border);color:#6b4200}
+
+  /* Loading skeleton (shimmer disabled under reduced-motion below) */
+  .skeleton{background:var(--n-100);border-radius:var(--radius-md);position:relative;overflow:hidden}
+  .skeleton::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);
+    transform:translateX(-100%);animation:sk 1.3s infinite}
+  @keyframes sk{100%{transform:translateX(100%)}}
+  .sk-line{height:14px;margin:10px 0}
+
+  /* Modal (ConfirmationModal primitive) */
+  .modal-overlay{position:fixed;inset:0;background:rgba(52,29,84,.45);display:none;
+    align-items:center;justify-content:center;padding:16px;z-index:50}
+  .modal-overlay.open{display:flex}
+  .modal{background:var(--n-0);border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+    max-width:420px;width:100%;padding:22px 20px}
+  .modal h3{font-size:var(--text-lg);color:var(--text-heading);margin-bottom:8px}
+  .modal p{font-size:var(--text-sm);color:var(--text-secondary);margin-bottom:16px;line-height:1.5}
+  .modal .modal-actions{display:flex;gap:10px}
+
+  /* Reading/content containers (for later page work) */
+  .container-reading{max-width:var(--container-reading);margin:0 auto}
+  .container-content{max-width:var(--container-content);margin:0 auto}
+
+  /* Desktop: gentle gutter increase (no structural change yet) */
+  @media (min-width:1024px){ .wrap{padding-left:32px;padding-right:32px} }
+
+  /* Respect reduced motion */
+  @media (prefers-reduced-motion:reduce){
+    *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
+      transition-duration:.001ms!important;scroll-behavior:auto!important}
+  }
 </style>
 </head>
 <body>
