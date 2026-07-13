@@ -52,10 +52,10 @@ export const QUESTIONS = [
     q:"Find the highest common factor (HCF) of 24 and 36.", data:"Give a whole number.", accept:[12], tolerance:0,
     commonMisconception:"Giving the lowest common multiple (72) instead of the HCF.",
     steps:`24 = 2³ × 3, 36 = 2² × 3². Common factors: 2² × 3<br><span class="final">HCF = 12</span>`, ref:"KPC Maths — The Number System", product:"maths-number" }),
-  M({ id:"mat-t1-u", topic:"The Number System", subtopic:"Multiplying in standard form", syllabusReference:"LO1", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:120,
-    q:"Work out (4 × 10³) × (3 × 10⁵). Give your answer in standard form.", data:"Give your answer in standard form (e.g. 1.2 × 10⁹) or as an ordinary number.", accept:[1.2e9], tolerance:0.001e9,
-    commonMisconception:"Adding the powers wrongly or forgetting to fix 12 × 10⁸.",
-    steps:`Multiply numbers: 4 × 3 = 12. Add powers: 10³ × 10⁵ = 10⁸. So 12 × 10⁸ = <b>1.2 × 10⁹</b>.<br><span class="final">= 1.2 × 10⁹ (1 200 000 000)</span>`, ref:"KPC Maths — The Number System", product:"maths-number" }),
+  M({ id:"mat-t1-u", topic:"The Number System", subtopic:"Dividing in standard form (negative indices)", syllabusReference:"LO1", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
+    q:"Work out (9 × 10⁻³) ÷ (1.5 × 10⁻⁵). Give your answer in standard form.", data:"Give your answer in standard form (e.g. 5 × 10³) or as an ordinary number.", accept:[600], tolerance:0.5,
+    commonMisconception:"Mishandling the negative powers when dividing — e.g. getting 10⁻⁸ instead of 10².",
+    steps:`Divide the numbers: 9 ÷ 1.5 = 6. Subtract the powers: 10⁻³ ÷ 10⁻⁵ = 10^(−3 − (−5)) = 10². So 6 × 10² = <b>600</b>.<br><span class="final">= 6 × 10² = 600</span>`, ref:"KPC Maths — The Number System", product:"maths-number" }),
 
   /* ===== T2 Numerical Calculations (LO2) ===== */
   M({ id:"mat-t2-f", topic:"Numerical Calculations", subtopic:"Percentage of an amount", syllabusReference:"LO2", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:45,
@@ -88,10 +88,10 @@ export const QUESTIONS = [
     q:"I think of a number, multiply it by 3, then add 5. The result is 26. What is the number?", data:"Give a number.", accept:[7], tolerance:0,
     commonMisconception:"Subtracting before/after dividing in the wrong order.",
     steps:`3n + 5 = 26 → 3n = 21 → n = 21 ÷ 3<br><span class="final">n = 7</span>`, ref:"KPC Maths — Fundamentals of Algebra", product:"maths-algebra" }),
-  M({ id:"mat-t3-u", topic:"Fundamentals of Algebra", subtopic:"Simultaneous equations", syllabusReference:"LO3", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
-    q:"Solve the simultaneous equations x + y = 12 and x − y = 4. What is the value of x?", data:"Give a number.", accept:[8], tolerance:0,
-    commonMisconception:"Subtracting the equations (giving y) when asked for x.",
-    steps:`Add the equations: (x + y) + (x − y) = 12 + 4 → 2x = 16 → x = 8.<br><span class="final">x = 8</span>`, ref:"KPC Maths — Fundamentals of Algebra", product:"maths-sequences" }),
+  M({ id:"mat-t3-u", topic:"Fundamentals of Algebra", subtopic:"Simultaneous equations (elimination with scaling)", syllabusReference:"LO3", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:170,
+    q:"Solve the simultaneous equations 2x + 3y = 16 and 3x − y = 13. What is the value of x?", data:"Give a number (the value of x).", accept:[5], tolerance:0,
+    commonMisconception:"Adding the equations without first scaling one so a variable cancels; or solving for y.",
+    steps:`Multiply the 2nd equation by 3: 9x − 3y = 39. Add to the 1st (2x + 3y = 16): 11x = 55 → x = 5. (Then y = 2.)<br><span class="final">x = 5</span>`, ref:"KPC Maths — Fundamentals of Algebra", product:"maths-algebra" }),
 
   /* ===== T4 Graphs (LO4) — NEW ===== */
   M({ id:"mat-t4-f", topic:"Graphs", subtopic:"Coordinates", syllabusReference:"LO4", difficulty:"foundation", cognitiveSkill:"recall", type:"work", marks:1, expectedTimeSeconds:40,
@@ -107,10 +107,10 @@ export const QUESTIONS = [
     opts:["a horizontal (flat) line","a steep straight line going up","a line going down","a curve"], correct:0,
     commonMisconception:"Thinking 'stopped' means the line goes down.",
     steps:`Stopped means distance does not change while time passes → a <b>horizontal line</b>. (A downward line would mean returning towards the start.)<br><span class="final">Answer: a horizontal (flat) line</span>`, ref:"KPC Maths — Graphs", product:"maths-algebra" }),
-  M({ id:"mat-t4-u", topic:"Graphs", subtopic:"Using y = mx + c", syllabusReference:"LO4", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
-    q:"A straight line passes through (0, 4) and has a gradient of 3. Calculate the value of y when x = 6.", data:"Give a number.", accept:[22], tolerance:0,
-    commonMisconception:"Forgetting the intercept c = 4, or using the wrong gradient.",
-    steps:`The line is y = 3x + 4 (intercept c = 4 from (0, 4)). At x = 6: y = 3 × 6 + 4 = 18 + 4<br><span class="final">y = 22</span>`, ref:"KPC Maths — Graphs", product:"maths-algebra" }),
+  M({ id:"mat-t4-u", topic:"Graphs", subtopic:"Equation of a line from two points", syllabusReference:"LO4", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:160,
+    q:"A straight line passes through the points (2, 5) and (6, 17). Work out the value of y on the line when x = 10.", data:"Give a number.", accept:[29], tolerance:0,
+    commonMisconception:"Finding the gradient but assuming the intercept c = 0 (giving 30).",
+    steps:`Gradient m = (17 − 5) ÷ (6 − 2) = 12 ÷ 4 = 3. Find c: 5 = 3×2 + c → c = −1, so y = 3x − 1. At x = 10: y = 3×10 − 1<br><span class="final">y = 29</span>`, ref:"KPC Maths — Graphs", product:"maths-algebra" }),
 
   /* ===== T5 Measurement (LO5) ===== */
   M({ id:"mat-t5-f", topic:"Measurement", subtopic:"Area of a rectangle", syllabusReference:"LO5", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:45,
@@ -125,10 +125,10 @@ export const QUESTIONS = [
     q:"A cube has sides of 5 cm. Calculate its volume.", data:"Give your answer in cm³.", accept:[125], acceptedUnits:["cm^3","cm3"], unit:"cm³", tolerance:0,
     commonMisconception:"Working 5 × 3 or 5 × 5 instead of 5³.",
     steps:`Volume = side³ = 5 × 5 × 5<br><span class="final">= 125 cm³</span>`, ref:"KPC Maths — Measurement", product:"maths-mensuration" }),
-  M({ id:"mat-t5-u", topic:"Measurement", subtopic:"Area of a circle", syllabusReference:"LO5", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:120,
-    q:"A circle has a radius of 10 cm. Calculate its area, using π = 3.14.", data:"Give your answer in cm² to the nearest whole number.", accept:[314], acceptedUnits:["cm^2","cm2"], unit:"cm²", tolerance:0.5,
-    commonMisconception:"Using π × d or 2πr (circumference) instead of πr².",
-    steps:`Area = π r² = 3.14 × 10² = 3.14 × 100<br><span class="final">= 314 cm²</span>`, ref:"KPC Maths — Measurement", product:"maths-mensuration" }),
+  M({ id:"mat-t5-u", topic:"Measurement", subtopic:"Area of a sector", syllabusReference:"LO5", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:130,
+    q:"A sector of a circle has a radius of 8 cm and an angle of 90° at the centre. Calculate the area of the sector. Use π = 3.14.", data:"Give your answer in cm².", accept:[50.24], acceptedUnits:["cm^2","cm2"], unit:"cm²", tolerance:0.5,
+    commonMisconception:"Working the whole circle's area (πr²) and forgetting the 90/360 fraction.",
+    steps:`Sector area = (angle ÷ 360) × π r² = (90 ÷ 360) × 3.14 × 8² = ¼ × 3.14 × 64<br><span class="final">= 50.24 cm²</span>`, ref:"KPC Maths — Measurement", product:"maths-mensuration" }),
 
   /* ===== T6 Lines, Angles & Shapes (LO6) ===== */
   M({ id:"mat-t6-f", topic:"Lines, Angles & Shapes", subtopic:"Angles in a triangle", syllabusReference:"LO6", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:45,
@@ -182,10 +182,10 @@ export const QUESTIONS = [
     opts:["(0, 4)","(0, −4)","(−4, 0)","(4, 0)"], correct:0,
     commonMisconception:"Rotating the wrong way (clockwise) or confusing the axes.",
     steps:`A 90° anticlockwise rotation about the origin sends (4, 0) up onto the positive y-axis → <b>(0, 4)</b>.<br><span class="final">Answer: (0, 4)</span>`, ref:"KPC Maths — Transformations", product:"maths-geometry" }),
-  M({ id:"mat-t8-u", topic:"Transformations", subtopic:"Enlargement about the origin", syllabusReference:"LO8", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:120,
-    q:"A shape is enlarged by scale factor 3, centre the origin. One of its points is at (2, 5). What is the y-coordinate of the image of that point?", data:"Give a number.", accept:[15], tolerance:0,
-    commonMisconception:"Adding 3 instead of multiplying by 3.",
-    steps:`Enlargement from the origin multiplies both coordinates by the scale factor: y = 5 × 3<br><span class="final">= 15</span> (image (6, 15))`, ref:"KPC Maths — Transformations", product:"maths-geometry" }),
+  M({ id:"mat-t8-u", topic:"Transformations", subtopic:"Enlargement with a negative scale factor", syllabusReference:"LO8", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:130,
+    q:"A shape is enlarged by scale factor −2, centre the origin. One of its points is at (3, 4). What is the y-coordinate of the image of that point?", data:"Give a number.", accept:[-8], tolerance:0,
+    commonMisconception:"Ignoring the negative sign (giving 8 instead of −8).",
+    steps:`A negative scale factor multiplies both coordinates by −2 and puts the image on the opposite side of the centre: y = 4 × (−2)<br><span class="final">= −8</span> (image (−6, −8))`, ref:"KPC Maths — Transformations", product:"maths-geometry" }),
 
   /* ===== T9 Statistics (LO9) ===== */
   M({ id:"mat-t9-f", topic:"Statistics", subtopic:"Mean", syllabusReference:"LO9", difficulty:"foundation", cognitiveSkill:"application", type:"work", marks:1, expectedTimeSeconds:50,
@@ -218,10 +218,10 @@ export const QUESTIONS = [
     q:"A spinner lands on red with a probability of 0.2. If it is spun 50 times, how many times is it expected to land on red?", data:"Give a whole number.", accept:[10], tolerance:0,
     commonMisconception:"Adding 0.2 and 50 instead of multiplying.",
     steps:`Expected frequency = probability × number of trials = 0.2 × 50<br><span class="final">= 10</span>`, ref:"KPC Maths — Probability", product:"maths-statistics" }),
-  M({ id:"mat-t10-u", topic:"Probability", subtopic:"Two independent events", syllabusReference:"LO10", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:140,
-    q:"A fair coin is tossed and a fair six-sided die is rolled. Calculate the probability of getting a head AND a six. Give your answer as a fraction or a decimal.", data:"Give a fraction (e.g. 1/12) or a decimal.", accept:[0.0833333], tolerance:0.005,
-    commonMisconception:"Adding the probabilities instead of multiplying independent events.",
-    steps:`Independent events multiply: P(head) × P(six) = 1/2 × 1/6 = 1/12<br><span class="final">= 1/12 ≈ 0.083</span>`, ref:"KPC Maths — Probability", product:"maths-statistics" }),
+  M({ id:"mat-t10-u", topic:"Probability", subtopic:"Probability without replacement", syllabusReference:"LO10", difficulty:"upper_exam", cognitiveSkill:"analysis", type:"work", marks:3, expectedTimeSeconds:150,
+    q:"A bag contains 4 red counters and 6 blue counters. Two counters are taken at random, one after the other, without replacement. Calculate the probability that both counters are red. Give your answer as a fraction or a decimal.", data:"Give a fraction (e.g. 3/10) or a decimal.", accept:[0.133333], tolerance:0.005,
+    commonMisconception:"Not reducing after the first counter is removed — using 4/10 × 4/10 instead of 4/10 × 3/9.",
+    steps:`First red: 4/10. After removing one red, 3 red remain of 9: 3/9. Multiply: 4/10 × 3/9 = 12/90 = 2/15<br><span class="final">= 2/15 ≈ 0.133</span>`, ref:"KPC Maths — Probability", product:"maths-statistics" }),
 ];
 
 export const WHY = {
@@ -234,7 +234,7 @@ export const WHY = {
   "Constructions & Loci":"Revise loci (perpendicular bisector, circle) and bearings (back bearings, turning).",
   "Transformations":"Practise reflections, translations, rotations and enlargements using coordinates.",
   "Statistics":"Review mean, median and the mean from a frequency table.",
-  "Probability":"Practise single/complementary events, expected frequency and independent events."
+  "Probability":"Practise single/complementary events, expected frequency and combined events without replacement."
 };
 
 /* -------- wire into the shared grading engine -------- */
