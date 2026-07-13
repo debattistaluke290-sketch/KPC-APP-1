@@ -18,8 +18,8 @@ const wrong = (q) => q.type === "mcq" ? { given: (q.correct + 1) % q.opts.length
 const cfgOf = (m) => ({ SUBJECT: m.SUBJECT, TOPIC_ORDER: m.TOPIC_ORDER, QUESTIONS: m.QUESTIONS,
   WHY: m.WHY, STRANDS: m.STRANDS, STRAND_WEIGHTS: m.STRAND_WEIGHTS });
 
-const CAL = [["Physics", physics], ["Mathematics", maths]];
-const LEGACY = [["Biology", biology], ["Chemistry", chemistry]];
+const CAL = [["Physics", physics], ["Mathematics", maths], ["Chemistry", chemistry]];
+const LEGACY = [["Biology", biology]];
 const ALL = [...CAL, ...LEGACY];
 
 /* ===================== 1. Structure / no leakage (all subjects) ===================== */
@@ -113,6 +113,14 @@ assert("parser: empty → null", P("") === null && P("   ") === null);
 assert("parser: pure text → null", P("hello") === null);
 assert("parser: div-by-zero 5/0 → null", P("5/0") === null);
 assert("parser: answer with < > & does not crash", P("<3") === 3 || P("<3") === null); // whichever; must not throw
+// unit-with-digits must NOT pollute the value (regression: dm³→3, m/s²→2, kg/m³→3 were appended)
+assert("parser: '0.08 mol/dm³' → 0.08 (unit not appended)", P("0.08 mol/dm³") === 0.08);
+assert("parser: '2 m/s²' → 2 (was polluted to 22)", P("2 m/s²") === 2);
+assert("parser: '3000 kg/m³' → 3000 (was polluted to 30003)", P("3000 kg/m³") === 3000);
+assert("parser: '1.2 cm³/s' → 1.2 (unit slash + exponent)", P("1.2 cm³/s") === 1.2);
+assert("parser: '5 g/cm³' → 5", P("5 g/cm³") === 5);
+assert("parser: currency '€36' → 36 (symbol prefix)", P("€36") === 36);
+assert("parser: still rejects malformed '3/' with no unit", P("3/") === null);
 
 /* ===================== 7. Physics units + tolerance + fraction fairness ===================== */
 {

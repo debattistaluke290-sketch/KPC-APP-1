@@ -75,13 +75,17 @@ function parseNumber(val) {
   if (s.includes("/")) {                       // simple fraction a/b
     const fm = s.match(/^([+-]?\d+(?:\.\d+)?)\/([+-]?\d+(?:\.\d+)?)$/);
     if (fm) { const den = parseFloat(fm[2]); if (den === 0) return null; return parseFloat(fm[1]) / den; }
-    // a slash touching a digit that is NOT a clean fraction (e.g. "3/", "/8", "1/2/3") = malformed
-    if (/\d\//.test(s) || /\/\d/.test(s)) return null;
-    // otherwise the slash is only inside a unit (e.g. "16m/s") — fall through and ignore it
+    // A slash touching a digit is a malformed fraction ("3/", "/8", "1/2/3") ONLY when there
+    // is no unit text. With a unit (e.g. "16 m/s", "cm³/s", "mol/dm³") the slash belongs to the
+    // unit — fall through and read the leading number instead.
+    if (!/[a-z]/.test(s) && (/\d\//.test(s) || /\/\d/.test(s))) return null;
   }
-  s = s.replace(/[^0-9.\-e+]/g, "");
-  if (s === "" || s === "-" || s === "." || s === "e" || s === "+") return null;
-  const n = parseFloat(s);
+  // Read the FIRST numeric token (optional sign, decimals, sci-notation) and ignore any
+  // surrounding unit text — so "0.08 mol/dm³", "2 m/s²", "€36" parse to their number without
+  // the unit's own digits (dm³→3, m/s²→2) getting appended to the value.
+  const m = s.match(/[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?/);
+  if (!m) return null;
+  const n = parseFloat(m[0]);
   return isNaN(n) || !isFinite(n) ? null : n;
 }
 // Exposed for tests.
