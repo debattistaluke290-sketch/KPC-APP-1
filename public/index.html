@@ -270,6 +270,19 @@
   .sol .yours b{color:var(--ink)}
   .sol .steps{font-size:13.5px;background:#faf7fc;border-radius:10px;padding:12px 14px;line-height:1.6}
   .sol .steps .final{color:var(--purple);font-weight:700}
+  /* KPC notes mapping — made central + repeated across the whole report */
+  .notes-hero{display:flex;gap:10px;align-items:flex-start;background:var(--primary-soft);border:1px solid var(--border-brand);
+    border-radius:var(--radius-md);padding:12px 14px;margin:14px 0 2px;font-size:13.5px;line-height:1.5;color:var(--text-primary)}
+  .notes-hero .nh-ico{font-size:18px;line-height:1.25;flex:0 0 auto}
+  .notes-hero b{color:var(--text-heading)}
+  .notes-link{color:var(--primary);font-weight:700;text-decoration:none}
+  .notes-link:hover{text-decoration:underline}
+  .notes-link.muted{color:var(--text-tertiary);font-weight:600}
+  .topic-notes{display:block;margin-top:3px;font-size:12px;line-height:1.4}
+  .sol-notes{margin-top:10px;font-size:13px}
+  .sol-notes.right{opacity:.8}
+  .sol-notes.wrong,.sol-notes.blank{background:var(--primary-soft);border:1px solid var(--border-brand);
+    border-radius:8px;padding:9px 11px;margin-top:12px}
   .priority{background:#faf7fc;border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:22px}
   .priority h3{font-size:15px;margin-bottom:4px;color:var(--purple-deep)}
   .priority .sub{font-size:13px;color:var(--muted);margin-bottom:12px}
@@ -604,6 +617,7 @@
         <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
       <div id="r-scores"></div>
+      <div class="notes-hero" id="r-notes-hero"></div>
       <button class="btn secondary" style="margin-top:14px" onclick="shareResult()">📲 Share my result</button>
       <div class="share-note">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
@@ -958,37 +972,55 @@ function renderReport(rep){
       `<div style="font-size:12px;color:var(--muted);margin-top:6px">Based on a short ${rep.totalQ}-question sample (${rep.totalCorrect} correct) — a guide to where to focus, not a formal prediction.</div>`;
   }
 
+  // ===== KPC notes mapping — computed once, then surfaced in EVERY part of the report =====
+  // (top revision-plan banner, each topic row, each worked solution, and the priority plan).
+  const c=window.KPC_CONFIG||{};
+  const collectionUrl=(()=>{
+    let u=(c.subjectCollections&&c.subjectCollections[currentSubject])||c.shopBundleUrl||'';
+    if(u && c.discountCode) u+=(u.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
+    return u;
+  })();
+  const pagesFor=(topic)=>(NOTES_PAGES[currentSubject]||{})[topic]||'';
+  const openNotes=(topic)=>{
+    if(!collectionUrl){ alert('Set KPC_CONFIG.subjectCollections for '+currentSubject+'.'); return; }
+    track('shop_clicked', {subject: currentSubject, topic: topic||''});
+    window.open(collectionUrl,'_blank','noopener');
+  };
+  const notesLink=(topic,label)=> collectionUrl
+    ? `<a class="notes-link" href="${collectionUrl}" target="_blank" rel="noopener" data-topic="${esc(topic||'')}">${label}</a>`
+    : `<span class="notes-link muted">${label}</span>`;
+
+  // Top banner — puts the KPC notes plan front and centre, right under the score.
+  const hero=document.getElementById('r-notes-hero');
+  if(hero) hero.innerHTML =
+    `<span class="nh-ico" aria-hidden="true">📘</span><div>Your <b>KPC ${currentSubject}</b> revision plan is built in below — `+
+    `every topic and every question is mapped to the exact pages to revise. `+notesLink('','Open the notes →')+`</div>`;
+
   const rows=document.getElementById('r-rows'); rows.innerHTML='';
   rep.topics.forEach(t=>{
     const row=document.createElement('div'); row.className='row';
-    row.innerHTML=`<span class="dot" style="background:${DOT[t.level]}"></span><span class="t">${t.name}</span>
-      <span class="meta">${t.c}/${t.n}</span><span class="lvl ${t.level}">${t.label}</span>`;
+    const pg=pagesFor(t.name);
+    const lbl=pg?`📘 KPC notes · ${pg}`:`📘 KPC ${currentSubject} notes`;
+    row.innerHTML=`<span class="dot" style="background:${DOT[t.level]}"></span>`+
+      `<span class="t">${t.name}<span class="topic-notes">${notesLink(t.name,lbl)}</span></span>`+
+      `<span class="meta">${t.c}/${t.n}</span><span class="lvl ${t.level}">${t.label}</span>`;
     rows.appendChild(row);
   });
 
   const sols=document.getElementById('r-solutions'); sols.innerHTML='';
   rep.solutions.forEach(s=>{
     const div=document.createElement('div'); div.className='sol';
+    const pg=pagesFor(s.topic);
+    const lbl=(s.mark==='right')
+      ? `📘 More practice — KPC ${currentSubject} notes${pg?` · ${pg}`:''} →`
+      : `📘 Revise this — KPC ${currentSubject} notes${pg?`, ${pg}`:''} →`;
     div.innerHTML=`<div class="head"><div class="qn">Q${s.n}. ${s.q}</div><span class="mark ${s.mark}">${s.markText}</span></div>
       ${s.dia&&DIA[s.dia]?`<div class="dlg">${DIA[s.dia]}</div>`:''}
       <div class="yours">Your answer: <b>${esc(s.given)}</b></div>
-      <div class="steps">${s.steps}</div>`;
+      <div class="steps">${s.steps}</div>
+      ${s.topic?`<div class="sol-notes ${s.mark}">${notesLink(s.topic,lbl)}</div>`:''}`;
     sols.appendChild(div);
   });
-
-  const c=window.KPC_CONFIG||{};
-  // The whole result is one subject, so every weak topic links to that subject's collection page
-  // (all of its note packs). Discount is appended only if one is configured.
-  const collectionUrl=(()=>{
-    let u=(c.subjectCollections&&c.subjectCollections[currentSubject])||c.shopBundleUrl||'';
-    if(u && c.discountCode) u+=(u.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
-    return u;
-  })();
-  const openNotes=(topic)=>{
-    if(!collectionUrl){ alert('Set KPC_CONFIG.subjectCollections for '+currentSubject+'.'); return; }
-    track('shop_clicked', {subject: currentSubject, topic: topic||''});
-    window.open(collectionUrl,'_blank','noopener');
-  };
 
   const recs=document.getElementById('r-recs'); recs.innerHTML='';
   if(!rep.recs.length){
@@ -1020,6 +1052,11 @@ function renderReport(rep){
   shop.textContent = none ? `Browse the KPC ${currentSubject} notes →` : `Get the KPC ${currentSubject} notes for my weak topics →`;
   shop.className = none ? 'btn secondary' : 'btn';
   shop.onclick=()=>openNotes('');
+
+  // Track clicks on any KPC-notes link scattered through the report (same shop_clicked event).
+  document.getElementById('s-done').querySelectorAll('.notes-link[href]').forEach(a=>{
+    a.addEventListener('click',()=>track('shop_clicked',{subject:currentSubject, topic:a.getAttribute('data-topic')||'', src:'notes-map'}));
+  });
 }
 
 /* ===== Shareable result card (canvas -> Web Share or download) ===== */

@@ -210,7 +210,7 @@ export async function gradeAndReport(cfg, name, answers = [], env) {
     }
 
     solutions.push({
-      n: i + 1, q: q.q, dia: q.dia || null,
+      n: i + 1, q: q.q, dia: q.dia || null, topic: q.topic,
       mark: answered ? (correct ? "right" : "wrong") : "blank",
       markText: answered ? (correct ? "Correct" : "Incorrect") : "Not attempted",
       given: givenDisplay, steps: q.steps
