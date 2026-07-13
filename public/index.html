@@ -25,7 +25,13 @@
 <script>
   window.KPC_CONFIG = {
     privacyUrl: "https://kpcnotesmt.com/policies/privacy-policy", // real Shopify privacy policy
-    shopBundleUrl: "https://kpcnotesmt.com/collections/sec-subjects", // O-Level collection
+    shopBundleUrl: "https://kpcnotesmt.com/collections/sec-subjects", // fallback: whole O-Level collection
+    subjectCollections: {      // weak topic → that subject's O-Level collection page (all its note packs)
+      Physics:   "https://kpcnotesmt.com/collections/physics-o-level",
+      Maths:     "https://kpcnotesmt.com/collections/maths-o-level",
+      Chemistry: "https://kpcnotesmt.com/collections/chemistry-o-level",
+      Biology:   "https://kpcnotesmt.com/collections/biology-o-level"
+    },
     discountCode: "",          // set to "DIAGNOSTIC20" once the code exists in Shopify
     discountPercent: "20%",    // only shown when discountCode is set
     siteUrl: "kpcnotesmt.com"
@@ -269,6 +275,9 @@
   .rec .num{width:24px;height:24px;border-radius:7px;background:var(--purple);color:#fff;font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px}
   .rec .body b{display:block;font-size:14px;margin-bottom:2px}
   .rec .body .ref{font-size:13px;color:var(--pink-dark);font-weight:600}
+  .rec .body a.rec-link{display:inline-block;margin-top:8px;color:var(--primary);text-decoration:none;cursor:pointer}
+  .rec .body a.rec-link:hover{text-decoration:underline}
+  .rec .body a.rec-link:focus-visible{outline:2px solid var(--primary);outline-offset:2px;border-radius:4px}
   .rec .body .why{font-size:12.5px;color:var(--muted);margin-top:2px}
   .cta-box{margin-top:24px;text-align:center}
   .cta-box .price{font-size:14px;color:var(--muted);margin-top:10px}
@@ -854,6 +863,36 @@ async function submitEmail(){
 }
 
 /* ===== Render the server-built report ===== */
+// Diagnostic topic → page range in the KPC O-Level Note Pack (Level 2-3) for that subject.
+// Pages are the PRINTED numbers the student sees (verified offset 0 against each pack's footers).
+// Keyed by the subject value used on the home buttons (Physics/Maths/Chemistry/Biology).
+const NOTES_PAGES = {
+  Physics: {
+    "Motion & Forces":"pp. 19–31", "Forces, Moments & Pressure":"pp. 38–44", "Energy, Work & Power":"pp. 45–48",
+    "Thermal Physics":"pp. 49–61", "Waves & Sound":"pp. 72–82", "Light & Optics":"pp. 85–97",
+    "Electricity & Circuits":"pp. 98–120", "Magnetism & Electromagnetism":"pp. 121–140",
+    "Radioactivity":"pp. 141–154", "Earth & Space":"pp. 62–71"
+  },
+  Maths: {
+    "The Number System":"pp. 6–28", "Numerical Calculations":"pp. 29–52", "Fundamentals of Algebra":"pp. 63–97",
+    "Graphs":"pp. 98–119", "Measurement":"pp. 162–188", "Lines, Angles & Shapes":"pp. 120–143 & 189–207",
+    "Constructions & Loci":"pp. 208–224", "Transformations":"pp. 225–242", "Statistics":"pp. 243–266",
+    "Probability":"pp. 267–281"
+  },
+  Chemistry: {
+    "Atomic Structure & Periodic Table":"pp. 13–22", "Bonding & Structure":"pp. 23–36",
+    "The Mole & Stoichiometry":"pp. 117–127", "Acids, Bases & Salts":"pp. 67–78", "Rates of Reaction":"pp. 128–134",
+    "Energetics":"pp. 142–148", "Redox & Electrolysis":"pp. 79–86", "Metals & Reactivity":"pp. 87–107",
+    "Organic Chemistry":"pp. 154–167", "Air, Water, Earth & Analysis":"pp. 37–46, 56–66 & 108–116"
+  },
+  Biology: {
+    "Cells & Transport":"pp. 3–5 & 9–13", "Nutrition, Molecules & Enzymes":"pp. 6–8 & 45–50",
+    "Photosynthesis & Plant Transport":"pp. 51–60", "Respiration & Gas Exchange":"pp. 14–23",
+    "Circulation in Animals":"pp. 24–30", "Homeostasis & Coordination":"pp. 67–78 & 86–91",
+    "Reproduction":"pp. 39–44 & 79–85", "Genetics & Inheritance":"pp. 92–98",
+    "Ecology & Human Impact":"pp. 31–38 & 61–66", "Classification, Variation & Evolution":"pp. 99–107"
+  }
+};
 function renderReport(rep){
   LAST_REPORT = rep;
   document.getElementById('c-head').textContent = rep.name?`Check your inbox, ${rep.name}!`:'Check your inbox!';
@@ -894,6 +933,20 @@ function renderReport(rep){
     sols.appendChild(div);
   });
 
+  const c=window.KPC_CONFIG||{};
+  // The whole result is one subject, so every weak topic links to that subject's collection page
+  // (all of its note packs). Discount is appended only if one is configured.
+  const collectionUrl=(()=>{
+    let u=(c.subjectCollections&&c.subjectCollections[currentSubject])||c.shopBundleUrl||'';
+    if(u && c.discountCode) u+=(u.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
+    return u;
+  })();
+  const openNotes=(topic)=>{
+    if(!collectionUrl){ alert('Set KPC_CONFIG.subjectCollections for '+currentSubject+'.'); return; }
+    track('shop_clicked', {subject: currentSubject, topic: topic||''});
+    window.open(collectionUrl,'_blank','noopener');
+  };
+
   const recs=document.getElementById('r-recs'); recs.innerHTML='';
   if(!rep.recs.length){
     recs.innerHTML=`<div class="rec"><div class="num">★</div><div class="body"><b>Brilliant - no weak topics!</b><div class="why">You're strong across the board. Keep practising past papers to stay sharp.</div></div></div>`;
@@ -902,30 +955,28 @@ function renderReport(rep){
       const div=document.createElement('div'); div.className='rec';
       const tier=w.tier||'Recommended';
       const tCol = tier==='Essential' ? ['#fbe3e3','#b22a2a'] : ['#fbeed7','#a86b14'];
+      const pageRef=(NOTES_PAGES[currentSubject]||{})[w.topic];
+      const linkLabel = pageRef ? `→ Revise this in the KPC ${currentSubject} notes, ${pageRef}` : `→ Revise this in the KPC ${currentSubject} notes`;
       div.innerHTML=`<div class="num">${i+1}</div><div class="body">
         <b>${w.topic}</b> <span style="font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:${tCol[0]};color:${tCol[1]}">${tier}</span>
         <div style="font-size:12.5px;color:${DOT[w.level]};font-weight:600;margin-top:2px">${w.label}</div>
-        <div class="ref">→ ${w.ref}</div><div class="why">${w.why}</div></div>`;
+        <div class="why">${w.why}</div>
+        <a class="ref rec-link" href="${collectionUrl}" target="_blank" rel="noopener">${linkLabel}</a></div>`;
       recs.appendChild(div);
     });
+    // track the specific topic on click, then open (the href is the no-JS fallback)
+    recs.querySelectorAll('.rec-link').forEach((a,i)=>a.addEventListener('click',(e)=>{ e.preventDefault(); openNotes(rep.recs[i]&&rep.recs[i].topic); }));
   }
 
-  // Shop CTA → Shopify collection (discount appended only if one is configured).
+  // Main CTA → the subject's collection page.
   // Secure students are NOT pushed to buy: soften the CTA and show a "no notes needed" note.
-  const c=window.KPC_CONFIG||{};
   const none = rep.recommendationState==='none_needed';
   const ctaNone=document.getElementById('cta-none');
   if(ctaNone) ctaNone.style.display = none?'block':'none';
   const shop=document.getElementById('shop-btn');
-  shop.textContent = none ? 'Browse the KPC notes anyway →' : 'Get the KPC notes for my weak topics →';
+  shop.textContent = none ? `Browse the KPC ${currentSubject} notes →` : `Get the KPC ${currentSubject} notes for my weak topics →`;
   shop.className = none ? 'btn secondary' : 'btn';
-  shop.onclick=()=>{
-    let url=c.shopBundleUrl||'';
-    if(!url){ alert('Set KPC_CONFIG.shopBundleUrl to your Shopify link.'); return; }
-    if(c.discountCode) url += (url.includes('?')?'&':'?')+'discount='+encodeURIComponent(c.discountCode);
-    track('shop_clicked', {subject: currentSubject});
-    window.open(url,'_blank','noopener');
-  };
+  shop.onclick=()=>openNotes('');
 }
 
 /* ===== Shareable result card (canvas -> Web Share or download) ===== */

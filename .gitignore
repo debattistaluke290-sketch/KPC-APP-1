@@ -19,3 +19,7 @@ Thumbs.db
 # marking schemes and examiners' reports live here for LOCAL use only.
 # Never commit copyrighted examination documents.
 reference/
+
+# KPC Notes' own paid note-pack PDFs (used only to extract topic→page references).
+# Private product files — never commit or deploy.
+notepacks/
