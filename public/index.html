@@ -426,6 +426,8 @@
     #s-done .row .meta{grid-column:3;grid-row:1;margin:0}
     #s-done .row .lvl{grid-column:1 / -1;grid-row:2;justify-self:start;white-space:normal;line-height:1.3}
   }
+  /* Polish: comfortable touch targets on small text buttons */
+  .quiz-exit, .quiz-skip .btn.text{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
 </style>
 </head>
 <body>
@@ -585,6 +587,19 @@ const DIA = {
   foodchain:`<svg viewBox="0 0 360 64" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="31" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grass</text><rect x="80" y="18" width="92" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="126" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grasshopper</text><rect x="192" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="221" y="37" text-anchor="middle" font-size="11" fill="#341D54">Lizard</text><rect x="270" y="18" width="66" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="303" y="37" text-anchor="middle" font-size="11" fill="#341D54">Kestrel</text><g stroke="#D6587E" stroke-width="2" fill="#D6587E"><line x1="62" y1="33" x2="74" y2="33"/><polygon points="80,33 73,29 73,37"/><line x1="174" y1="33" x2="186" y2="33"/><polygon points="192,33 185,29 185,37"/><line x1="252" y1="33" x2="264" y2="33"/><polygon points="270,33 263,29 263,37"/></g></svg>`,
   pyramid:`<svg viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="112" width="200" height="26" fill="#cdbfdb" stroke="#7C27AC" stroke-width="1.5"/><rect x="50" y="82" width="140" height="26" fill="#bba6cf" stroke="#7C27AC" stroke-width="1.5"/><rect x="80" y="52" width="80" height="26" fill="#a98fc2" stroke="#7C27AC" stroke-width="1.5"/><rect x="103" y="22" width="34" height="26" fill="#9678b6" stroke="#7C27AC" stroke-width="1.5"/></svg>`
 };
+/* Text alternatives for diagrams — describe the DRAWING (labels/arrows/values) so a
+   screen-reader user can reason it out, WITHOUT stating the answer. */
+const DIA_ALT = {
+  vtgraph:"Velocity–time graph. The line rises straight from the origin to 16 m/s at 8 seconds, then stays flat at 16 m/s until 20 seconds. Vertical axis velocity in metres per second, horizontal axis time in seconds.",
+  resultant:"A van with two horizontal force arrows: a 3500 N arrow pointing right and an 1100 N arrow pointing left.",
+  wave:"A transverse wave on a horizontal dashed rest line. A short arrow labelled X points from the rest line up to a crest. A longer double-headed arrow labelled Y spans from one crest across a trough to the next crest.",
+  circuit:"A single-loop series circuit with a 9 V cell, a 6 ohm resistor and a 3 ohm resistor. A current arrow labelled I is on the bottom wire.",
+  moments:"A uniform beam balanced on a central pivot. A 12 N downward force acts 0.5 m to the left of the pivot; an unknown downward force F acts 0.3 m to the right of the pivot.",
+  savcube:"A cube with each side labelled 2 cm.",
+  punnett:"A Punnett square. The top is labelled T and t; the left side is labelled T and t. The four inner cells read TT, Tt, Tt and tt.",
+  foodchain:"A food chain with arrows: grass, then grasshopper, then lizard, then kestrel.",
+  pyramid:"A pyramid of energy: four stacked horizontal bars, each one narrower than the bar beneath it."
+};
 const DOT={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
 
 /* Escape untrusted text before putting it inside innerHTML. Used for the
@@ -654,8 +669,10 @@ function renderQuestion(){
   document.getElementById('q-text').innerHTML = item.q + (item.data?`<span class="data">${item.data}</span>`:'');
 
   const dWrap=document.getElementById('q-diagram');
-  if(item.dia && DIA[item.dia]){ dWrap.innerHTML = DIA[item.dia]; dWrap.style.display='block'; }
-  else { dWrap.innerHTML=''; dWrap.style.display='none'; }
+  if(item.dia && DIA[item.dia]){
+    dWrap.innerHTML = DIA[item.dia]; dWrap.style.display='block';
+    dWrap.setAttribute('aria-label', DIA_ALT[item.dia] || 'Diagram for this question');
+  } else { dWrap.innerHTML=''; dWrap.style.display='none'; dWrap.removeAttribute('aria-label'); }
 
   const body = document.getElementById('q-body'); body.innerHTML='';
   const prev = responses[idx];
