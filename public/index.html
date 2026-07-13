@@ -428,6 +428,32 @@
   }
   /* Polish: comfortable touch targets on small text buttons */
   .quiz-exit, .quiz-skip .btn.text{min-height:44px;display:inline-flex;align-items:center;justify-content:center}
+
+  /* ===================== FULL-WIDTH DESKTOP + HOME REDESIGN =====================
+     Narrow single column on mobile; on desktop the app uses the page width, with
+     reading/interaction screens kept comfortably centred inside the wider frame. */
+  @media (min-width:900px){
+    .wrap{max-width:var(--container-wide)}                 /* 1080 on desktop */
+    #s-quiz .quiz-shell{max-width:var(--container-reading);margin-left:auto;margin-right:auto}
+    #s-done .card{max-width:var(--container-content);margin-left:auto;margin-right:auto}
+    #s-email .card{margin-left:auto;margin-right:auto}
+  }
+
+  /* Calmer, flatter, more editorial hero (drops the radial-glow decoration) */
+  .hero{background:var(--ink);overflow:hidden}
+  .hero::before, .hero::after{display:none}
+  .hero h1 .hl{color:var(--accent)}
+  @media (min-width:900px){
+    .hero{padding:56px 52px;margin-bottom:32px}
+    .hero h1{font-size:var(--text-3xl);max-width:20ch}
+    .hero p{max-width:60ch;font-size:var(--text-md)}
+    .section-h{font-size:var(--text-sm);margin-bottom:16px}
+  }
+
+  /* Subject cards: 1 column on mobile → fill the width on desktop; equal heights */
+  .subjects{grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:16px}
+  .subject{display:flex;flex-direction:column}
+  .subject .go{margin-top:auto;padding-top:14px}
 </style>
 </head>
 <body>
