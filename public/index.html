@@ -31,7 +31,9 @@
       Maths:     "https://kpcnotesmt.com/collections/maths-o-level",
       Chemistry: "https://kpcnotesmt.com/collections/chemistry-o-level",
       Biology:   "https://kpcnotesmt.com/collections/biology-o-level",
-      "Year 6 Maths": "https://kpcnotesmt.com/collections/year-6"
+      "Year 6 Maths": "https://kpcnotesmt.com/collections/year-6",
+      "Year 7 Maths": "https://kpcnotesmt.com/collections/year-7",
+      "Year 8 Maths": "https://kpcnotesmt.com/collections/year-8"
     },
     discountCode: "",          // set to "DIAGNOSTIC20" once the code exists in Shopify
     discountPercent: "20%",    // only shown when discountCode is set
@@ -518,16 +520,16 @@
         <h3>Year 6 Maths</h3><p>Number, fractions, shape &amp; measures</p>
         <span class="go">Start diagnostic →</span>
       </button>
-      <div class="subject soon" id="subj-year7maths" aria-disabled="true">
-        <span class="badge">Coming soon</span>
+      <button class="subject" id="subj-year7maths" type="button" onclick="startSubject('Year 7 Maths')">
         <span class="ico" aria-hidden="true">7️⃣</span>
-        <h3>Year 7 Maths</h3><p>Building on primary — algebra &amp; more</p>
-      </div>
-      <div class="subject soon" id="subj-year8maths" aria-disabled="true">
-        <span class="badge">Coming soon</span>
+        <h3>Year 7 Maths</h3><p>Number, algebra, angles &amp; ratio</p>
+        <span class="go">Start diagnostic →</span>
+      </button>
+      <button class="subject" id="subj-year8maths" type="button" onclick="startSubject('Year 8 Maths')">
         <span class="ico" aria-hidden="true">8️⃣</span>
-        <h3>Year 8 Maths</h3><p>Lower-secondary foundations</p>
-      </div>
+        <h3>Year 8 Maths</h3><p>Algebra, graphs, geometry &amp; data</p>
+        <span class="go">Start diagnostic →</span>
+      </button>
     </div>
     <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
       <a href="https://kpcnotesmt.com/policies/privacy-policy" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
@@ -918,6 +920,20 @@ const NOTES_PAGES = {
     "Ratio & Proportion":"pp. 100–106", "Measures: Length, Weight & Capacity":"pp. 107–121",
     "Perimeter & Area":"pp. 122–132", "Time & Calendar":"pp. 133–148",
     "Shape & Angles":"pp. 149–182", "Statistics & Averages":"pp. 183–193"
+  },
+  "Year 7 Maths": {
+    "Number & Place Value":"pp. 4–7, 27–32 & 72–73", "Factors, Multiples, Primes & Powers":"pp. 8–26",
+    "Fractions":"pp. 33–41", "Decimals, Percentages & FDP":"pp. 42–49",
+    "Angles":"pp. 50–67", "Symmetry, Polygons & Shapes":"pp. 68–71 & 84–88",
+    "Algebra":"pp. 74–83", "Coordinate Geometry & The Circle":"pp. 89–95",
+    "Measurement, Area & Volume":"pp. 96–122", "Ratio, Statistics & Probability":"pp. 123–129 & 145–157"
+  },
+  "Year 8 Maths": {
+    "Indices, Powers, Primes & Multiples":"pp. 4–34", "Fractions, Decimals & Percentages":"pp. 35–102",
+    "Ratio & Proportion":"pp. 103–134", "Sequences & the nth Term":"pp. 135–152",
+    "Algebra":"pp. 153–185", "Straight-Line Graphs":"pp. 186–220",
+    "Circles & Angles":"pp. 221–242", "Area, Surface Area & Nets":"pp. 243–278",
+    "Transformations":"pp. 279–292", "Statistics & Probability":"pp. 293–323"
   }
 };
 function renderReport(rep){

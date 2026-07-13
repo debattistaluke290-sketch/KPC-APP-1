@@ -9,6 +9,8 @@ import { gradeAndReport as gradeBiology } from "../_biology.js";
 import { gradeAndReport as gradeChemistry } from "../_chemistry.js";
 import { gradeAndReport as gradeMaths } from "../_maths.js";
 import { gradeAndReport as gradeMaths6 } from "../_maths6.js";
+import { gradeAndReport as gradeMaths7 } from "../_maths7.js";
+import { gradeAndReport as gradeMaths8 } from "../_maths8.js";
 import { syncKlaviyo } from "../_klaviyo.js";
 
 const GRADERS = {
@@ -16,7 +18,9 @@ const GRADERS = {
   biology: gradeBiology,
   chemistry: gradeChemistry,
   maths: gradeMaths,
-  "year 6 maths": gradeMaths6
+  "year 6 maths": gradeMaths6,
+  "year 7 maths": gradeMaths7,
+  "year 8 maths": gradeMaths8
 };
 
 const json = (obj, status = 200) =>
