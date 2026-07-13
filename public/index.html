@@ -457,7 +457,7 @@ function renderQuestion(){
       b.className='opt'+(prev.given===i?' chosen':'');
       b.textContent=o;
       b.onclick=()=>{ body.querySelectorAll('.opt').forEach(x=>x.classList.remove('chosen'));
-        b.classList.add('chosen'); responses[idx]={given:i, answered:true}; };
+        b.classList.add('chosen'); responses[idx]={given:i, answered:true}; updateNextState(); };
       body.appendChild(b);
     });
   } else {
@@ -465,13 +465,21 @@ function renderQuestion(){
     inp.className='answer-field'; inp.type='text';
     inp.placeholder='Your final answer'+(item.unit?` (${item.unit})`:'');
     inp.value = (prev.given!==null && prev.given!==undefined)?prev.given:'';
-    inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; };
+    inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; updateNextState(); };
     body.appendChild(inp);
     const sub=document.createElement('div'); sub.className='answer-sub';
     sub.textContent='No feedback now - your worked solution arrives by email.';
     body.appendChild(sub);
   }
   document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & see my score →':'Next →';
+  updateNextState();
+}
+
+/* "Next" stays disabled until the current question is answered.
+   (The "Skip this question" link remains as the explicit opt-out.) */
+function updateNextState(){
+  const r = responses[idx];
+  document.getElementById('q-next').disabled = !(r && r.answered);
 }
 
 function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
