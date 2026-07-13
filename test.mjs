@@ -18,8 +18,8 @@ const wrong = (q) => q.type === "mcq" ? { given: (q.correct + 1) % q.opts.length
 const cfgOf = (m) => ({ SUBJECT: m.SUBJECT, TOPIC_ORDER: m.TOPIC_ORDER, QUESTIONS: m.QUESTIONS,
   WHY: m.WHY, STRANDS: m.STRANDS, STRAND_WEIGHTS: m.STRAND_WEIGHTS });
 
-const CAL = [["Physics", physics], ["Mathematics", maths], ["Chemistry", chemistry]];
-const LEGACY = [["Biology", biology]];
+const CAL = [["Physics", physics], ["Mathematics", maths], ["Chemistry", chemistry], ["Biology", biology]];
+const LEGACY = [];
 const ALL = [...CAL, ...LEGACY];
 
 /* ===================== 1. Structure / no leakage (all subjects) ===================== */
