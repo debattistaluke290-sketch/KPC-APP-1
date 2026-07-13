@@ -390,6 +390,42 @@
     #s-quiz .quiz-shell{padding:28px 28px 24px}
     #s-quiz .q{font-size:var(--text-xl)}
   }
+
+  /* ===================== HOME / GATE / RESULTS (system pass) ===================== */
+  /* Subject cards as accessible buttons (were non-focusable <div>s) */
+  .subject{appearance:none;font:inherit;text-align:left;color:inherit;width:100%;display:block;
+    background:var(--n-0);border:1px solid var(--n-200);border-radius:var(--radius-lg);
+    padding:18px 16px;box-shadow:var(--shadow-xs)}
+  .subject:hover{border-color:var(--primary);transform:translateY(-2px);box-shadow:var(--shadow-sm)}
+  .subject .ico{background:var(--primary-soft);width:44px;height:44px;font-size:23px;margin-bottom:12px}
+  .subject h3{color:var(--text-heading)}
+  .subject p{color:var(--text-secondary)}
+  .subject .go{color:var(--primary)}
+  /* Calmer container radii */
+  .hero{border-radius:var(--radius-xl)}
+  .card{border-radius:var(--radius-lg)}
+  /* Form labels + fields on tokens */
+  .field-label{display:block;font-size:var(--text-sm);font-weight:600;color:var(--text-primary);margin:0 0 6px}
+  .field-label + .field{margin-bottom:14px}
+  .field{border:1.5px solid var(--n-200)}
+  .field:focus{border-color:var(--primary)}
+  .pill-lite{background:var(--primary-soft);color:var(--primary)}
+  /* Results surfaces → tokens */
+  .summary{background:var(--n-25);border-color:var(--n-200)}
+  .priority{background:var(--n-25);border-color:var(--n-200);border-radius:var(--radius-lg)}
+  .sol{border-color:var(--n-200);border-radius:var(--radius-lg)}
+  .sol .steps{background:var(--n-25)}
+  .rec .num{background:var(--primary);border-radius:var(--radius-sm)}
+  .diagram{background:var(--n-25);border-color:var(--n-200)}
+  .teaser-weak{border-radius:var(--radius-md)}
+  /* Topic rows: on narrow screens, name + count on line 1, status label on its own line below */
+  @media (max-width:560px){
+    #s-done .row{display:grid;grid-template-columns:auto 1fr auto;align-items:center;column-gap:10px;row-gap:8px}
+    #s-done .row .dot{grid-row:1}
+    #s-done .row .t{grid-column:2;grid-row:1}
+    #s-done .row .meta{grid-column:3;grid-row:1;margin:0}
+    #s-done .row .lvl{grid-column:1 / -1;grid-row:2;justify-self:start;white-space:normal;line-height:1.3}
+  }
 </style>
 </head>
 <body>
@@ -415,26 +451,26 @@
     </div>
     <div class="section-h">Choose your subject</div>
     <div class="subjects">
-      <div class="subject" id="subj-physics" onclick="startSubject('Physics')">
-        <div class="ico" style="background:#f3ebf8">⚛️</div>
+      <button class="subject" id="subj-physics" type="button" onclick="startSubject('Physics')">
+        <span class="ico" aria-hidden="true">⚛️</span>
         <h3>Physics</h3><p>Forces, energy, waves, electricity &amp; more</p>
         <span class="go">Start diagnostic →</span>
-      </div>
-      <div class="subject" id="subj-biology" onclick="startSubject('Biology')">
-        <div class="ico" style="background:#fdeef3">🧬</div>
+      </button>
+      <button class="subject" id="subj-biology" type="button" onclick="startSubject('Biology')">
+        <span class="ico" aria-hidden="true">🧬</span>
         <h3>Biology</h3><p>Cells, transport, genetics &amp; ecology</p>
         <span class="go">Start diagnostic →</span>
-      </div>
-      <div class="subject" id="subj-chemistry" onclick="startSubject('Chemistry')">
-        <div class="ico" style="background:#f3ebf8">🧪</div>
+      </button>
+      <button class="subject" id="subj-chemistry" type="button" onclick="startSubject('Chemistry')">
+        <span class="ico" aria-hidden="true">🧪</span>
         <h3>Chemistry</h3><p>Atoms, reactions, bonding &amp; the mole</p>
         <span class="go">Start diagnostic →</span>
-      </div>
-      <div class="subject" id="subj-maths" onclick="startSubject('Maths')">
-        <div class="ico" style="background:#fdeef3">📐</div>
+      </button>
+      <button class="subject" id="subj-maths" type="button" onclick="startSubject('Maths')">
+        <span class="ico" aria-hidden="true">📐</span>
         <h3>Mathematics</h3><p>Algebra, geometry, trig &amp; statistics</p>
         <span class="go">Start diagnostic →</span>
-      </div>
+      </button>
     </div>
     <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
       <a href="https://kpcnotesmt.com/policies/privacy-policy" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
@@ -484,8 +520,10 @@
       </div>
 
       <h2 class="gate-h">Enter your email to unlock everything</h2>
-      <input class="field" id="email-name" type="text" placeholder="First name" />
-      <input class="field" id="email-addr" type="email" placeholder="Email address" />
+      <label class="field-label" for="email-name">First name</label>
+      <input class="field" id="email-name" type="text" placeholder="Your first name" autocomplete="given-name" />
+      <label class="field-label" for="email-addr">Email address</label>
+      <input class="field" id="email-addr" type="email" placeholder="you@example.com" autocomplete="email" inputmode="email" />
       <!-- honeypot: hidden from humans, bots fill it -->
       <input type="text" id="company" name="company" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px;width:1px;height:1px;opacity:0" aria-hidden="true" />
       <label class="consent">
