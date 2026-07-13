@@ -146,12 +146,12 @@
   .screen{display:none;animation:fade .25s ease}
   .screen.active{display:block}
   @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
-  .btn{appearance:none;border:none;cursor:pointer;width:100%;background:var(--pink);color:#fff;
-    font-weight:700;font-size:16px;padding:15px 18px;border-radius:12px;
-    transition:background .15s,transform .05s;box-shadow:0 4px 14px rgba(214,88,126,.28)}
-  .btn:hover{background:var(--pink-dark)}
+  .btn{appearance:none;border:none;cursor:pointer;width:100%;background:var(--primary);color:#fff;
+    font-weight:700;font-size:16px;padding:15px 18px;border-radius:var(--radius-md);
+    transition:background var(--dur) var(--ease),transform .05s;box-shadow:var(--shadow-xs)}
+  .btn:hover{background:var(--primary-hover)}
   .btn:active{transform:translateY(1px)}
-  .btn[disabled]{background:#d8c9e2;cursor:not-allowed;box-shadow:none}
+  .btn[disabled]{background:var(--n-200);color:var(--n-500);cursor:not-allowed;box-shadow:none}
   .btn.secondary{background:transparent;color:var(--purple);border:1.5px solid var(--line);box-shadow:none}
   .btn.secondary:hover{background:#f6f0fa}
 
@@ -339,6 +339,57 @@
     *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;
       transition-duration:.001ms!important;scroll-behavior:auto!important}
   }
+
+  /* ===================== QUIZ PAGE (redesigned) ===================== */
+  #s-quiz .quiz-shell{background:var(--n-0);border:1px solid var(--n-200);border-radius:var(--radius-lg);
+    box-shadow:var(--shadow-xs);padding:20px}
+  .quiz-head{display:flex;align-items:center;gap:14px;margin-bottom:18px}
+  .quiz-exit{color:var(--text-secondary);padding:6px 8px;margin-left:-6px;flex:0 0 auto}
+  .quiz-exit:hover{color:var(--text-primary)}
+  .quiz-meter{flex:1;min-width:0}
+  #s-quiz .progress-head{margin-bottom:6px}
+  #s-quiz .bar{height:6px;background:var(--n-100);margin:0}
+  #s-quiz .bar>i{background:var(--primary)}
+  #s-quiz .topic-tag{font-size:var(--text-xs);letter-spacing:.06em;text-transform:uppercase;
+    color:var(--primary);font-weight:700;margin:2px 0 12px;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  #s-quiz .paper-badge{background:var(--info-bg);color:var(--info);text-transform:none;letter-spacing:0}
+  #s-quiz .q{font-size:var(--text-lg);font-weight:600;color:var(--text-primary);line-height:1.4;margin:0;outline:none}
+  #s-quiz .q .data{display:block;font-size:var(--text-sm);color:var(--text-secondary);font-weight:400;margin-top:10px;line-height:1.5}
+  #s-quiz .diagram{background:var(--n-25);border:1px solid var(--n-200);border-radius:var(--radius-md);padding:16px;margin:18px 0}
+  #s-quiz .paper-hint{background:var(--info-bg);border:1px solid var(--info-border);color:#1c3a5e;
+    border-radius:var(--radius-md);padding:12px 14px;margin:16px 0 0;font-size:var(--text-sm);line-height:1.5;display:flex;gap:8px;align-items:flex-start}
+  #q-body{margin-top:18px}
+  /* Answer options — radio-dot indicator in a reserved slot (no layout shift between states) */
+  #s-quiz .opt{position:relative;display:flex;align-items:center;gap:12px;width:100%;text-align:left;
+    background:var(--n-0);border:1.5px solid var(--n-200);border-radius:var(--radius-md);
+    padding:14px 16px;margin-bottom:10px;font-size:var(--text-base);color:var(--text-primary);
+    line-height:1.4;cursor:pointer;min-height:54px;
+    transition:border-color var(--dur) var(--ease),background var(--dur) var(--ease)}
+  #s-quiz .opt::before{content:"";flex:0 0 auto;width:20px;height:20px;border-radius:50%;
+    border:2px solid var(--n-300);background:var(--n-0);
+    transition:border-color var(--dur),background var(--dur),box-shadow var(--dur)}
+  #s-quiz .opt:hover{border-color:var(--n-400);background:var(--n-25)}
+  #s-quiz .opt.chosen{border-color:var(--primary);background:var(--primary-soft)}
+  #s-quiz .opt.chosen::before{border-color:var(--primary);background:var(--primary);box-shadow:inset 0 0 0 3px var(--n-0)}
+  #s-quiz .opt:disabled{opacity:.55;cursor:not-allowed}
+  /* correct/incorrect states exist for the results answer-review; the live quiz is feedback-free */
+  #s-quiz .opt.correct{border-color:var(--success);background:var(--success-bg)}
+  #s-quiz .opt.correct::before{border-color:var(--success);background:var(--success);box-shadow:inset 0 0 0 3px var(--n-0)}
+  #s-quiz .opt.incorrect{border-color:var(--danger);background:var(--danger-bg)}
+  #s-quiz .opt.incorrect::before{border-color:var(--danger);background:var(--danger);box-shadow:inset 0 0 0 3px var(--n-0)}
+  #s-quiz .answer-field{border:1.5px solid var(--n-200);border-radius:var(--radius-md);font-size:16px}
+  #s-quiz .answer-field:focus{border-color:var(--primary)}
+  #s-quiz .answer-sub{font-size:var(--text-xs);color:var(--text-secondary);margin-top:8px}
+  /* Stable action row (Back compact left, Next dominant right; Next fills when alone) */
+  #s-quiz .quiz-actions{display:flex;gap:12px;margin-top:26px}
+  #s-quiz #q-next{flex:1 1 auto;width:auto;margin:0}
+  #s-quiz #q-back{flex:0 0 auto;width:auto;margin:0;padding-left:18px;padding-right:18px}
+  .quiz-skip{text-align:center;margin-top:14px}
+  .quiz-skip .btn.text{color:var(--text-secondary);font-size:var(--text-sm)}
+  @media (min-width:640px){
+    #s-quiz .quiz-shell{padding:28px 28px 24px}
+    #s-quiz .q{font-size:var(--text-xl)}
+  }
 </style>
 </head>
 <body>
@@ -390,20 +441,29 @@
   </section>
 
   <!-- QUIZ -->
-  <section class="screen" id="s-quiz">
-    <div class="card">
-      <div class="progress-head"><span id="q-count">Question 1</span><span id="q-pct">0%</span></div>
-      <div class="bar"><i id="q-bar"></i></div>
-      <div class="topic-tag"><span id="q-topic-name"></span><span class="paper-badge" id="q-paper-badge" style="display:none">✏️ Paper question</span></div>
-      <div class="q" id="q-text"></div>
-      <div class="diagram" id="q-diagram" style="display:none"></div>
-      <div class="paper-hint" id="q-paper-hint" style="display:none"><span>✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll get the full worked solution by email.</span></div>
-      <div id="q-body"></div>
-      <div class="quiz-actions">
-        <button class="btn" id="q-next" onclick="nextQuestion()">Next →</button>
-        <button class="btn secondary" id="q-back" onclick="prevQuestion()" style="display:none">← Back</button>
+  <section class="screen" id="s-quiz" aria-label="Diagnostic quiz">
+    <div class="quiz-shell">
+      <div class="quiz-head">
+        <button class="btn text quiz-exit" type="button" onclick="confirmExit()">✕ Exit</button>
+        <div class="quiz-meter">
+          <div class="progress-head"><span id="q-count" aria-live="polite">Question 1 of 40</span><span id="q-pct">0%</span></div>
+          <div class="bar" id="q-progress" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Quiz progress"><i id="q-bar"></i></div>
+        </div>
       </div>
-      <div style="text-align:center;margin-top:12px"><a href="#" onclick="skipQuestion(event)" style="font-size:13px;color:var(--muted);text-decoration:none">Skip this question</a></div>
+
+      <div class="quiz-stage">
+        <div class="topic-tag"><span id="q-topic-name"></span><span class="paper-badge" id="q-paper-badge" style="display:none">✏️ Paper question</span></div>
+        <div class="q" id="q-text" tabindex="-1"></div>
+        <div class="diagram" id="q-diagram" style="display:none" role="img"></div>
+        <div class="paper-hint" id="q-paper-hint" style="display:none"><span class="ico" aria-hidden="true">✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll get the full worked solution by email.</span></div>
+        <div id="q-body"></div>
+      </div>
+
+      <div class="quiz-actions">
+        <button class="btn secondary" id="q-back" type="button" onclick="prevQuestion()" style="display:none">← Back</button>
+        <button class="btn" id="q-next" type="button" onclick="nextQuestion()">Next →</button>
+      </div>
+      <div class="quiz-skip"><button class="btn text" type="button" onclick="skipQuestion(event)">Skip this question</button></div>
     </div>
   </section>
 
@@ -460,6 +520,18 @@
     </div>
   </section>
 
+</div>
+
+<!-- Exit-confirmation modal -->
+<div class="modal-overlay" id="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-title" aria-describedby="exit-desc" onclick="if(event.target===this)closeExit()">
+  <div class="modal">
+    <h3 id="exit-title">Leave the quiz?</h3>
+    <p id="exit-desc">Your progress on this diagnostic will be lost and you'll return to the subject list.</p>
+    <div class="modal-actions">
+      <button class="btn secondary" type="button" onclick="closeExit()">Keep going</button>
+      <button class="btn" type="button" onclick="doExit()" style="background:var(--danger)">Leave quiz</button>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -534,6 +606,7 @@ function renderQuestion(){
   const pct = Math.round(idx/QUESTIONS.length*100);
   document.getElementById('q-pct').textContent = pct + '%';
   document.getElementById('q-bar').style.width = pct + '%';
+  document.getElementById('q-progress').setAttribute('aria-valuenow', pct);
   document.getElementById('q-topic-name').textContent = item.topic;
   document.getElementById('q-back').style.display = idx>0 ? 'block' : 'none';
 
@@ -550,17 +623,35 @@ function renderQuestion(){
   const prev = responses[idx];
 
   if(item.type==='mcq'){
+    body.setAttribute('role','radiogroup');
+    body.setAttribute('aria-labelledby','q-text');
+    const sync=()=>body.querySelectorAll('.opt').forEach((x,j)=>x.setAttribute('aria-checked', responses[idx].given===j?'true':'false'));
     item.opts.forEach((o,i)=>{
       const b=document.createElement('button');
+      b.type='button';
       b.className='opt'+(prev.given===i?' chosen':'');
+      b.setAttribute('role','radio');
+      b.setAttribute('aria-checked', prev.given===i?'true':'false');
       b.textContent=o;
       b.onclick=()=>{ body.querySelectorAll('.opt').forEach(x=>x.classList.remove('chosen'));
-        b.classList.add('chosen'); responses[idx]={given:i, answered:true}; updateNextState(); };
+        b.classList.add('chosen'); responses[idx]={given:i, answered:true}; sync(); updateNextState(); };
       body.appendChild(b);
     });
+    // Arrow keys move through the options and select (standard radio-group behaviour).
+    body.onkeydown=(e)=>{
+      if(!['ArrowDown','ArrowRight','ArrowUp','ArrowLeft'].includes(e.key)) return;
+      e.preventDefault();
+      const opts=[...body.querySelectorAll('.opt')];
+      const cur=opts.indexOf(document.activeElement);
+      const fwd=e.key==='ArrowDown'||e.key==='ArrowRight';
+      const ni=cur<0?0:(fwd?(cur+1)%opts.length:(cur-1+opts.length)%opts.length);
+      opts[ni].focus(); opts[ni].click();
+    };
   } else {
+    body.removeAttribute('role'); body.removeAttribute('aria-labelledby'); body.onkeydown=null;
     const inp=document.createElement('input');
     inp.className='answer-field'; inp.type='text';
+    inp.setAttribute('aria-label','Your final answer'+(item.unit?` in ${item.unit}`:''));
     inp.placeholder='Your final answer'+(item.unit?` (${item.unit})`:'');
     inp.value = (prev.given!==null && prev.given!==undefined)?prev.given:'';
     inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; updateNextState(); };
@@ -571,6 +662,8 @@ function renderQuestion(){
   }
   document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & see my score →':'Next →';
   updateNextState();
+  // Move focus to the question so screen-reader users hear the new question on navigation.
+  try{ document.getElementById('q-text').focus({preventScroll:true}); }catch(_){}
 }
 
 /* "Next" stays disabled until the current question is answered.
@@ -583,6 +676,30 @@ function updateNextState(){
 function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
 function prevQuestion(){ if(idx>0){ idx--; renderQuestion(); } }
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
+
+/* ===== Exit-confirmation modal ===== */
+let _exitFocus=null;
+function confirmExit(){
+  _exitFocus=document.activeElement;
+  const m=document.getElementById('exit-modal'); m.classList.add('open');
+  const keep=m.querySelector('.btn.secondary'); if(keep) keep.focus();
+  document.addEventListener('keydown', _exitKey);
+}
+function closeExit(){
+  document.getElementById('exit-modal').classList.remove('open');
+  document.removeEventListener('keydown', _exitKey);
+  if(_exitFocus && _exitFocus.focus) _exitFocus.focus();
+}
+function doExit(){ closeExit(); reset(); }
+function _exitKey(e){
+  if(e.key==='Escape'){ closeExit(); return; }
+  if(e.key==='Tab'){
+    const f=[...document.querySelectorAll('#exit-modal button')]; if(!f.length) return;
+    const first=f[0], last=f[f.length-1];
+    if(e.shiftKey && document.activeElement===first){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+}
 
 /* ===== Finish quiz: fetch a teaser (no solutions) then show the gate ===== */
 async function goToEmail(){
