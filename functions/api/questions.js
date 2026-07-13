@@ -5,12 +5,14 @@ import { publicQuestions as physicsPublic } from "../_bank.js";
 import { publicQuestions as biologyPublic } from "../_biology.js";
 import { publicQuestions as chemistryPublic } from "../_chemistry.js";
 import { publicQuestions as mathsPublic } from "../_maths.js";
+import { publicQuestions as maths6Public } from "../_maths6.js";
 
 const PUBLIC = {
   physics: physicsPublic,
   biology: biologyPublic,
   chemistry: chemistryPublic,
-  maths: mathsPublic
+  maths: mathsPublic,
+  "year 6 maths": maths6Public
 };
 
 export const onRequestGet = ({ request }) => {

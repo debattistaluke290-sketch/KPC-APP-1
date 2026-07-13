@@ -26,11 +26,12 @@
   window.KPC_CONFIG = {
     privacyUrl: "https://kpcnotesmt.com/policies/privacy-policy", // real Shopify privacy policy
     shopBundleUrl: "https://kpcnotesmt.com/collections/sec-subjects", // fallback: whole O-Level collection
-    subjectCollections: {      // weak topic → that subject's O-Level collection page (all its note packs)
+    subjectCollections: {      // weak topic → that subject's collection page (all its note packs)
       Physics:   "https://kpcnotesmt.com/collections/physics-o-level",
       Maths:     "https://kpcnotesmt.com/collections/maths-o-level",
       Chemistry: "https://kpcnotesmt.com/collections/chemistry-o-level",
-      Biology:   "https://kpcnotesmt.com/collections/biology-o-level"
+      Biology:   "https://kpcnotesmt.com/collections/biology-o-level",
+      "Year 6 Maths": "https://kpcnotesmt.com/collections/year-6"
     },
     discountCode: "",          // set to "DIAGNOSTIC20" once the code exists in Shopify
     discountPercent: "20%",    // only shown when discountCode is set
@@ -486,7 +487,7 @@
         <span class="item"><b>92%</b> report grade improvement</span>
       </div>
     </div>
-    <div class="section-h">Choose your subject</div>
+    <div class="section-h">O-Level diagnostics</div>
     <div class="subjects">
       <button class="subject" id="subj-physics" type="button" onclick="startSubject('Physics')">
         <span class="ico" aria-hidden="true">⚛️</span>
@@ -508,6 +509,25 @@
         <h3>Mathematics</h3><p>Algebra, geometry, trig &amp; statistics</p>
         <span class="go">Start diagnostic →</span>
       </button>
+    </div>
+
+    <div class="section-h" style="margin-top:28px">Years 6–8 Maths</div>
+    <div class="subjects">
+      <button class="subject" id="subj-year6maths" type="button" onclick="startSubject('Year 6 Maths')">
+        <span class="ico" aria-hidden="true">6️⃣</span>
+        <h3>Year 6 Maths</h3><p>Number, fractions, shape &amp; measures</p>
+        <span class="go">Start diagnostic →</span>
+      </button>
+      <div class="subject soon" id="subj-year7maths" aria-disabled="true">
+        <span class="badge">Coming soon</span>
+        <span class="ico" aria-hidden="true">7️⃣</span>
+        <h3>Year 7 Maths</h3><p>Building on primary — algebra &amp; more</p>
+      </div>
+      <div class="subject soon" id="subj-year8maths" aria-disabled="true">
+        <span class="badge">Coming soon</span>
+        <span class="ico" aria-hidden="true">8️⃣</span>
+        <h3>Year 8 Maths</h3><p>Lower-secondary foundations</p>
+      </div>
     </div>
     <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
       <a href="https://kpcnotesmt.com/policies/privacy-policy" id="privacy-link" target="_blank" rel="noopener">Privacy policy</a></div>
@@ -891,6 +911,13 @@ const NOTES_PAGES = {
     "Circulation in Animals":"pp. 24–30", "Homeostasis & Coordination":"pp. 67–78 & 86–91",
     "Reproduction":"pp. 39–44 & 79–85", "Genetics & Inheritance":"pp. 92–98",
     "Ecology & Human Impact":"pp. 31–38 & 61–66", "Classification, Variation & Evolution":"pp. 99–107"
+  },
+  "Year 6 Maths": {
+    "Place Value & Rounding":"pp. 4–22", "Addition & Subtraction":"pp. 23–42",
+    "Multiplication & Division":"pp. 43–71", "Fractions":"pp. 72–99",
+    "Ratio & Proportion":"pp. 100–106", "Measures: Length, Weight & Capacity":"pp. 107–121",
+    "Perimeter & Area":"pp. 122–132", "Time & Calendar":"pp. 133–148",
+    "Shape & Angles":"pp. 149–182", "Statistics & Averages":"pp. 183–193"
   }
 };
 function renderReport(rep){

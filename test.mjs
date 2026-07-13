@@ -5,6 +5,7 @@ import * as physics from "./functions/_bank.js";
 import * as biology from "./functions/_biology.js";
 import * as chemistry from "./functions/_chemistry.js";
 import * as maths from "./functions/_maths.js";
+import * as maths6 from "./functions/_maths6.js";
 import { validateBank } from "./functions/_validate.js";
 import { _parseNumber as P } from "./functions/_grade.js";
 
@@ -18,7 +19,7 @@ const wrong = (q) => q.type === "mcq" ? { given: (q.correct + 1) % q.opts.length
 const cfgOf = (m) => ({ SUBJECT: m.SUBJECT, TOPIC_ORDER: m.TOPIC_ORDER, QUESTIONS: m.QUESTIONS,
   WHY: m.WHY, STRANDS: m.STRANDS, STRAND_WEIGHTS: m.STRAND_WEIGHTS });
 
-const CAL = [["Physics", physics], ["Mathematics", maths], ["Chemistry", chemistry], ["Biology", biology]];
+const CAL = [["Physics", physics], ["Mathematics", maths], ["Chemistry", chemistry], ["Biology", biology], ["Year 6 Maths", maths6]];
 const LEGACY = [];
 const ALL = [...CAL, ...LEGACY];
 

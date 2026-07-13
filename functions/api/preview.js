@@ -9,12 +9,14 @@ import { gradeAndReport as gradePhysics } from "../_bank.js";
 import { gradeAndReport as gradeBiology } from "../_biology.js";
 import { gradeAndReport as gradeChemistry } from "../_chemistry.js";
 import { gradeAndReport as gradeMaths } from "../_maths.js";
+import { gradeAndReport as gradeMaths6 } from "../_maths6.js";
 
 const GRADERS = {
   physics: gradePhysics,
   biology: gradeBiology,
   chemistry: gradeChemistry,
-  maths: gradeMaths
+  maths: gradeMaths,
+  "year 6 maths": gradeMaths6
 };
 
 const json = (obj, status = 200) =>

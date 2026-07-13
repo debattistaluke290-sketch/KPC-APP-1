@@ -23,3 +23,7 @@ reference/
 # KPC Notes' own paid note-pack PDFs (used only to extract topic→page references).
 # Private product files — never commit or deploy.
 notepacks/
+
+# KPC Notes' own paid Year 6/7/8 workbook PDFs (used only to extract topic→page
+# references + calibrate difficulty). Paid products — never commit or deploy.
+workbooks/
