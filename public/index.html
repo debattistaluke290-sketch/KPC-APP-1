@@ -578,7 +578,7 @@
         <div class="topic-tag"><span id="q-topic-name"></span><span class="paper-badge" id="q-paper-badge" style="display:none">✏️ Paper question</span></div>
         <div class="q" id="q-text" tabindex="-1"></div>
         <div class="diagram" id="q-diagram" style="display:none" role="img"></div>
-        <div class="paper-hint" id="q-paper-hint" style="display:none"><span class="ico" aria-hidden="true">✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll get the full worked solution by email.</span></div>
+        <div class="paper-hint" id="q-paper-hint" style="display:none"><span class="ico" aria-hidden="true">✏️</span><span>Work this one out on paper, then type your final answer below. We won't tell you if it's right - you'll see the full worked solution when you finish.</span></div>
         <div id="q-body"></div>
       </div>
 
@@ -827,7 +827,7 @@ function renderQuestion(){
     inp.oninput=()=>{ const val=inp.value.trim(); responses[idx]={given:val, answered: val.length>0}; updateNextState(); };
     body.appendChild(inp);
     const sub=document.createElement('div'); sub.className='answer-sub';
-    sub.textContent='No feedback now - your worked solution arrives by email.';
+    sub.textContent='No feedback now - your full worked solution appears at the end.';
     body.appendChild(sub);
   }
   document.getElementById('q-next').textContent = (idx===QUESTIONS.length-1)?'Finish & see my score →':'Next →';
