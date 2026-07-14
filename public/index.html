@@ -638,8 +638,9 @@
       <div class="summary" id="r-summary"></div>
       <div id="r-scores"></div>
       <div class="notes-hero" id="r-notes-hero"></div>
-      <button class="btn secondary no-print" style="margin-top:14px" onclick="downloadPdf()">🖨️ Download as PDF</button>
-      <button class="btn secondary no-print" style="margin-top:10px" onclick="shareResult()">📲 Share my result</button>
+      <button class="btn secondary no-print" style="margin-top:14px" onclick="downloadPdf()">🖨️ Save as PDF</button>
+      <div class="share-note no-print" style="margin-top:6px">Opens your print window — set the destination to <b>“Save as PDF”</b> to save it to your device.</div>
+      <button class="btn secondary no-print" style="margin-top:12px" onclick="shareResult()">📲 Share my result</button>
       <div class="share-note no-print">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
@@ -1093,12 +1094,20 @@ function wrapText(ctx,text,x,y,maxW,lh){
   ctx.fillText(line.trim(),x,yy);
 }
 
-/* Uses the browser's native print -> "Save as PDF" (no external library, no
-   dependency on an email service). A print stylesheet hides buttons/nav and
-   keeps report cards from splitting awkwardly across pages. */
+/* Browser-native "Save as PDF": there is no web API that force-downloads a PDF
+   of the page, so we use window.print() -> the dialog's "Save as PDF" destination.
+   This renders the report perfectly (real text, all maths symbols + emoji, clean
+   pagination via the print stylesheet) with zero external libraries. We set a tidy
+   document title first so the saved file gets a sensible default name. */
 function downloadPdf(){
   const rep=LAST_REPORT;
   track('pdf_download_clicked', {subject: (rep&&rep.subject)||currentSubject});
+  const prevTitle=document.title;
+  const who=(rep&&rep.name)?(' - '+rep.name):'';
+  document.title='KPC '+((rep&&rep.subject)||currentSubject)+' Evaluation Results'+who;
+  const restore=()=>{ document.title=prevTitle; window.removeEventListener('afterprint',restore); };
+  window.addEventListener('afterprint',restore);
+  setTimeout(restore,120000); // safety net if afterprint never fires
   window.print();
 }
 
