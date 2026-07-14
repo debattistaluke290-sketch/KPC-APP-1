@@ -10,7 +10,7 @@
         name for every subject) carrying the full topic breakdown + priority
         plan (with KPC notes page refs) as event properties, so ONE Klaviyo
         Flow (trigger: this metric) can send the results email for every
-        subject. Deliberately excludes the 40 individual worked solutions —
+        subject. Deliberately excludes the 40 individual worked solutions -
         those stay on-screen right after submitting; keeps the event payload
         small and the Flow template simple/reliable.
 

@@ -19,14 +19,14 @@ function sampleLabelFor(c, n) {
   if (n === 4) {
     if (c === 4) return "Secure on this sample";
     if (c === 3) return "Mostly secure on this sample";
-    if (c === 2) return "Possible gap — limited evidence";
-    return "Priority concern — limited evidence";
+    if (c === 2) return "Possible gap - limited evidence";
+    return "Priority concern - limited evidence";
   }
   const r = n ? c / n : 0;               // legacy banks (n may not be 4)
   if (r >= 0.75) return "Secure on this sample";
   if (r >= 0.5) return "Mostly secure on this sample";
-  if (r >= 0.25) return "Possible gap — limited evidence";
-  return "Priority concern — limited evidence";
+  if (r >= 0.25) return "Possible gap - limited evidence";
+  return "Priority concern - limited evidence";
 }
 function tierFor(label) {
   if (label.startsWith("Priority")) return "Essential";
@@ -77,11 +77,11 @@ function parseNumber(val) {
     if (fm) { const den = parseFloat(fm[2]); if (den === 0) return null; return parseFloat(fm[1]) / den; }
     // A slash touching a digit is a malformed fraction ("3/", "/8", "1/2/3") ONLY when there
     // is no unit text. With a unit (e.g. "16 m/s", "cm³/s", "mol/dm³") the slash belongs to the
-    // unit — fall through and read the leading number instead.
+    // unit - fall through and read the leading number instead.
     if (!/[a-z]/.test(s) && (/\d\//.test(s) || /\/\d/.test(s))) return null;
   }
   // Read the FIRST numeric token (optional sign, decimals, sci-notation) and ignore any
-  // surrounding unit text — so "0.08 mol/dm³", "2 m/s²", "€36" parse to their number without
+  // surrounding unit text - so "0.08 mol/dm³", "2 m/s²", "€36" parse to their number without
   // the unit's own digits (dm³→3, m/s²→2) getting appended to the value.
   const m = s.match(/[+-]?(?:\d+(?:\.\d+)?|\.\d+)(?:e[+-]?\d+)?/);
   if (!m) return null;
@@ -261,8 +261,8 @@ export async function gradeAndReport(cfg, name, answers = [], env) {
 
   const summary =
     recommendationState === "none_needed"
-      ? "You're in good shape across every topic on this sample — no priority gaps stand out. Keep practising past-paper questions to stay sharp."
-    : rawScore >= 80 ? "A strong result — you're secure across most topics. Focus on the few areas in your plan below to tidy up the last marks."
+      ? "You're in good shape across every topic on this sample - no priority gaps stand out. Keep practising past-paper questions to stay sharp."
+    : rawScore >= 80 ? "A strong result - you're secure across most topics. Focus on the few areas in your plan below to tidy up the last marks."
     : rawScore >= 50 ? "A solid base, with a few topics to firm up. Your priority plan below shows where the evidence suggests focusing first."
     : "There's real room to grow, and the plan below points to exactly which topics to study first. Remember this is a short sample, not a final verdict.";
 

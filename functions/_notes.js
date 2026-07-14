@@ -1,6 +1,6 @@
 /* =========================================================================
    Server-side copy of the topic → KPC notes page map + subject collection URLs.
-   Keyed by report.subject (the module SUBJECT value — note O-Level Maths is
+   Keyed by report.subject (the module SUBJECT value - note O-Level Maths is
    "Mathematics", not "Maths"). Used by the Mailgun results email (_mailgun.js).
 
    ⚠️  The BROWSER keeps its own copy in public/index.html (NOTES_PAGES /

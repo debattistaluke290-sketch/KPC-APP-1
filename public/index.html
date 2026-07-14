@@ -97,7 +97,7 @@
 
 <style>
   :root{
-    /* ===== Design system tokens ("Calm Academic" — see DESIGN_SYSTEM.md) ===== */
+    /* ===== Design system tokens ("Calm Academic" - see DESIGN_SYSTEM.md) ===== */
     /* Brand */
     --ink:#341D54; --ink-hover:#2A1745;
     --primary:#7C27AC; --primary-hover:#6A1F94; --primary-active:#59187C;
@@ -270,7 +270,7 @@
   .sol .yours b{color:var(--ink)}
   .sol .steps{font-size:13.5px;background:#faf7fc;border-radius:10px;padding:12px 14px;line-height:1.6}
   .sol .steps .final{color:var(--purple);font-weight:700}
-  /* KPC notes mapping — made central + repeated across the whole report */
+  /* KPC notes mapping - made central + repeated across the whole report */
   .notes-hero{display:flex;gap:10px;align-items:flex-start;background:var(--primary-soft);border:1px solid var(--border-brand);
     border-radius:var(--radius-md);padding:12px 14px;margin:14px 0 2px;font-size:13.5px;line-height:1.5;color:var(--text-primary)}
   .notes-hero .nh-ico{font-size:18px;line-height:1.25;flex:0 0 auto}
@@ -384,7 +384,7 @@
   #s-quiz .paper-hint{background:var(--info-bg);border:1px solid var(--info-border);color:#1c3a5e;
     border-radius:var(--radius-md);padding:12px 14px;margin:16px 0 0;font-size:var(--text-sm);line-height:1.5;display:flex;gap:8px;align-items:flex-start}
   #q-body{margin-top:18px}
-  /* Answer options — radio-dot indicator in a reserved slot (no layout shift between states) */
+  /* Answer options - radio-dot indicator in a reserved slot (no layout shift between states) */
   #s-quiz .opt{position:relative;display:flex;align-items:center;gap:12px;width:100%;text-align:left;
     background:var(--n-0);border:1.5px solid var(--n-200);border-radius:var(--radius-md);
     padding:14px 16px;margin-bottom:10px;font-size:var(--text-base);color:var(--text-primary);
@@ -491,7 +491,7 @@
     .card{ box-shadow:none; border:none; padding:0 }
     .topbar{ margin-bottom:14px }
     .reveal-divider{ margin:18px 0 12px }
-    /* Keep each card intact — don't split a solution/topic/plan-item across a page break */
+    /* Keep each card intact - don't split a solution/topic/plan-item across a page break */
     .sol, .rec, #s-done .row, .summary, .priority{ break-inside:avoid; page-break-inside:avoid }
     .sol{ border-color:#ccc }
     .steps{ background:#f7f5f0 !important }
@@ -631,7 +631,7 @@
   <section class="screen" id="s-done">
     <div class="card">
       <div class="confirm"><div class="big">✅</div><h2 id="c-head">Your results are ready!</h2>
-        <p id="c-sub">Here's your full breakdown below — download it as a PDF to keep, or take a screenshot to share.</p></div>
+        <p id="c-sub">Here's your full breakdown below - download it as a PDF to keep, or take a screenshot to share.</p></div>
       <div class="reveal-divider">Your results</div>
       <div class="score-ring"><div class="ring" id="r-ring">-</div>
         <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
@@ -639,14 +639,14 @@
       <div id="r-scores"></div>
       <div class="notes-hero" id="r-notes-hero"></div>
       <button class="btn secondary no-print" style="margin-top:14px" onclick="downloadPdf()">🖨️ Save as PDF</button>
-      <div class="share-note no-print" style="margin-top:6px">Opens your print window — set the destination to <b>“Save as PDF”</b> to save it to your device.</div>
+      <div class="share-note no-print" style="margin-top:6px">Opens your print window - set the destination to <b>“Save as PDF”</b> to save it to your device.</div>
       <button class="btn secondary no-print" style="margin-top:12px" onclick="shareResult()">📲 Share my result</button>
       <div class="share-note no-print">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
       <div class="priority"><h3>🎯 Your priority study plan</h3>
         <div class="sub">Work through these in order - biggest gaps first.</div><div id="r-recs"></div></div>
-      <div class="cta-box no-print" id="cta-box"><div id="cta-none" style="display:none;font-size:14px;color:var(--muted);background:#f3f8f4;border:1px solid #d7ebdd;border-radius:12px;padding:13px 15px">✅ <b>No priority gaps on this sample</b> — you look in good shape, so there's nothing you need to buy right now. Keep practising past papers. You can still browse the notes if you'd like.</div>
+      <div class="cta-box no-print" id="cta-box"><div id="cta-none" style="display:none;font-size:14px;color:var(--muted);background:#f3f8f4;border:1px solid #d7ebdd;border-radius:12px;padding:13px 15px">✅ <b>No priority gaps on this sample</b> - you look in good shape, so there's nothing you need to buy right now. Keep practising past papers. You can still browse the notes if you'd like.</div>
         <button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
         <div class="price" id="disc-line" style="display:none">Tailored bundle · <b id="disc-pct">20%</b> off with code <b id="disc-code"></b></div></div>
       <button class="btn secondary no-print" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
@@ -680,7 +680,7 @@ const DIA = {
   foodchain:`<svg viewBox="0 0 360 64" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="31" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grass</text><rect x="80" y="18" width="92" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="126" y="37" text-anchor="middle" font-size="11" fill="#341D54">Grasshopper</text><rect x="192" y="18" width="58" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="221" y="37" text-anchor="middle" font-size="11" fill="#341D54">Lizard</text><rect x="270" y="18" width="66" height="30" rx="6" fill="#f3ebf8" stroke="#7C27AC" stroke-width="1.5"/><text x="303" y="37" text-anchor="middle" font-size="11" fill="#341D54">Kestrel</text><g stroke="#D6587E" stroke-width="2" fill="#D6587E"><line x1="62" y1="33" x2="74" y2="33"/><polygon points="80,33 73,29 73,37"/><line x1="174" y1="33" x2="186" y2="33"/><polygon points="192,33 185,29 185,37"/><line x1="252" y1="33" x2="264" y2="33"/><polygon points="270,33 263,29 263,37"/></g></svg>`,
   pyramid:`<svg viewBox="0 0 240 150" xmlns="http://www.w3.org/2000/svg"><rect x="20" y="112" width="200" height="26" fill="#cdbfdb" stroke="#7C27AC" stroke-width="1.5"/><rect x="50" y="82" width="140" height="26" fill="#bba6cf" stroke="#7C27AC" stroke-width="1.5"/><rect x="80" y="52" width="80" height="26" fill="#a98fc2" stroke="#7C27AC" stroke-width="1.5"/><rect x="103" y="22" width="34" height="26" fill="#9678b6" stroke="#7C27AC" stroke-width="1.5"/></svg>`
 };
-/* Text alternatives for diagrams — describe the DRAWING (labels/arrows/values) so a
+/* Text alternatives for diagrams - describe the DRAWING (labels/arrows/values) so a
    screen-reader user can reason it out, WITHOUT stating the answer. */
 const DIA_ALT = {
   vtgraph:"Velocity–time graph. The line rises straight from the origin to 16 m/s at 8 seconds, then stays flat at 16 m/s until 20 seconds. Vertical axis velocity in metres per second, horizontal axis time in seconds.",
@@ -992,11 +992,11 @@ function renderReport(rep){
     const ready=(rep.readinessScore!=null)?rep.readinessScore:null;
     sc.innerHTML =
       `<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px"><span>Estimated exam-level score</span><b style="font-size:17px;color:var(--purple-deep)">${exam}%</b></div>`+
-      (ready!=null?`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:14px"><span>Secure-readiness <span style="color:var(--muted)">(stricter — not a predicted exam mark)</span></span><b style="font-size:17px;color:var(--purple-deep)">${ready}%</b></div>`:'')+
-      `<div style="font-size:12px;color:var(--muted);margin-top:6px">Based on a short ${rep.totalQ}-question sample (${rep.totalCorrect} correct) — a guide to where to focus, not a formal prediction.</div>`;
+      (ready!=null?`<div style="display:flex;justify-content:space-between;align-items:center;padding:9px 0;font-size:14px"><span>Secure-readiness <span style="color:var(--muted)">(stricter - not a predicted exam mark)</span></span><b style="font-size:17px;color:var(--purple-deep)">${ready}%</b></div>`:'')+
+      `<div style="font-size:12px;color:var(--muted);margin-top:6px">Based on a short ${rep.totalQ}-question sample (${rep.totalCorrect} correct) - a guide to where to focus, not a formal prediction.</div>`;
   }
 
-  // ===== KPC notes mapping — computed once, then surfaced in EVERY part of the report =====
+  // ===== KPC notes mapping - computed once, then surfaced in EVERY part of the report =====
   // (top revision-plan banner, each topic row, each worked solution, and the priority plan).
   const c=window.KPC_CONFIG||{};
   const collectionUrl=(()=>{
@@ -1014,10 +1014,10 @@ function renderReport(rep){
     ? `<a class="notes-link" href="${collectionUrl}" target="_blank" rel="noopener" data-topic="${esc(topic||'')}">${label}</a>`
     : `<span class="notes-link muted">${label}</span>`;
 
-  // Top banner — puts the KPC notes plan front and centre, right under the score.
+  // Top banner - puts the KPC notes plan front and centre, right under the score.
   const hero=document.getElementById('r-notes-hero');
   if(hero) hero.innerHTML =
-    `<span class="nh-ico" aria-hidden="true">📘</span><div>Your <b>KPC ${currentSubject}</b> revision plan is built in below — `+
+    `<span class="nh-ico" aria-hidden="true">📘</span><div>Your <b>KPC ${currentSubject}</b> revision plan is built in below - `+
     `every topic and every question is mapped to the exact pages to revise. `+notesLink('','Open the notes →')+`</div>`;
 
   const rows=document.getElementById('r-rows'); rows.innerHTML='';
@@ -1036,8 +1036,8 @@ function renderReport(rep){
     const div=document.createElement('div'); div.className='sol';
     const pg=pagesFor(s.topic);
     const lbl=(s.mark==='right')
-      ? `📘 More practice — KPC ${currentSubject} notes${pg?` · ${pg}`:''} →`
-      : `📘 Revise this — KPC ${currentSubject} notes${pg?`, ${pg}`:''} →`;
+      ? `📘 More practice - KPC ${currentSubject} notes${pg?` · ${pg}`:''} →`
+      : `📘 Revise this - KPC ${currentSubject} notes${pg?`, ${pg}`:''} →`;
     div.innerHTML=`<div class="head"><div class="qn">Q${s.n}. ${s.q}</div><span class="mark ${s.mark}">${s.markText}</span></div>
       ${s.dia&&DIA[s.dia]?`<div class="dlg">${DIA[s.dia]}</div>`:''}
       <div class="yours">Your answer: <b>${esc(s.given)}</b></div>
