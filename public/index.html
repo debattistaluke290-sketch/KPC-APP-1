@@ -3,18 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>KPC Notes - Free Science Diagnostic</title>
-<meta name="description" content="Free science diagnostics from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
+<title>KPC Notes - Free Science Evaluation Test</title>
+<meta name="description" content="Free science evaluation tests from KPC Notes Malta. Find out exactly what to revise and get worked solutions mapped to KPC notes.">
 
 <!-- social share preview -->
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="KPC Notes Malta">
-<meta property="og:title" content="Free Science Diagnostic - KPC Notes Malta">
-<meta property="og:description" content="Take a short diagnostic and find out exactly what to revise. Full worked solutions + a personalised study plan, free.">
+<meta property="og:title" content="Free Science Evaluation Test - KPC Notes Malta">
+<meta property="og:description" content="Take a short evaluation test and find out exactly what to revise. Full worked solutions + a personalised study plan, free.">
 <meta property="og:url" content="https://kpc-app-1.pages.dev/">
 <meta property="og:image" content="https://kpcnotesmt.com/cdn/shop/files/Title_1.png?v=1731144923">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Free Science Diagnostic - KPC Notes Malta">
+<meta name="twitter:title" content="Free Science Evaluation Test - KPC Notes Malta">
 <meta name="twitter:description" content="Find your weak topics in minutes. Free worked solutions + a study plan.">
 <meta name="twitter:image" content="https://kpcnotesmt.com/cdn/shop/files/Title_1.png?v=1731144923">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect width='100' height='100' rx='22' fill='%23341D54'/%3E%3Ctext x='50' y='71' font-size='62' font-weight='bold' text-anchor='middle' fill='%23D6587E' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
@@ -409,8 +409,10 @@
   #s-quiz .quiz-actions{display:flex;gap:12px;margin-top:26px}
   #s-quiz #q-next{flex:1 1 auto;width:auto;margin:0}
   #s-quiz #q-back{flex:0 0 auto;width:auto;margin:0;padding-left:18px;padding-right:18px}
-  .quiz-skip{text-align:center;margin-top:14px}
+  .quiz-skip{text-align:center;margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:2px}
   .quiz-skip .btn.text{color:var(--text-secondary);font-size:var(--text-sm)}
+  .quiz-skip .btn.text.skip-all{color:var(--primary);font-weight:700}
+  .quiz-skip .btn.text.skip-all:hover{text-decoration:underline;background:transparent}
   @media (min-width:640px){
     #s-quiz .quiz-shell{padding:28px 28px 24px}
     #s-quiz .q{font-size:var(--text-xl)}
@@ -492,37 +494,37 @@
   <!-- HOMEPAGE -->
   <section class="screen active" id="s-home">
     <div class="hero">
-      <div class="pill">Free diagnostic · Built around the Maltese syllabus</div>
+      <div class="pill">Free evaluation test · Built around the Maltese syllabus</div>
       <h1>Stop guessing what to revise. <span class="hl">Start knowing.</span></h1>
-      <p>Take a short diagnostic, work the problems through, and we'll email you full worked solutions plus a personalised plan mapped straight to KPC Notes.</p>
+      <p>Take a short evaluation test, work the problems through, and we'll email you full worked solutions plus a personalised plan mapped straight to KPC Notes.</p>
       <div class="trust">
         <span class="stars">★★★★★</span>
-        <span class="item"><b>4.9/5</b> · 435+ reviews</span>
-        <span class="item"><b>6,000+</b> students 🇲🇹</span>
+        <span class="item"><b>4.9/5</b> · 700+ reviews</span>
+        <span class="item"><b>8,000+</b> students 🇲🇹</span>
         <span class="item"><b>92%</b> report grade improvement</span>
       </div>
     </div>
-    <div class="section-h">O-Level diagnostics</div>
+    <div class="section-h">O-Level evaluation tests</div>
     <div class="subjects">
       <button class="subject" id="subj-physics" type="button" onclick="startSubject('Physics')">
         <span class="ico" aria-hidden="true">⚛️</span>
         <h3>Physics</h3><p>Forces, energy, waves, electricity &amp; more</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
       <button class="subject" id="subj-biology" type="button" onclick="startSubject('Biology')">
         <span class="ico" aria-hidden="true">🧬</span>
         <h3>Biology</h3><p>Cells, transport, genetics &amp; ecology</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
       <button class="subject" id="subj-chemistry" type="button" onclick="startSubject('Chemistry')">
         <span class="ico" aria-hidden="true">🧪</span>
         <h3>Chemistry</h3><p>Atoms, reactions, bonding &amp; the mole</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
       <button class="subject" id="subj-maths" type="button" onclick="startSubject('Maths')">
         <span class="ico" aria-hidden="true">📐</span>
         <h3>Mathematics</h3><p>Algebra, geometry, trig &amp; statistics</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
     </div>
 
@@ -531,17 +533,17 @@
       <button class="subject" id="subj-year6maths" type="button" onclick="startSubject('Year 6 Maths')">
         <span class="ico" aria-hidden="true">6️⃣</span>
         <h3>Year 6 Maths</h3><p>Number, fractions, shape &amp; measures</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
       <button class="subject" id="subj-year7maths" type="button" onclick="startSubject('Year 7 Maths')">
         <span class="ico" aria-hidden="true">7️⃣</span>
         <h3>Year 7 Maths</h3><p>Number, algebra, angles &amp; ratio</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
       <button class="subject" id="subj-year8maths" type="button" onclick="startSubject('Year 8 Maths')">
         <span class="ico" aria-hidden="true">8️⃣</span>
         <h3>Year 8 Maths</h3><p>Algebra, graphs, geometry &amp; data</p>
-        <span class="go">Start diagnostic →</span>
+        <span class="go">Start evaluation test →</span>
       </button>
     </div>
     <div class="homefoot"><b>KPC Notes Malta</b> · kpcnotesmt.com · @kpcnotesmt<br>
@@ -549,7 +551,7 @@
   </section>
 
   <!-- QUIZ -->
-  <section class="screen" id="s-quiz" aria-label="Diagnostic quiz">
+  <section class="screen" id="s-quiz" aria-label="Evaluation Test quiz">
     <div class="quiz-shell">
       <div class="quiz-head">
         <button class="btn text quiz-exit" type="button" onclick="confirmExit()">✕ Exit</button>
@@ -571,7 +573,10 @@
         <button class="btn secondary" id="q-back" type="button" onclick="prevQuestion()" style="display:none">← Back</button>
         <button class="btn" id="q-next" type="button" onclick="nextQuestion()">Next →</button>
       </div>
-      <div class="quiz-skip"><button class="btn text" type="button" onclick="skipQuestion(event)">Skip this question</button></div>
+      <div class="quiz-skip">
+        <button class="btn text" type="button" onclick="skipQuestion(event)">Skip this question</button>
+        <button class="btn text skip-all" type="button" onclick="skipAll(event)">Skip all questions →</button>
+      </div>
     </div>
   </section>
 
@@ -637,7 +642,7 @@
 <div class="modal-overlay" id="exit-modal" role="dialog" aria-modal="true" aria-labelledby="exit-title" aria-describedby="exit-desc" onclick="if(event.target===this)closeExit()">
   <div class="modal">
     <h3 id="exit-title">Leave the quiz?</h3>
-    <p id="exit-desc">Your progress on this diagnostic will be lost and you'll return to the subject list.</p>
+    <p id="exit-desc">Your progress on this evaluation test will be lost and you'll return to the subject list.</p>
     <div class="modal-actions">
       <button class="btn secondary" type="button" onclick="closeExit()">Keep going</button>
       <button class="btn" type="button" onclick="doExit()" style="background:var(--danger)">Leave quiz</button>
@@ -802,6 +807,8 @@ function updateNextState(){
 function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
 function prevQuestion(){ if(idx>0){ idx--; renderQuestion(); } }
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
+// Skip the rest of the test and jump straight to the results/email gate (answered questions are kept).
+function skipAll(e){ if(e)e.preventDefault(); goToEmail(); }
 
 /* ===== Exit-confirmation modal ===== */
 let _exitFocus=null;
@@ -887,7 +894,7 @@ async function submitEmail(){
     });
     if(!res.ok){ const e=await res.json().catch(()=>({})); throw new Error(e.error||('status '+res.status)); }
     const report=await res.json();
-    track('email_submitted', {subject: currentSubject, content_name: currentSubject+' Diagnostic'});
+    track('email_submitted', {subject: currentSubject, content_name: currentSubject+' Evaluation Test'});
     renderReport(report);
     show('s-done');
   }catch(e){
@@ -1083,7 +1090,7 @@ function shareResult(){
   x.fillStyle='#D6587E'; x.beginPath(); x.arc(980,950,210,0,7); x.fill(); x.globalAlpha=1;
   x.textAlign='center';
   x.fillStyle='#fff'; x.font='800 46px -apple-system,Arial'; x.fillText('KPC NOTES MALTA', W/2, 150);
-  x.fillStyle='#D6587E'; x.font='700 30px Arial'; x.fillText('FREE '+subject.toUpperCase()+' DIAGNOSTIC', W/2, 200);
+  x.fillStyle='#D6587E'; x.font='700 30px Arial'; x.fillText('FREE '+subject.toUpperCase()+' EVALUATION TEST', W/2, 200);
   const cx=W/2, cy=470, r=175;
   const col= rep.score>=80?'#2fa566':rep.score>=50?'#e0982f':'#cf3b3b';
   x.lineWidth=36; x.lineCap='round';
@@ -1104,7 +1111,7 @@ function shareResult(){
   cv.toBlob(function(blob){
     if(!blob){ alert('Could not create the image on this device.'); return; }
     const file=new File([blob],'kpc-'+subject.toLowerCase()+'-result.png',{type:'image/png'});
-    const caption='I scored '+rep.score+'% on the free KPC Notes '+subject+' diagnostic 🇲🇹 Find your weak spots and fix them: '+site;
+    const caption='I scored '+rep.score+'% on the free KPC Notes '+subject+' evaluation test 🇲🇹 Find your weak spots and fix them: '+site;
     track('result_shared', {subject});
     if(navigator.canShare && navigator.canShare({files:[file]})){
       navigator.share({files:[file], text:caption}).catch(function(){});
