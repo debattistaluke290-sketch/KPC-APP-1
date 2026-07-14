@@ -481,6 +481,21 @@
   .subjects{grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:16px}
   .subject{display:flex;flex-direction:column}
   .subject .go{margin-top:auto;padding-top:14px}
+
+  /* ===== Print / "Download as PDF" (results screen only) ===== */
+  @media print{
+    @page{ margin:1.5cm; }
+    body{ background:#fff }
+    .no-print{ display:none !important }
+    .wrap{ max-width:none; padding:0 }
+    .card{ box-shadow:none; border:none; padding:0 }
+    .topbar{ margin-bottom:14px }
+    .reveal-divider{ margin:18px 0 12px }
+    /* Keep each card intact — don't split a solution/topic/plan-item across a page break */
+    .sol, .rec, #s-done .row, .summary, .priority{ break-inside:avoid; page-break-inside:avoid }
+    .sol{ border-color:#ccc }
+    .steps{ background:#f7f5f0 !important }
+  }
 </style>
 </head>
 <body>
@@ -615,24 +630,25 @@
   <!-- CONFIRMATION + REPORT -->
   <section class="screen" id="s-done">
     <div class="card">
-      <div class="confirm"><div class="big">📬</div><h2 id="c-head">Check your inbox!</h2>
-        <p id="c-sub">Your full worked solutions and personalised KPC study plan are on their way.</p></div>
+      <div class="confirm"><div class="big">✅</div><h2 id="c-head">Your results are ready!</h2>
+        <p id="c-sub">Here's your full breakdown below — download it as a PDF to keep, or take a screenshot to share.</p></div>
       <div class="reveal-divider">Your results</div>
       <div class="score-ring"><div class="ring" id="r-ring">-</div>
         <div><h2 id="r-head">Your snapshot</h2><p class="lead" style="margin:0" id="r-sub"></p></div></div>
       <div class="summary" id="r-summary"></div>
       <div id="r-scores"></div>
       <div class="notes-hero" id="r-notes-hero"></div>
-      <button class="btn secondary" style="margin-top:14px" onclick="shareResult()">📲 Share my result</button>
-      <div class="share-note">Post it to your story and tag @kpcnotesmt</div>
+      <button class="btn secondary no-print" style="margin-top:14px" onclick="downloadPdf()">🖨️ Download as PDF</button>
+      <button class="btn secondary no-print" style="margin-top:10px" onclick="shareResult()">📲 Share my result</button>
+      <div class="share-note no-print">Post it to your story and tag @kpcnotesmt</div>
       <div class="section-label">How you did, topic by topic</div><div id="r-rows"></div>
       <div class="section-label">Full worked solutions</div><div id="r-solutions"></div>
       <div class="priority"><h3>🎯 Your priority study plan</h3>
         <div class="sub">Work through these in order - biggest gaps first.</div><div id="r-recs"></div></div>
-      <div class="cta-box" id="cta-box"><div id="cta-none" style="display:none;font-size:14px;color:var(--muted);background:#f3f8f4;border:1px solid #d7ebdd;border-radius:12px;padding:13px 15px">✅ <b>No priority gaps on this sample</b> — you look in good shape, so there's nothing you need to buy right now. Keep practising past papers. You can still browse the notes if you'd like.</div>
+      <div class="cta-box no-print" id="cta-box"><div id="cta-none" style="display:none;font-size:14px;color:var(--muted);background:#f3f8f4;border:1px solid #d7ebdd;border-radius:12px;padding:13px 15px">✅ <b>No priority gaps on this sample</b> — you look in good shape, so there's nothing you need to buy right now. Keep practising past papers. You can still browse the notes if you'd like.</div>
         <button class="btn" id="shop-btn">Get the KPC notes for my weak topics →</button>
         <div class="price" id="disc-line" style="display:none">Tailored bundle · <b id="disc-pct">20%</b> off with code <b id="disc-code"></b></div></div>
-      <button class="btn secondary" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
+      <button class="btn secondary no-print" style="margin-top:14px" onclick="reset()">↺ Back to start</button>
     </div>
   </section>
 
@@ -959,7 +975,7 @@ const NOTES_PAGES = {
 };
 function renderReport(rep){
   LAST_REPORT = rep;
-  document.getElementById('c-head').textContent = rep.name?`Check your inbox, ${rep.name}!`:'Check your inbox!';
+  document.getElementById('c-head').textContent = rep.name?`${rep.name}, your results are ready!`:'Your results are ready!';
   const ring=document.getElementById('r-ring');
   ring.textContent=rep.score+'%';
   ring.style.background = rep.score>=80?'var(--green)':rep.score>=50?'var(--amber)':'var(--red)';
@@ -1075,6 +1091,15 @@ function wrapText(ctx,text,x,y,maxW,lh){
     else line=test;
   }
   ctx.fillText(line.trim(),x,yy);
+}
+
+/* Uses the browser's native print -> "Save as PDF" (no external library, no
+   dependency on an email service). A print stylesheet hides buttons/nav and
+   keeps report cards from splitting awkwardly across pages. */
+function downloadPdf(){
+  const rep=LAST_REPORT;
+  track('pdf_download_clicked', {subject: (rep&&rep.subject)||currentSubject});
+  window.print();
 }
 
 function shareResult(){
