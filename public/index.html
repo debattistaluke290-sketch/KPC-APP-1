@@ -409,10 +409,8 @@
   #s-quiz .quiz-actions{display:flex;gap:12px;margin-top:26px}
   #s-quiz #q-next{flex:1 1 auto;width:auto;margin:0}
   #s-quiz #q-back{flex:0 0 auto;width:auto;margin:0;padding-left:18px;padding-right:18px}
-  .quiz-skip{text-align:center;margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:2px}
+  .quiz-skip{text-align:center;margin-top:14px}
   .quiz-skip .btn.text{color:var(--text-secondary);font-size:var(--text-sm)}
-  .quiz-skip .btn.text.skip-all{color:var(--primary);font-weight:700}
-  .quiz-skip .btn.text.skip-all:hover{text-decoration:underline;background:transparent}
   @media (min-width:640px){
     #s-quiz .quiz-shell{padding:28px 28px 24px}
     #s-quiz .q{font-size:var(--text-xl)}
@@ -590,7 +588,6 @@
       </div>
       <div class="quiz-skip">
         <button class="btn text" type="button" onclick="skipQuestion(event)">Skip this question</button>
-        <button class="btn text skip-all" type="button" onclick="skipAll(event)">Skip all questions →</button>
       </div>
     </div>
   </section>
@@ -849,8 +846,6 @@ function updateNextState(){
 function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else { renderQuestion(); pushNav({view:'quiz', idx}); } }
 function prevQuestion(){ if(idx>0){ history.back(); } }  /* routed through history so browser + in-app Back stay in sync */
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
-// Skip the rest of the test and jump straight to the results/email gate (answered questions are kept).
-function skipAll(e){ if(e)e.preventDefault(); goToEmail(); }
 
 /* ===== Exit-confirmation modal ===== */
 let _exitFocus=null;
