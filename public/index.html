@@ -727,6 +727,31 @@ function show(id){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 
+/* ===== Browser back/forward -> in-app navigation (History API) =====
+   Every screen (home / quiz question / email gate / results) lives at the same
+   URL, so without this the browser's back/forward arrows would leave the app.
+   We record each step in history and re-render the matching screen on back/forward. */
+let _suppressPush = false;
+function pushNav(state){ if(_suppressPush) return; try{ history.pushState(state, ''); }catch(_){} }
+function applyNav(st){
+  st = st || { view:'home' };
+  if(st.view==='quiz' && QUESTIONS.length){
+    idx = Math.max(0, Math.min(st.idx||0, QUESTIONS.length-1));
+    show('s-quiz'); renderQuestion();
+  } else if(st.view==='email' && QUESTIONS.length){
+    show('s-email');
+  } else if(st.view==='done' && LAST_REPORT){
+    show('s-done');
+  } else {
+    show('s-home');
+  }
+}
+window.addEventListener('popstate', function(e){
+  _suppressPush = true;
+  try{ applyNav(e.state); } finally { _suppressPush = false; }
+});
+try{ history.replaceState({ view:'home' }, ''); }catch(_){}
+
 /* ===== Start a subject: load its questions, then run the quiz ===== */
 async function startSubject(name){
   currentSubject = name;
@@ -743,7 +768,7 @@ async function startSubject(name){
   if(!QUESTIONS.length){ alert('No questions are available for '+name+' yet.'); return; }
   idx=0; responses = QUESTIONS.map(()=>({given:null,answered:false}));
   track('quiz_started', {subject:name});
-  show('s-quiz'); renderQuestion();
+  show('s-quiz'); renderQuestion(); pushNav({view:'quiz', idx:0});
 }
 
 function renderQuestion(){
@@ -821,8 +846,8 @@ function updateNextState(){
   document.getElementById('q-next').disabled = !(r && r.answered);
 }
 
-function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else renderQuestion(); }
-function prevQuestion(){ if(idx>0){ idx--; renderQuestion(); } }
+function nextQuestion(){ idx++; if(idx>=QUESTIONS.length){ goToEmail(); } else { renderQuestion(); pushNav({view:'quiz', idx}); } }
+function prevQuestion(){ if(idx>0){ history.back(); } }  /* routed through history so browser + in-app Back stay in sync */
 function skipQuestion(e){ e.preventDefault(); responses[idx]={given:null,answered:false}; nextQuestion(); }
 // Skip the rest of the test and jump straight to the results/email gate (answered questions are kept).
 function skipAll(e){ if(e)e.preventDefault(); goToEmail(); }
@@ -860,7 +885,7 @@ async function goToEmail(){
   document.getElementById('t-head').textContent='Your snapshot';
   document.getElementById('t-sub').textContent='Scoring your answers…';
   document.getElementById('t-weak').style.display='none';
-  show('s-email');
+  show('s-email'); pushNav({view:'email'});
   try{
     const res = await fetch('/api/preview',{
       method:'POST', headers:{'content-type':'application/json'},
@@ -913,7 +938,7 @@ async function submitEmail(){
     const report=await res.json();
     track('email_submitted', {subject: currentSubject, content_name: currentSubject+' Evaluation Test'});
     renderReport(report);
-    show('s-done');
+    show('s-done'); pushNav({view:'done'});
   }catch(e){
     err.textContent='Something went wrong sending your results. Please try again.';
     console.error(e);
@@ -1162,7 +1187,7 @@ function reset(){
   document.getElementById('email-name').value='';
   document.getElementById('email-addr').value='';
   document.getElementById('consent').checked=false;
-  show('s-home');
+  show('s-home'); pushNav({view:'home'});
 }
 </script>
 </body>
